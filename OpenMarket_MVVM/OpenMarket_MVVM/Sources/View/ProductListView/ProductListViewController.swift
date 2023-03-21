@@ -3,8 +3,8 @@
 //  OpenMarket_MVVM
 //
 //  Copyright (c) 2023 Minii All rights reserved.
-        
 
+import Combine
 import UIKit
 
 class ProductListViewController: UIViewController {
@@ -22,6 +22,8 @@ class ProductListViewController: UIViewController {
     
     // MARK: Data Properties
     private var dataSource: UICollectionViewDiffableDataSource<Int, Product>?
+    private var subscribers = Set<AnyCancellable>()
+    private let viewModel = ProductListViewModel()
     
     // MARK: Life Cycle
     override func viewDidLoad() {
@@ -29,7 +31,13 @@ class ProductListViewController: UIViewController {
         
         configureUI()
         dataSource = configureDataSource()
-        setSnapshot(with: Product.mockData())
+        
+        viewModel.$products
+            .sink {
+                self.setSnapshot(with: $0)
+            }
+            .store(in: &subscribers)
+        
     }
 }
 
@@ -47,8 +55,14 @@ private extension ProductListViewController {
 private extension ProductListViewController {
     func configureDataSource() -> UICollectionViewDiffableDataSource<Int, Product> {
         let registration = configureListCellRegistration()
-        return UICollectionViewDiffableDataSource<Int, Product>(collectionView: listCollectionView) { (colletionView, indexPath, item) in
-            return colletionView.dequeueConfiguredReusableCell(using: registration, for: indexPath, item: item)
+        return UICollectionViewDiffableDataSource<Int, Product>(
+            collectionView: listCollectionView
+        ) { (colletionView, indexPath, item) in
+            return colletionView.dequeueConfiguredReusableCell(
+                using: registration,
+                for: indexPath,
+                item: item
+            )
         }
     }
     
