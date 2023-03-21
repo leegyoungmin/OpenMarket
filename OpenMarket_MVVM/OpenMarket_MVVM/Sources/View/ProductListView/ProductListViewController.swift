@@ -19,7 +19,7 @@ class ProductListViewController: UIViewController {
     }()
     
     // MARK: Data Properties
-    private var dataSource: UICollectionViewDiffableDataSource<Int, Int>?
+    private var dataSource: UICollectionViewDiffableDataSource<Int, Product>?
     
     // MARK: Life Cycle
     override func viewDidLoad() {
@@ -27,14 +27,14 @@ class ProductListViewController: UIViewController {
         
         configureUI()
         dataSource = configureDataSource()
-        setSnapshot(with: Array(1...100))
+        setSnapshot(with: Product.mockData())
     }
 }
 
 // MARK: Data Method
 private extension ProductListViewController {
-    func setSnapshot(with datas: [Int]) {
-        var snapshot = NSDiffableDataSourceSnapshot<Int, Int>()
+    func setSnapshot(with datas: [Product]) {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, Product>()
         snapshot.appendSections([0])
         snapshot.appendItems(datas, toSection: 0)
         dataSource?.apply(snapshot)
@@ -43,19 +43,19 @@ private extension ProductListViewController {
 
 // MARK: Configure CollectionView Layout
 private extension ProductListViewController {
-    func configureDataSource() -> UICollectionViewDiffableDataSource<Int, Int> {
+    func configureDataSource() -> UICollectionViewDiffableDataSource<Int, Product> {
         let registration = configureListCellRegistration()
-        return UICollectionViewDiffableDataSource<Int, Int>(collectionView: listCollectionView) { (colletionView, indexPath, item) in
+        return UICollectionViewDiffableDataSource<Int, Product>(collectionView: listCollectionView) { (colletionView, indexPath, item) in
             return colletionView.dequeueConfiguredReusableCell(using: registration, for: indexPath, item: item)
         }
     }
     
-    func configureListCellRegistration() -> UICollectionView.CellRegistration<UICollectionViewListCell, Int> {
-        return UICollectionView.CellRegistration<UICollectionViewListCell, Int> { cell, indexPath, item in
+    func configureListCellRegistration() -> UICollectionView.CellRegistration<UICollectionViewListCell, Product> {
+        return UICollectionView.CellRegistration<UICollectionViewListCell, Product> { cell, indexPath, item in
             var content = cell.defaultContentConfiguration()
-            content.text = indexPath.description
+            content.text = item.name
             content.textProperties.font = .preferredFont(forTextStyle: .title1)
-            content.secondaryText = "Example"
+            content.secondaryText = item.vendorName
             content.secondaryTextProperties.font = .preferredFont(forTextStyle: .headline)
             content.image = UIImage(systemName: "person.circle")
             content.imageProperties.reservedLayoutSize = CGSize(width: 50, height: 50)

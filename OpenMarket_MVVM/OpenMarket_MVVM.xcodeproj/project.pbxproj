@@ -13,6 +13,7 @@
 		18E1713C29C99EE5007F606E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18E1713B29C99EE5007F606E /* Assets.xcassets */; };
 		18E1713F29C99EE5007F606E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18E1713D29C99EE5007F606E /* LaunchScreen.storyboard */; };
 		18E1714E29C9A493007F606E /* ProductListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E1714D29C9A493007F606E /* ProductListCell.swift */; };
+		18E1715029C9B537007F606E /* ProductsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E1714F29C9B537007F606E /* ProductsResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		18E1713E29C99EE5007F606E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		18E1714029C99EE5007F606E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		18E1714D29C9A493007F606E /* ProductListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListCell.swift; sourceTree = "<group>"; };
+		18E1714F29C9B537007F606E /* ProductsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 		18E1714929C9A01A007F606E /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				18E1714F29C9B537007F606E /* ProductsResponse.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -193,6 +196,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18E1715029C9B537007F606E /* ProductsResponse.swift in Sources */,
 				18E1713729C99EE4007F606E /* ProductListViewController.swift in Sources */,
 				18E1714E29C9A493007F606E /* ProductListCell.swift in Sources */,
 				18E1713329C99EE4007F606E /* AppDelegate.swift in Sources */,
