@@ -6,35 +6,67 @@
 
 import UIKit
 
-class ProductListCell: UICollectionViewCell {
-    static let identifier = String(describing: ProductListCell.self)
+extension UIConfigurationStateCustomKey {
+    static let product = UIConfigurationStateCustomKey("Product")
+}
+
+extension UIConfigurationState {
+    var productData: Product? {
+        get { return self[.product] as? Product }
+        set { self[.product] = newValue }
+    }
+}
+
+final class ProductListCell: UICollectionViewListCell {
+    private var productData: Product?
     
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = UIColor.label
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        return label
-    }()
+    override var configurationState: UICellConfigurationState {
+        var state = super.configurationState
+        state.productData = self.productData
+        return state
+    }
+    private func defaultProductConfiguration() -> UIListContentConfiguration {
+        return .subtitleCell()
+    }
+    private lazy var listContentView = UIListContentView(configuration: defaultProductConfiguration())
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    func update(with newProduct: Product) {
+        guard productData?.id != newProduct.id else { return }
         
-        contentView.addSubview(titleLabel)
+        productData = newProduct
+        setNeedsUpdateConfiguration()
+    }
+}
+
+extension ProductListCell {
+    func setUpViewsIfNeeded() {
+        [listContentView].forEach {
+            contentView.addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
         
         NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor),
-            titleLabel.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor)
+            listContentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            listContentView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            listContentView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            listContentView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
-    func setUpTitle(with title: String) {
-        titleLabel.text = title
+    override func updateConfiguration(using state: UICellConfigurationState) {
+        setUpViewsIfNeeded()
+        
+        var content = defaultProductConfiguration().updated(for: state)
+        
+        content.image = UIImage(systemName: "person.circle")
+        content.imageProperties.maximumSize = CGSize(width: 50, height: 50)
+        
+        content.text = state.productData?.name
+        content.textProperties.font = .preferredFont(forTextStyle: .title2)
+        
+        content.secondaryText = state.productData?.vendorName
+        content.secondaryTextProperties.font = .preferredFont(forTextStyle: .headline)
+        
+        listContentView.configuration = content
     }
 }

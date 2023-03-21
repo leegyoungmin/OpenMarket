@@ -50,17 +50,9 @@ private extension ProductListViewController {
         }
     }
     
-    func configureListCellRegistration() -> UICollectionView.CellRegistration<UICollectionViewListCell, Product> {
-        return UICollectionView.CellRegistration<UICollectionViewListCell, Product> { cell, indexPath, item in
-            var content = cell.defaultContentConfiguration()
-            content.text = item.name
-            content.textProperties.font = .preferredFont(forTextStyle: .title1)
-            content.secondaryText = item.vendorName
-            content.secondaryTextProperties.font = .preferredFont(forTextStyle: .headline)
-            content.image = UIImage(systemName: "person.circle")
-            content.imageProperties.reservedLayoutSize = CGSize(width: 50, height: 50)
-            content.textProperties.color = .label
-            cell.contentConfiguration = content
+    func configureListCellRegistration() -> UICollectionView.CellRegistration<ProductListCell, Product> {
+        return UICollectionView.CellRegistration<ProductListCell, Product> { cell, indexPath, item in
+            cell.update(with: item)
         }
     }
 }
