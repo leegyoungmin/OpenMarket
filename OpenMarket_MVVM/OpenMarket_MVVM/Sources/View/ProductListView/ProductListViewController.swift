@@ -18,6 +18,13 @@ class ProductListViewController: UIViewController {
         return collectionView
     }()
     
+    private let segmentControl: UISegmentedControl = {
+        let control = UISegmentedControl(items: ["LIST", "GRID"])
+        control.selectedSegmentIndex = .zero
+        control.translatesAutoresizingMaskIntoConstraints = false
+        return control
+    }()
+    
     // MARK: Data Properties
     private var dataSource: UICollectionViewDiffableDataSource<Int, Product>?
     
@@ -60,6 +67,7 @@ private extension ProductListViewController {
 // MARK: Configure UI
 private extension ProductListViewController {
     func configureUI() {
+        configureNavigationBar()
         addSubComponents()
         setUpConstraints()
     }
@@ -75,5 +83,9 @@ private extension ProductListViewController {
             listCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             listCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+    
+    func configureNavigationBar() {
+        navigationItem.titleView = segmentControl
     }
 }
