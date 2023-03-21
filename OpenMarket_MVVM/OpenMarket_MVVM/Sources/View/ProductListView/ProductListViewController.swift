@@ -31,13 +31,19 @@ class ProductListViewController: UIViewController {
         
         configureUI()
         dataSource = configureDataSource()
-        
+        bind()
+    }
+}
+
+// MARK: Binding Method
+private extension ProductListViewController {
+    func bind() {
         viewModel.$products
+            .receive(on: DispatchQueue.main)
             .sink {
                 self.setSnapshot(with: $0)
             }
             .store(in: &subscribers)
-        
     }
 }
 

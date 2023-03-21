@@ -8,23 +8,31 @@ import Combine
 import Foundation
 
 class ProductListViewModel {
+    private var pageNumber = 1
     @Published var products: [Product] = []
     
+    private let apiService: APIServiceProtocol
     private var subscribers = Set<AnyCancellable>()
     
-    init() {
+    init(apiService: APIServiceProtocol = APIService()) {
+        self.apiService = apiService
         fetchProducts()
     }
     
     func fetchProducts() {
-        let url = URL(string: "https://openmarket.yagom-academy.kr/api/products?page_no=1&items_per_page=30")!
-        
-        URLSession.shared.dataTaskPublisher(for: url)
-            .map(\.data)
-            .decode(type: ProductsResponse.self, decoder: JSONDecoder())
-            .map(\.items)
-            .replaceError(with: [])
-            .assign(to: \.products, on: self)
+        apiService.loadProducts(pageNumber: pageNumber, count: 10)
+            .sink { completion in
+                if case let .failure(error) = completion {
+                    print(error)
+                }
+            } receiveValue: { response in
+                if response.hasNext {
+                    self.pageNumber = (response.pageNumber + 1)
+                }
+                
+                self.products = response.items
+            }
             .store(in: &subscribers)
+
     }
 }
