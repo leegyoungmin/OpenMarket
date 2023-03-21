@@ -18,13 +18,6 @@ class ProductListViewController: UIViewController {
         return collectionView
     }()
     
-    private let segmentControl: UISegmentedControl = {
-        let control = UISegmentedControl(items: ["LIST", "GRID"])
-        control.selectedSegmentIndex = .zero
-        control.translatesAutoresizingMaskIntoConstraints = false
-        return control
-    }()
-    
     // MARK: Data Properties
     private var dataSource: UICollectionViewDiffableDataSource<Int, Product>?
     
@@ -86,6 +79,15 @@ private extension ProductListViewController {
     }
     
     func configureNavigationBar() {
-        navigationItem.titleView = segmentControl
+        let toggleViewStyle = UIAction(handler: handleViewStyle)
+        let viewShapeChangeButton = UIBarButtonItem(
+            image: UIImage(systemName: "square.grid.2x2"),
+            primaryAction: toggleViewStyle
+        )
+        navigationItem.setLeftBarButton(viewShapeChangeButton, animated: true)
+    }
+    
+    func handleViewStyle(_ action: UIAction) {
+        print(action.title)
     }
 }
