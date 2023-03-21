@@ -88,6 +88,6 @@ private extension ProductListViewController {
     }
     
     func handleViewStyle(_ action: UIAction) {
-        print(action.title)
+        navigationItem.leftBarButtonItem?.image = UIImage(systemName: "list.bullet")
     }
 }
