@@ -17,7 +17,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = ProductListViewController()
+        let productListViewController = ProductListViewController()
+        window?.rootViewController = UINavigationController(rootViewController: productListViewController)
         window?.backgroundColor = .systemBackground
         window?.makeKeyAndVisible()
     }
