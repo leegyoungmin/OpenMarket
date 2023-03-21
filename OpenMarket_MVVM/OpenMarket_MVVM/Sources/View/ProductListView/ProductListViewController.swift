@@ -18,6 +18,8 @@ class ProductListViewController: UIViewController {
         return collectionView
     }()
     
+    weak var coordinator: AppCoordinator?
+    
     // MARK: Data Properties
     private var dataSource: UICollectionViewDiffableDataSource<Int, Product>?
     
