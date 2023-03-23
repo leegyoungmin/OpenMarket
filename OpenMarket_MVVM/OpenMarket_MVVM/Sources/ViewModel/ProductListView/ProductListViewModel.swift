@@ -9,12 +9,12 @@ import Foundation
 
 class ProductListViewModel {
     private var pageNumber = 1
-    @Published var products: [Product] = []
+    @Published private(set) var products: [Product] = []
     
-    private let apiService: APIServiceProtocol
+    private let apiService: ProductListServicing
     private var subscribers = Set<AnyCancellable>()
     
-    init(apiService: APIServiceProtocol = APIService()) {
+    init(apiService: ProductListServicing = ProductListService(productsListRepository: ProductListRepository())) {
         self.apiService = apiService
         fetchProducts()
     }
@@ -25,13 +25,7 @@ class ProductListViewModel {
                 if case let .failure(error) = completion {
                     print(error)
                 }
-            } receiveValue: { response in
-                if response.hasNext {
-                    self.pageNumber = (response.pageNumber + 1)
-                }
-                
-                self.products = response.items
-            }
+            } receiveValue: { self.products = $0 }
             .store(in: &subscribers)
 
     }

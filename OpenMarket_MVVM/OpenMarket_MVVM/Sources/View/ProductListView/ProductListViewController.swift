@@ -110,6 +110,11 @@ private extension ProductListViewController {
     }
     
     func handleViewStyle(_ action: UIAction) {
-        navigationItem.leftBarButtonItem?.image = UIImage(systemName: "list.bullet")
+        guard let image = navigationItem.leftBarButtonItem?.image else { return }
+        if image == UIImage(systemName: "list.bullet") {
+            navigationItem.leftBarButtonItem?.image = UIImage(systemName: "square.grid.2x2")
+        } else {
+            navigationItem.leftBarButtonItem?.image = UIImage(systemName: "list.bullet")
+        }
     }
 }
