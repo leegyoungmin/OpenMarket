@@ -20,7 +20,7 @@ class ProductListViewModel {
     }
     
     func fetchProducts() {
-        apiService.loadProducts(pageNumber: pageNumber, count: 10)
+        apiService.loadProducts()
             .sink { completion in
                 if case let .failure(error) = completion {
                     print(error)

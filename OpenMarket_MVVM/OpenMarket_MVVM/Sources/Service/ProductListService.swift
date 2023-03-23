@@ -9,21 +9,22 @@ import Combine
 
 protocol ProductListServicing {
     var productsListRepository: ProductListLoadable { get }
-    func loadProducts(pageNumber: Int, count: Int) -> AnyPublisher<[Product], Error>
+    func loadProducts() -> AnyPublisher<[Product], Error>
 }
 
 final class ProductListService: ProductListServicing {
+    private var pageNumber: Int = 1
+    private var elementCount: Int = 10
+    
     private(set) var productsListRepository: ProductListLoadable
     
     init(productsListRepository: ProductListLoadable) {
         self.productsListRepository = productsListRepository
     }
     
-    func loadProducts(pageNumber: Int, count: Int) -> AnyPublisher<[Product], Error> {
-        let url = URL(string: "https://openmarket.yagom-academy.kr/api/products?page_no=\(pageNumber)&items_per_page=\(count)")!
-        
+    func loadProducts() -> AnyPublisher<[Product], Error> {
         return productsListRepository
-            .fetchData(with: url, type: ProductsResponse.self)
+            .fetchData(pageNumber: pageNumber, count: elementCount, type: ProductsResponse.self)
             .map(\.items)
             .eraseToAnyPublisher()
     }
