@@ -31,7 +31,7 @@ class ProductListViewModel {
                     debugPrint(error)
                 }
             } receiveValue: { products in
-                self.products = products
+                self.products += products
             }
             .store(in: &subscribers)
     }

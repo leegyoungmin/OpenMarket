@@ -29,9 +29,20 @@ class ProductListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        listCollectionView.delegate = self
         configureUI()
         dataSource = configureDataSource()
         bind()
+    }
+}
+
+// MARK: - CollectionView Delegate
+extension ProductListViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if let itemCount = dataSource?.snapshot().numberOfItems(inSection: 0),
+           (itemCount - 1) == indexPath.row {
+            viewModel.fetchProducts()
+        }
     }
 }
 
