@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		183AFF4529CC2116008108CB /* ProductListRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183AFF4429CC2116008108CB /* ProductListRepository.swift */; };
-		183AFF4829CC3164008108CB /* ProductListCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183AFF4729CC3164008108CB /* ProductListCellViewModel.swift */; };
 		18E1713329C99EE4007F606E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E1713229C99EE4007F606E /* AppDelegate.swift */; };
 		18E1713529C99EE4007F606E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E1713429C99EE4007F606E /* SceneDelegate.swift */; };
 		18E1713729C99EE4007F606E /* ProductListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E1713629C99EE4007F606E /* ProductListViewController.swift */; };
@@ -24,7 +23,6 @@
 
 /* Begin PBXFileReference section */
 		183AFF4429CC2116008108CB /* ProductListRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListRepository.swift; sourceTree = "<group>"; };
-		183AFF4729CC3164008108CB /* ProductListCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListCellViewModel.swift; sourceTree = "<group>"; };
 		18E1712F29C99EE4007F606E /* OpenMarket_MVVM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenMarket_MVVM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18E1713229C99EE4007F606E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		18E1713429C99EE4007F606E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -163,7 +161,6 @@
 			isa = PBXGroup;
 			children = (
 				18E1715729C9F3C3007F606E /* ProductListViewModel.swift */,
-				183AFF4729CC3164008108CB /* ProductListCellViewModel.swift */,
 			);
 			path = ProductListView;
 			sourceTree = "<group>";
@@ -246,7 +243,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				183AFF4829CC3164008108CB /* ProductListCellViewModel.swift in Sources */,
 				18E1715029C9B537007F606E /* ProductsResponse.swift in Sources */,
 				183AFF4529CC2116008108CB /* ProductListRepository.swift in Sources */,
 				18E1713729C99EE4007F606E /* ProductListViewController.swift in Sources */,
