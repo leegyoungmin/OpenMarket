@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		183AFF4529CC2116008108CB /* ProductListRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183AFF4429CC2116008108CB /* ProductListRepository.swift */; };
 		183AFF5729CDD5D4008108CB /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183AFF5629CDD5D4008108CB /* UIFont+Extension.swift */; };
+		183AFF5929CDD669008108CB /* ProductGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183AFF5829CDD669008108CB /* ProductGridCell.swift */; };
+		183AFF5B29CDD69D008108CB /* ProductListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183AFF5A29CDD69D008108CB /* ProductListCollectionViewCell.swift */; };
 		18E1713329C99EE4007F606E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E1713229C99EE4007F606E /* AppDelegate.swift */; };
 		18E1713529C99EE4007F606E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E1713429C99EE4007F606E /* SceneDelegate.swift */; };
 		18E1713729C99EE4007F606E /* ProductListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E1713629C99EE4007F606E /* ProductListViewController.swift */; };
@@ -25,6 +27,8 @@
 /* Begin PBXFileReference section */
 		183AFF4429CC2116008108CB /* ProductListRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListRepository.swift; sourceTree = "<group>"; };
 		183AFF5629CDD5D4008108CB /* UIFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
+		183AFF5829CDD669008108CB /* ProductGridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductGridCell.swift; sourceTree = "<group>"; };
+		183AFF5A29CDD69D008108CB /* ProductListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListCollectionViewCell.swift; sourceTree = "<group>"; };
 		18E1712F29C99EE4007F606E /* OpenMarket_MVVM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenMarket_MVVM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18E1713229C99EE4007F606E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		18E1713429C99EE4007F606E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -156,6 +160,8 @@
 			children = (
 				18E1713629C99EE4007F606E /* ProductListViewController.swift */,
 				18E1714D29C9A493007F606E /* ProductListCell.swift */,
+				183AFF5829CDD669008108CB /* ProductGridCell.swift */,
+				183AFF5A29CDD69D008108CB /* ProductListCollectionViewCell.swift */,
 			);
 			path = ProductListView;
 			sourceTree = "<group>";
@@ -261,8 +267,10 @@
 				18E1714E29C9A493007F606E /* ProductListCell.swift in Sources */,
 				18E1713329C99EE4007F606E /* AppDelegate.swift in Sources */,
 				18E1713529C99EE4007F606E /* SceneDelegate.swift in Sources */,
+				183AFF5929CDD669008108CB /* ProductGridCell.swift in Sources */,
 				18E1715829C9F3C3007F606E /* ProductListViewModel.swift in Sources */,
 				18E1715B29C9FA69007F606E /* ProductListService.swift in Sources */,
+				183AFF5B29CDD69D008108CB /* ProductListCollectionViewCell.swift in Sources */,
 				18E1715529C9F2C9007F606E /* AppCoordinator.swift in Sources */,
 				183AFF5729CDD5D4008108CB /* UIFont+Extension.swift in Sources */,
 			);

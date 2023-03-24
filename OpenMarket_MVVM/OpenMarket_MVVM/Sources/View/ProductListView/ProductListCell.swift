@@ -6,33 +6,36 @@
 
 import UIKit
 
-final class ProductListCell: UICollectionViewCell {
+final class ProductListCell: UICollectionViewCell, ProductListCollectionViewCell {
     // MARK: - View Properties
-    private let thumbnailImage: UIImageView = {
+    let thumbnailImage: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
+        imageView.setContentHuggingPriority(.defaultLow, for: .horizontal)
         return imageView
     }()
     
-    private let titleLabel: UILabel = {
+    let titleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.font = .preferredFont(forTextStyle: .title2).bold()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         return label
     }()
     
-    private let priceLabel: UILabel = {
+    let priceLabel: UILabel = {
         let label = UILabel()
         label.font = .preferredFont(forTextStyle: .body)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let remainStockLabel: UILabel = {
+    let remainStockLabel: UILabel = {
         let label = UILabel()
         label.font = .preferredFont(forTextStyle: .body)
+        label.textAlignment = .right
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -44,13 +47,6 @@ final class ProductListCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-    }
-    
-    func updateViewModel(with product: Product) {
-        self.thumbnailImage.image = UIImage(systemName: "person.circle")
-        self.titleLabel.text = product.name
-        self.priceLabel.text = product.bargainPrice.description
-        self.remainStockLabel.text = product.stock.description
     }
 }
 
@@ -74,24 +70,24 @@ private extension ProductListCell {
         
         NSLayoutConstraint.activate([
             thumbnailImage.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 12),
-            thumbnailImage.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 5),
-            thumbnailImage.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -5),
-            thumbnailImage.widthAnchor.constraint(equalToConstant: 60),
-            thumbnailImage.heightAnchor.constraint(equalTo: thumbnailImage.widthAnchor),
+            thumbnailImage.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 12),
+            thumbnailImage.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -12),
+            thumbnailImage.widthAnchor.constraint(equalToConstant: 80),
             
             priceLabel.topAnchor.constraint(equalTo: thumbnailImage.centerYAnchor),
             priceLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            priceLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
+            priceLabel.trailingAnchor.constraint(equalTo: remainStockLabel.trailingAnchor),
             priceLabel.bottomAnchor.constraint(equalTo: thumbnailImage.bottomAnchor),
             
             remainStockLabel.topAnchor.constraint(equalTo: thumbnailImage.topAnchor),
             remainStockLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -12),
             remainStockLabel.bottomAnchor.constraint(equalTo: thumbnailImage.centerYAnchor),
+            remainStockLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 80),
             
             titleLabel.topAnchor.constraint(equalTo: thumbnailImage.topAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: thumbnailImage.trailingAnchor, constant: 12),
             titleLabel.bottomAnchor.constraint(equalTo: thumbnailImage.centerYAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: remainStockLabel.leadingAnchor)
+            titleLabel.trailingAnchor.constraint(equalTo: remainStockLabel.leadingAnchor, constant: -5)
         ])
     }
 }

@@ -85,7 +85,7 @@ private extension ProductListViewController {
     
     func configureListCellRegistration() -> UICollectionView.CellRegistration<ProductListCell, Product> {
         return UICollectionView.CellRegistration<ProductListCell, Product> { cell, indexPath, item in
-            cell.updateViewModel(with: item)
+            cell.update(with: item)
         }
     }
 }
