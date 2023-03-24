@@ -6,67 +6,92 @@
 
 import UIKit
 
-extension UIConfigurationStateCustomKey {
-    static let product = UIConfigurationStateCustomKey("Product")
-}
-
-extension UIConfigurationState {
-    var productData: Product? {
-        get { return self[.product] as? Product }
-        set { self[.product] = newValue }
-    }
-}
-
-final class ProductListCell: UICollectionViewListCell {
-    private var productData: Product?
+final class ProductListCell: UICollectionViewCell {
+    // MARK: - View Properties
+    private let thumbnailImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
     
-    override var configurationState: UICellConfigurationState {
-        var state = super.configurationState
-        state.productData = self.productData
-        return state
-    }
-    private func defaultProductConfiguration() -> UIListContentConfiguration {
-        return .subtitleCell()
-    }
-    private lazy var listContentView = UIListContentView(configuration: defaultProductConfiguration())
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.font = .preferredFont(forTextStyle: .title2)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
-    func update(with newProduct: Product) {
-        guard productData?.id != newProduct.id else { return }
-        
-        productData = newProduct
-        setNeedsUpdateConfiguration()
+    private let priceLabel: UILabel = {
+        let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .body)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let remainStockLabel: UILabel = {
+        let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .body)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configureUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    func updateViewModel(with product: Product) {
+        self.thumbnailImage.image = UIImage(systemName: "person.circle")
+        self.titleLabel.text = product.name
+        self.priceLabel.text = product.bargainPrice.description
+        self.remainStockLabel.text = product.stock.description
     }
 }
 
-extension ProductListCell {
-    func setUpViewsIfNeeded() {
-        [listContentView].forEach {
-            contentView.addSubview($0)
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
+private extension ProductListCell {
+    func configureUI() {
+        addChildComponents()
+        makeConstraints()
+    }
+    
+    func addChildComponents() {
+        [
+            thumbnailImage,
+            titleLabel,
+            priceLabel,
+            remainStockLabel
+        ].forEach(contentView.addSubview)
+    }
+    
+    func makeConstraints() {
+        let safeArea = contentView.safeAreaLayoutGuide
         
         NSLayoutConstraint.activate([
-            listContentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            listContentView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            listContentView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            listContentView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            thumbnailImage.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 12),
+            thumbnailImage.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 5),
+            thumbnailImage.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -5),
+            thumbnailImage.widthAnchor.constraint(equalToConstant: 60),
+            thumbnailImage.heightAnchor.constraint(equalTo: thumbnailImage.widthAnchor),
+            
+            priceLabel.topAnchor.constraint(equalTo: thumbnailImage.centerYAnchor),
+            priceLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            priceLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
+            priceLabel.bottomAnchor.constraint(equalTo: thumbnailImage.bottomAnchor),
+            
+            remainStockLabel.topAnchor.constraint(equalTo: thumbnailImage.topAnchor),
+            remainStockLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -12),
+            remainStockLabel.bottomAnchor.constraint(equalTo: thumbnailImage.centerYAnchor),
+            
+            titleLabel.topAnchor.constraint(equalTo: thumbnailImage.topAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: thumbnailImage.trailingAnchor, constant: 12),
+            titleLabel.bottomAnchor.constraint(equalTo: thumbnailImage.centerYAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: remainStockLabel.leadingAnchor)
         ])
-    }
-    
-    override func updateConfiguration(using state: UICellConfigurationState) {
-        setUpViewsIfNeeded()
-        
-        var content = defaultProductConfiguration().updated(for: state)
-        
-        content.image = UIImage(systemName: "person.circle")
-        content.imageProperties.maximumSize = CGSize(width: 50, height: 50)
-        
-        content.text = state.productData?.name
-        content.textProperties.font = .preferredFont(forTextStyle: .title2)
-        
-        content.secondaryText = state.productData?.vendorName
-        content.secondaryTextProperties.font = .preferredFont(forTextStyle: .headline)
-        
-        listContentView.configuration = content
     }
 }
