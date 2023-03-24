@@ -18,7 +18,7 @@ final class ProductListCell: UICollectionViewCell {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.font = .preferredFont(forTextStyle: .title2)
+        label.font = .preferredFont(forTextStyle: .title2).bold()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
