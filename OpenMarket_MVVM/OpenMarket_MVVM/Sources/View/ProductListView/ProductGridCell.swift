@@ -54,7 +54,6 @@ final class ProductGridCell: UICollectionViewCell, ProductListCollectionViewCell
     
     func update(with product: Product) {
         self.viewModel = ProductCellViewModel(product: product)
-        
         bind()
     }
 }

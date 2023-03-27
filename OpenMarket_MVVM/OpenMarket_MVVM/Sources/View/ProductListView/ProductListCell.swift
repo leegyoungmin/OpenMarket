@@ -18,6 +18,7 @@ final class ProductListCell: UICollectionViewCell, ProductListCollectionViewCell
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         imageView.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        imageView.setContentHuggingPriority(.defaultLow, for: .vertical)
         return imageView
     }()
     
@@ -48,8 +49,6 @@ final class ProductListCell: UICollectionViewCell, ProductListCollectionViewCell
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
-        
-        bind()
     }
     
     required init?(coder: NSCoder) {
@@ -58,6 +57,14 @@ final class ProductListCell: UICollectionViewCell, ProductListCollectionViewCell
     
     func update(with product: Product) {
         self.viewModel = ProductCellViewModel(product: product)
+        
+        bind()
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        thumbnailImage.image = nil
     }
 }
 
@@ -78,23 +85,24 @@ private extension ProductListCell {
     
     func makeConstraints() {
         let safeArea = contentView.safeAreaLayoutGuide
+        
         NSLayoutConstraint.activate([
+            thumbnailImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            thumbnailImage.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
             thumbnailImage.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 12),
-            thumbnailImage.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 12),
-            thumbnailImage.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -12),
-            thumbnailImage.widthAnchor.constraint(equalToConstant: 80),
+            thumbnailImage.widthAnchor.constraint(equalTo: contentView.heightAnchor),
+            thumbnailImage.heightAnchor.constraint(lessThanOrEqualTo: contentView.heightAnchor, multiplier: 0.8),
             
             priceLabel.topAnchor.constraint(equalTo: thumbnailImage.centerYAnchor),
             priceLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             priceLabel.trailingAnchor.constraint(equalTo: remainStockLabel.trailingAnchor),
-            priceLabel.bottomAnchor.constraint(equalTo: thumbnailImage.bottomAnchor),
+            priceLabel.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
             
-            remainStockLabel.topAnchor.constraint(equalTo: thumbnailImage.topAnchor),
+            remainStockLabel.topAnchor.constraint(equalTo: safeArea.topAnchor),
             remainStockLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -12),
             remainStockLabel.bottomAnchor.constraint(equalTo: thumbnailImage.centerYAnchor),
-            remainStockLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 80),
             
-            titleLabel.topAnchor.constraint(equalTo: thumbnailImage.topAnchor),
+            titleLabel.topAnchor.constraint(equalTo: safeArea.topAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: thumbnailImage.trailingAnchor, constant: 12),
             titleLabel.bottomAnchor.constraint(equalTo: thumbnailImage.centerYAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: remainStockLabel.leadingAnchor, constant: -5)

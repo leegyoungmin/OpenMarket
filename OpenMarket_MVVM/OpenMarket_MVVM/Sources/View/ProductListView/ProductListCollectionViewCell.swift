@@ -22,7 +22,6 @@ protocol ProductListCollectionViewCell: UICollectionViewCell {
 
 extension ProductListCollectionViewCell {
     func bind() {
-        self.thumbnailImage.image = UIImage(systemName: "person.circle")
         viewModel?.$title
             .sink { [weak self] in
                 self?.titleLabel.text = $0
@@ -38,6 +37,14 @@ extension ProductListCollectionViewCell {
         viewModel?.$stock
             .sink { [weak self] in
                 self?.remainStockLabel.text = $0.description
+            }
+            .store(in: &cancellables)
+        
+        viewModel?.$imageData
+            .receive(on: DispatchQueue.main)
+            .replaceNil(with: Data())
+            .sink {
+                self.thumbnailImage.image = UIImage(data: $0)
             }
             .store(in: &cancellables)
     }
