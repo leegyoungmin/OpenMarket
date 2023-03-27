@@ -38,9 +38,8 @@ final class ProductGridCell: UICollectionViewCell, ProductListCollectionViewCell
         return label
     }()
     
-    init() {
-        super.init(frame: .zero)
-        
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         configureUI()
     }
     
@@ -71,19 +70,19 @@ extension ProductGridCell {
             thumbnailImage.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 16),
             thumbnailImage.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             thumbnailImage.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
-            thumbnailImage.heightAnchor.constraint(equalToConstant: 100),
+            thumbnailImage.heightAnchor.constraint(equalToConstant: 80),
             
-            titleLabel.leadingAnchor.constraint(equalTo: thumbnailImage.leadingAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             titleLabel.topAnchor.constraint(equalTo: thumbnailImage.bottomAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(equalTo: thumbnailImage.trailingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
             
-            priceLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            priceLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
-            priceLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
+            priceLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
             
-            remainStockLabel.leadingAnchor.constraint(equalTo: priceLabel.leadingAnchor),
+            remainStockLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             remainStockLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor),
-            remainStockLabel.trailingAnchor.constraint(equalTo: priceLabel.trailingAnchor),
+            remainStockLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
             remainStockLabel.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -16)
         ])
     }
@@ -106,8 +105,6 @@ struct UIViewPreview<View: UIView>: UIViewRepresentable {
     }
     
     func updateUIView(_ view: UIView, context: Context) {
-        view.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        view.setContentHuggingPriority(.defaultHigh, for: .vertical)
     }
 }
 

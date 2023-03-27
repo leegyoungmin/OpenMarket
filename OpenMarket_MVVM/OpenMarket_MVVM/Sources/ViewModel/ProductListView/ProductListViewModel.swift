@@ -7,11 +7,17 @@
 import Combine
 import Foundation
 
-class ProductListViewModel {
+class ProductListViewModel: ObservableObject {
+    enum CollectionViewCase {
+        case list
+        case grid
+    }
+    
     private var pageNumber: Int = 1
     private var elementCount: Int = 30
     
     @Published private(set) var products: [Product] = []
+    @Published private(set) var collectionCase: CollectionViewCase = .list
     
     private let apiService: ProductListServicing
     private var subscribers = Set<AnyCancellable>()
@@ -34,5 +40,18 @@ class ProductListViewModel {
                 self.products += products
             }
             .store(in: &subscribers)
+    }
+    
+    func toggleCollectionCase() {
+        if collectionCase == .grid {
+            collectionCase = .list
+            return
+        }
+        
+        if collectionCase == .list {
+            collectionCase = .grid
+            self.products = products
+            return
+        }
     }
 }

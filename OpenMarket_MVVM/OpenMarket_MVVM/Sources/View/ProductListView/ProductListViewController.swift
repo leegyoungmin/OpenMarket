@@ -7,7 +7,7 @@
 import Combine
 import UIKit
 
-class ProductListViewController: UIViewController {
+class ProductListViewController: UIViewController {    
     // MARK: View Properties
     private var listCollectionView: UICollectionView = {
         let layoutConfigure = UICollectionLayoutListConfiguration(appearance: .plain)
@@ -55,6 +55,16 @@ private extension ProductListViewController {
                 self.setSnapshot(with: $0)
             }
             .store(in: &subscribers)
+        
+        viewModel.$collectionCase
+            .sink {
+                if $0 == .grid {
+                    self.changeCollectionViewLayout()
+                } else {
+                    self.dataSource = self.configureDataSource()
+                }
+            }
+            .store(in: &subscribers)
     }
 }
 
@@ -87,6 +97,36 @@ private extension ProductListViewController {
         return UICollectionView.CellRegistration<ProductListCell, Product> { cell, indexPath, item in
             cell.update(with: item)
         }
+    }
+    
+    func changeCollectionViewLayout() {
+        listCollectionView.collectionViewLayout = configureGridLayout()
+        
+        let registration = UICollectionView.CellRegistration<ProductGridCell, Product> { cell, indexPath, item in
+            cell.update(with: item)
+        }
+        
+        self.dataSource = UICollectionViewDiffableDataSource<Int, Product>(collectionView: listCollectionView, cellProvider: { collectionView, indexPath, item in
+            return collectionView.dequeueConfiguredReusableCell(using: registration, for: indexPath, item: item)
+        })
+    }
+    
+    func configureGridLayout() -> UICollectionViewCompositionalLayout {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(0.5),
+            heightDimension: .fractionalHeight(1.0)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.3))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        let spacing = CGFloat(10)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = spacing
+        
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        return layout
     }
 }
 
@@ -122,6 +162,7 @@ private extension ProductListViewController {
     
     func handleViewStyle(_ action: UIAction) {
         guard let image = navigationItem.leftBarButtonItem?.image else { return }
+        viewModel.toggleCollectionCase()
         if image == UIImage(systemName: "list.bullet") {
             navigationItem.leftBarButtonItem?.image = UIImage(systemName: "square.grid.2x2")
         } else {
