@@ -81,16 +81,24 @@ private extension ProductListViewController {
     }
 }
 
-// MARK: Configure CollectionView Layout
+// MARK: Configure List CollectionView
 private extension ProductListViewController {
     func setListCollectionView() {
         listCollectionView.collectionViewLayout = configureListLayout()
         dataSource = configureListDataSource()
     }
     
-    func setGridCollectionView(width: Int) {
-        listCollectionView.collectionViewLayout = configureGridLayout(widthCount: width)
-        dataSource = configureGridDataSource()
+    func configureListLayout() -> UICollectionViewCompositionalLayout {
+        let layoutConfigure = UICollectionLayoutListConfiguration(appearance: .plain)
+        let layout = UICollectionViewCompositionalLayout.list(using: layoutConfigure)
+        
+        return layout
+    }
+    
+    func configureListCellRegistration() -> UICollectionView.CellRegistration<ProductListCell, Product> {
+        return UICollectionView.CellRegistration<ProductListCell, Product> { cell, indexPath, item in
+            cell.update(with: item)
+        }
     }
     
     func configureListDataSource() -> UICollectionViewDiffableDataSource<Int, Product> {
@@ -105,37 +113,13 @@ private extension ProductListViewController {
             )
         }
     }
-    
-    func configureGridDataSource() -> UICollectionViewDiffableDataSource<Int, Product> {
-        let registration = configureGridCellRegistration()
-        return UICollectionViewDiffableDataSource(
-            collectionView: listCollectionView
-        ) { collectionView, indexPath, item in
-            return collectionView.dequeueConfiguredReusableCell(
-                using: registration,
-                for: indexPath,
-                item: item
-            )
-        }
-    }
-    
-    func configureListCellRegistration() -> UICollectionView.CellRegistration<ProductListCell, Product> {
-        return UICollectionView.CellRegistration<ProductListCell, Product> { cell, indexPath, item in
-            cell.update(with: item)
-        }
-    }
-    
-    func configureGridCellRegistration() -> UICollectionView.CellRegistration<ProductGridCell, Product> {
-        return UICollectionView.CellRegistration<ProductGridCell, Product> { cell, indexPath, item in
-            cell.update(with: item)
-        }
-    }
-    
-    func configureListLayout() -> UICollectionViewCompositionalLayout {
-        let layoutConfigure = UICollectionLayoutListConfiguration(appearance: .plain)
-        let layout = UICollectionViewCompositionalLayout.list(using: layoutConfigure)
-        
-        return layout
+}
+
+// MARK: Configure Grid CollectionView
+private extension ProductListViewController {
+    func setGridCollectionView(width: Int) {
+        listCollectionView.collectionViewLayout = configureGridLayout(widthCount: width)
+        dataSource = configureGridDataSource()
     }
     
     func configureGridLayout(widthCount: Int) -> UICollectionViewCompositionalLayout {
@@ -158,6 +142,25 @@ private extension ProductListViewController {
         
         let layout = UICollectionViewCompositionalLayout(section: section)
         return layout
+    }
+    
+    func configureGridCellRegistration() -> UICollectionView.CellRegistration<ProductGridCell, Product> {
+        return UICollectionView.CellRegistration<ProductGridCell, Product> { cell, indexPath, item in
+            cell.update(with: item)
+        }
+    }
+    
+    func configureGridDataSource() -> UICollectionViewDiffableDataSource<Int, Product> {
+        let registration = configureGridCellRegistration()
+        return UICollectionViewDiffableDataSource(
+            collectionView: listCollectionView
+        ) { collectionView, indexPath, item in
+            return collectionView.dequeueConfiguredReusableCell(
+                using: registration,
+                for: indexPath,
+                item: item
+            )
+        }
     }
 }
 
