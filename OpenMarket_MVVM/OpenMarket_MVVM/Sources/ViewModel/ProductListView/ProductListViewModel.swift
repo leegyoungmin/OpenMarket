@@ -8,12 +8,6 @@ import Combine
 import Foundation
 
 class ProductListViewModel: ObservableObject {
-    enum CollectionViewCase {
-        case list
-        case gridTwoColumn
-        case gridThreeColumn
-    }
-    
     private var pageNumber: Int = 1
     private var elementCount: Int = 30
     
@@ -54,5 +48,28 @@ class ProductListViewModel: ObservableObject {
         }
         
         self.products = products
+    }
+}
+
+extension ProductListViewModel {
+    enum CollectionViewCase {
+        case list
+        case gridTwoColumn
+        case gridThreeColumn
+    }
+}
+
+extension ProductListViewModel.CollectionViewCase {
+    var systemImageName: String {
+        switch self {
+        case .list:
+            return "square.grid.2x2"
+            
+        case .gridTwoColumn:
+            return "square.grid.3x3"
+            
+        case .gridThreeColumn:
+            return "list.bullet"
+        }
     }
 }

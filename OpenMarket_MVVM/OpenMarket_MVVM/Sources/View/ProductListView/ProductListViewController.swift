@@ -55,6 +55,7 @@ private extension ProductListViewController {
         
         viewModel.$collectionCase
             .sink { [weak self] in
+                self?.setNavigationLeadingImage(with: $0.systemImageName)
                 switch $0 {
                 case .list:
                     self?.setListCollectionView()
@@ -191,7 +192,10 @@ private extension ProductListViewController {
     }
     
     func handleViewStyle(_ action: UIAction) {
-        guard let image = navigationItem.leftBarButtonItem?.image else { return }
         viewModel.toggleCollectionCase()
+    }
+    
+    func setNavigationLeadingImage(with imageName: String) {
+        navigationItem.leftBarButtonItem?.image = UIImage(systemName: imageName)
     }
 }
