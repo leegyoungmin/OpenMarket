@@ -84,15 +84,8 @@ private extension ProductListViewController {
 // MARK: Configure List CollectionView
 private extension ProductListViewController {
     func setListCollectionView() {
-        listCollectionView.collectionViewLayout = configureListLayout()
+        listCollectionView.collectionViewLayout = configureGridLayout(widthCount: 1)
         dataSource = configureListDataSource()
-    }
-    
-    func configureListLayout() -> UICollectionViewCompositionalLayout {
-        let layoutConfigure = UICollectionLayoutListConfiguration(appearance: .plain)
-        let layout = UICollectionViewCompositionalLayout.list(using: layoutConfigure)
-        
-        return layout
     }
     
     func configureListCellRegistration() -> UICollectionView.CellRegistration<ProductListCell, Product> {
@@ -129,7 +122,10 @@ private extension ProductListViewController {
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.3))
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: widthCount == 1 ? .estimated(110) : .fractionalHeight(0.3)
+        )
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
         if widthCount >= 3 {
