@@ -10,9 +10,7 @@ import UIKit
 class ProductListViewController: UIViewController {    
     // MARK: View Properties
     private var listCollectionView: UICollectionView = {
-        let layoutConfigure = UICollectionLayoutListConfiguration(appearance: .plain)
-        let layout = UICollectionViewCompositionalLayout.list(using: layoutConfigure)
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
         return collectionView
@@ -31,7 +29,6 @@ class ProductListViewController: UIViewController {
         
         listCollectionView.delegate = self
         configureUI()
-        dataSource = configureDataSource()
         bind()
     }
 }
@@ -57,11 +54,11 @@ private extension ProductListViewController {
             .store(in: &subscribers)
         
         viewModel.$collectionCase
-            .sink {
+            .sink { [weak self] in
                 if $0 == .grid {
-                    self.changeCollectionViewLayout()
+                    self?.setGridCollectionView(width: 2)
                 } else {
-                    self.dataSource = self.configureDataSource()
+                    self?.setListCollectionView()
                 }
             }
             .store(in: &subscribers)
@@ -80,12 +77,35 @@ private extension ProductListViewController {
 
 // MARK: Configure CollectionView Layout
 private extension ProductListViewController {
-    func configureDataSource() -> UICollectionViewDiffableDataSource<Int, Product> {
+    func setListCollectionView() {
+        listCollectionView.collectionViewLayout = configureListLayout()
+        dataSource = configureListDataSource()
+    }
+    
+    func setGridCollectionView(width: Int) {
+        listCollectionView.collectionViewLayout = configureGridLayout(widthCount: width)
+        dataSource = configureGridDataSource()
+    }
+    
+    func configureListDataSource() -> UICollectionViewDiffableDataSource<Int, Product> {
         let registration = configureListCellRegistration()
         return UICollectionViewDiffableDataSource<Int, Product>(
             collectionView: listCollectionView
         ) { (colletionView, indexPath, item) in
             return colletionView.dequeueConfiguredReusableCell(
+                using: registration,
+                for: indexPath,
+                item: item
+            )
+        }
+    }
+    
+    func configureGridDataSource() -> UICollectionViewDiffableDataSource<Int, Product> {
+        let registration = configureGridCellRegistration()
+        return UICollectionViewDiffableDataSource(
+            collectionView: listCollectionView
+        ) { collectionView, indexPath, item in
+            return collectionView.dequeueConfiguredReusableCell(
                 using: registration,
                 for: indexPath,
                 item: item
@@ -99,21 +119,22 @@ private extension ProductListViewController {
         }
     }
     
-    func changeCollectionViewLayout() {
-        listCollectionView.collectionViewLayout = configureGridLayout()
-        
-        let registration = UICollectionView.CellRegistration<ProductGridCell, Product> { cell, indexPath, item in
+    func configureGridCellRegistration() -> UICollectionView.CellRegistration<ProductGridCell, Product> {
+        return UICollectionView.CellRegistration<ProductGridCell, Product> { cell, indexPath, item in
             cell.update(with: item)
         }
-        
-        self.dataSource = UICollectionViewDiffableDataSource<Int, Product>(collectionView: listCollectionView, cellProvider: { collectionView, indexPath, item in
-            return collectionView.dequeueConfiguredReusableCell(using: registration, for: indexPath, item: item)
-        })
     }
     
-    func configureGridLayout() -> UICollectionViewCompositionalLayout {
+    func configureListLayout() -> UICollectionViewCompositionalLayout {
+        let layoutConfigure = UICollectionLayoutListConfiguration(appearance: .plain)
+        let layout = UICollectionViewCompositionalLayout.list(using: layoutConfigure)
+        
+        return layout
+    }
+    
+    func configureGridLayout(widthCount: Int) -> UICollectionViewCompositionalLayout {
         let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(0.5),
+            widthDimension: .fractionalWidth(CGFloat(10 / widthCount) / 10),
             heightDimension: .fractionalHeight(1.0)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
