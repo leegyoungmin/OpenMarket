@@ -55,10 +55,15 @@ private extension ProductListViewController {
         
         viewModel.$collectionCase
             .sink { [weak self] in
-                if $0 == .grid {
-                    self?.setGridCollectionView(width: 2)
-                } else {
+                switch $0 {
+                case .list:
                     self?.setListCollectionView()
+                    
+                case .gridTwoColumn:
+                    self?.setGridCollectionView(width: 2)
+                    
+                case .gridThreeColumn:
+                    self?.setGridCollectionView(width: 3)
                 }
             }
             .store(in: &subscribers)
@@ -141,6 +146,10 @@ private extension ProductListViewController {
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.3))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        if widthCount >= 3 {
+            group.interItemSpacing = .flexible(10)
+        }
         let spacing = CGFloat(10)
         
         let section = NSCollectionLayoutSection(group: group)
@@ -184,10 +193,5 @@ private extension ProductListViewController {
     func handleViewStyle(_ action: UIAction) {
         guard let image = navigationItem.leftBarButtonItem?.image else { return }
         viewModel.toggleCollectionCase()
-        if image == UIImage(systemName: "list.bullet") {
-            navigationItem.leftBarButtonItem?.image = UIImage(systemName: "square.grid.2x2")
-        } else {
-            navigationItem.leftBarButtonItem?.image = UIImage(systemName: "list.bullet")
-        }
     }
 }

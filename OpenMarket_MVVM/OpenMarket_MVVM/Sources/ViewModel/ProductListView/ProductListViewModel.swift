@@ -10,7 +10,8 @@ import Foundation
 class ProductListViewModel: ObservableObject {
     enum CollectionViewCase {
         case list
-        case grid
+        case gridTwoColumn
+        case gridThreeColumn
     }
     
     private var pageNumber: Int = 1
@@ -43,15 +44,15 @@ class ProductListViewModel: ObservableObject {
     }
     
     func toggleCollectionCase() {
-        if collectionCase == .grid {
+        switch collectionCase {
+        case .list:
+            collectionCase = .gridTwoColumn
+        case .gridTwoColumn:
+            collectionCase = .gridThreeColumn
+        case .gridThreeColumn:
             collectionCase = .list
-            return
         }
         
-        if collectionCase == .list {
-            collectionCase = .grid
-            self.products = products
-            return
-        }
+        self.products = products
     }
 }
