@@ -4,9 +4,14 @@
 //
 //  Copyright (c) 2023 Minii All rights reserved.
 
+import Combine
 import UIKit
 
 final class ProductListCell: UICollectionViewCell, ProductListCollectionViewCell {
+    var cancellables: Set<AnyCancellable> = Set<AnyCancellable>()
+    
+    var viewModel: ProductCellViewModel?
+    
     // MARK: - View Properties
     let thumbnailImage: UIImageView = {
         let imageView = UIImageView()
@@ -43,10 +48,16 @@ final class ProductListCell: UICollectionViewCell, ProductListCollectionViewCell
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
+        
+        bind()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+    
+    func update(with product: Product) {
+        self.viewModel = ProductCellViewModel(product: product)
     }
 }
 
@@ -67,7 +78,6 @@ private extension ProductListCell {
     
     func makeConstraints() {
         let safeArea = contentView.safeAreaLayoutGuide
-        
         NSLayoutConstraint.activate([
             thumbnailImage.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 12),
             thumbnailImage.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 12),

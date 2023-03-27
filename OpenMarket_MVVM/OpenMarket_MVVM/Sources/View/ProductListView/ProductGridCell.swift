@@ -4,9 +4,14 @@
 //
 //  Copyright (c) 2023 Minii All rights reserved.
 
+import Combine
 import UIKit
 
 final class ProductGridCell: UICollectionViewCell, ProductListCollectionViewCell {
+    var cancellables: Set<AnyCancellable> = Set<AnyCancellable>()
+    
+    var viewModel: ProductCellViewModel?
+    
     var thumbnailImage: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -45,6 +50,12 @@ final class ProductGridCell: UICollectionViewCell, ProductListCollectionViewCell
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+    
+    func update(with product: Product) {
+        self.viewModel = ProductCellViewModel(product: product)
+        
+        bind()
     }
 }
 

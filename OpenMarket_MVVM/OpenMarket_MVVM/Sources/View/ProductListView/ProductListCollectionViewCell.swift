@@ -4,22 +4,41 @@
 //
 //  Copyright (c) 2023 Minii All rights reserved.
 
+import Combine
 import UIKit
 
 protocol ProductListCollectionViewCell: UICollectionViewCell {
+    var viewModel: ProductCellViewModel? { get }
     var thumbnailImage: UIImageView { get }
     var titleLabel: UILabel { get }
     var priceLabel: UILabel { get }
     var remainStockLabel: UILabel { get }
     
+    var cancellables: Set<AnyCancellable> { get set }
+    
     func update(with product: Product)
+    func bind()
 }
 
 extension ProductListCollectionViewCell {
-    func update(with product: Product) {
+    func bind() {
         self.thumbnailImage.image = UIImage(systemName: "person.circle")
-        self.titleLabel.text = product.name
-        self.priceLabel.text = product.bargainPrice.description
-        self.remainStockLabel.text = product.stock.description
+        viewModel?.$title
+            .sink { [weak self] in
+                self?.titleLabel.text = $0
+            }
+            .store(in: &cancellables)
+        
+        viewModel?.$price
+            .sink { [weak self] in
+                self?.priceLabel.text = $0
+            }
+            .store(in: &cancellables)
+        
+        viewModel?.$stock
+            .sink { [weak self] in
+                self?.remainStockLabel.text = $0.description
+            }
+            .store(in: &cancellables)
     }
 }
