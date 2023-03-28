@@ -16,6 +16,12 @@ final class ProductListCell: UICollectionViewCell, ProductListCollectionViewCell
     let thumbnailImage: ThumbnailImageView = {
         let imageView = ThumbnailImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        imageView.layer.cornerRadius = 12
+        imageView.layer.shadowColor = UIColor.black.cgColor
+        imageView.layer.shadowOffset = CGSize(width: 1, height: 1)
+        imageView.layer.shadowRadius = 5
+        imageView.layer.shadowOpacity = 0.4
         return imageView
     }()
     
@@ -87,7 +93,7 @@ private extension ProductListCell {
         NSLayoutConstraint.activate([
             thumbnailImage.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 12),
             thumbnailImage.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 12),
-            thumbnailImage.widthAnchor.constraint(equalToConstant: 100),
+            thumbnailImage.widthAnchor.constraint(equalTo: thumbnailImage.heightAnchor),
             thumbnailImage.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -12),
             
             priceLabel.topAnchor.constraint(equalTo: thumbnailImage.centerYAnchor),
@@ -106,3 +112,19 @@ private extension ProductListCell {
         ])
     }
 }
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+
+struct ProductListCell_Previews: PreviewProvider {
+    static let product = Product.mockData().first!
+    static var previews: some View {
+        UIViewPreview {
+            let cell = ProductListCell()
+            cell.update(with: product)
+            return cell
+        }
+        .previewLayout(.fixed(width: 300, height: 100))
+    }
+}
+#endif
