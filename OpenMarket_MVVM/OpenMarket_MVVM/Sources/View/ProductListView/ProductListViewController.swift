@@ -12,7 +12,6 @@ class ProductListViewController: UIViewController {
     private var listCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        
         return collectionView
     }()
     
@@ -121,16 +120,17 @@ private extension ProductListViewController {
             heightDimension: .fractionalHeight(1.0)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        if widthCount == 2 {
+            item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 12, bottom: 5, trailing: 12)
+        }
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
             heightDimension: widthCount == 1 ? .estimated(110) : .fractionalHeight(0.3)
         )
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+//        group.interItemSpacing = .flexible(5)
         
-        if widthCount >= 3 {
-            group.interItemSpacing = .flexible(10)
-        }
         let spacing = CGFloat(10)
         
         let section = NSCollectionLayoutSection(group: group)
