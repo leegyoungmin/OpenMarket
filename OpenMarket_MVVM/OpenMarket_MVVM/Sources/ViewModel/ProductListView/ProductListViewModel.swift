@@ -12,7 +12,7 @@ class ProductListViewModel: ObservableObject {
     private var elementCount: Int = 30
     
     @Published private(set) var products: [Product] = []
-    @Published private(set) var collectionCase: CollectionViewCase = .list
+    @Published private(set) var collectionCase: CollectionViewCase = .gridTwoColumn
     
     private let apiService: ProductListServicing
     private var subscribers = Set<AnyCancellable>()

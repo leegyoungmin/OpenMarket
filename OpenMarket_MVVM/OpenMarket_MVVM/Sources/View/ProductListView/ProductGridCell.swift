@@ -16,6 +16,8 @@ final class ProductGridCell: UICollectionViewCell, ProductListCollectionViewCell
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 12
+        imageView.setContentHuggingPriority(.defaultLow, for: .vertical)
         return imageView
     }()
     
@@ -40,6 +42,7 @@ final class ProductGridCell: UICollectionViewCell, ProductListCollectionViewCell
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
+        label.setContentHuggingPriority(.defaultLow, for: .vertical)
         return label
     }()
     
@@ -62,6 +65,7 @@ extension ProductGridCell {
     func configureUI() {
         addChildComponents()
         makeConstraints()
+        setContentViewLayer()
     }
     
     func addChildComponents() {
@@ -80,11 +84,11 @@ extension ProductGridCell {
             thumbnailImage.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 16),
             thumbnailImage.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             thumbnailImage.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
-            thumbnailImage.heightAnchor.constraint(equalToConstant: 80),
+            thumbnailImage.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.6),
             
-            titleLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 12),
             titleLabel.topAnchor.constraint(equalTo: thumbnailImage.bottomAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -12),
             
             priceLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
@@ -95,6 +99,12 @@ extension ProductGridCell {
             remainStockLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
             remainStockLabel.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -16)
         ])
+    }
+    
+    func setContentViewLayer() {
+        contentView.layer.cornerRadius = 12
+        contentView.layer.borderColor = UIColor.label.cgColor
+        contentView.layer.borderWidth = 1
     }
 }
 
