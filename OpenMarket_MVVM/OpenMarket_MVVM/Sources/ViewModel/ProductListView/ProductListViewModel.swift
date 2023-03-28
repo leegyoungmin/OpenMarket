@@ -12,7 +12,7 @@ class ProductListViewModel: ObservableObject {
     private var elementCount: Int = 30
     
     @Published private(set) var products: [Product] = []
-    @Published private(set) var collectionCase: CollectionViewCase = .gridTwoColumn
+    @Published private(set) var collectionCase: CollectionViewCase = .list
     
     private let apiService: ProductListServicing
     private var subscribers = Set<AnyCancellable>()
@@ -46,8 +46,6 @@ class ProductListViewModel: ObservableObject {
         case .gridThreeColumn:
             collectionCase = .list
         }
-        
-        self.products = products
     }
 }
 
@@ -70,6 +68,17 @@ extension ProductListViewModel.CollectionViewCase {
             
         case .gridThreeColumn:
             return "list.bullet"
+        }
+    }
+    
+    var numberOfColumns: Int {
+        switch self {
+        case .list:
+            return 1
+        case .gridTwoColumn:
+            return 2
+        case .gridThreeColumn:
+            return 3
         }
     }
 }

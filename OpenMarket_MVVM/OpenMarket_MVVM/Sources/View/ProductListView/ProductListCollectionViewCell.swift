@@ -16,7 +16,7 @@ protocol ProductListCollectionViewCell: UICollectionViewCell {
     
     var cancellables: Set<AnyCancellable> { get set }
     
-    func update(with product: Product)
+    func update(viewType: ProductListViewModel.CollectionViewCase, with product: Product)
     func bind()
 }
 

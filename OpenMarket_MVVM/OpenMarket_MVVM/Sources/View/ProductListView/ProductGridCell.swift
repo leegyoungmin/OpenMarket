@@ -58,7 +58,16 @@ final class ProductGridCell: UICollectionViewCell, ProductListCollectionViewCell
         super.init(coder: coder)
     }
     
-    func update(with product: Product) {
+    func update(viewType grid: ProductListViewModel.CollectionViewCase, with product: Product) {
+        if grid == .gridThreeColumn {
+            [priceLabel, remainStockLabel].forEach {
+                $0.removeFromSuperview()
+            }
+            
+            titleLabel.font = .preferredFont(forTextStyle: .body)
+            titleLabel.numberOfLines = 2
+            titleLabel.textAlignment = .left
+        }
         self.viewModel = ProductCellViewModel(product: product)
         bind()
     }
@@ -136,7 +145,7 @@ struct ProductGirdCell_Previews: PreviewProvider {
     static var previews: some View {
         UIViewPreview {
             let cell = ProductGridCell()
-            cell.update(with: product)
+            cell.update(viewType: .gridThreeColumn, with: product)
             return cell
         }
         .previewLayout(.fixed(width: 200, height: 300))

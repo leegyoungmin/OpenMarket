@@ -59,7 +59,7 @@ final class ProductListCell: UICollectionViewCell, ProductListCollectionViewCell
         super.init(coder: coder)
     }
     
-    func update(with product: Product) {
+    func update(viewType: ProductListViewModel.CollectionViewCase, with product: Product) {
         self.viewModel = ProductCellViewModel(product: product)
         
         bind()
@@ -121,7 +121,7 @@ struct ProductListCell_Previews: PreviewProvider {
     static var previews: some View {
         UIViewPreview {
             let cell = ProductListCell()
-            cell.update(with: product)
+            cell.update(viewType: .list, with: product)
             return cell
         }
         .previewLayout(.fixed(width: 300, height: 100))

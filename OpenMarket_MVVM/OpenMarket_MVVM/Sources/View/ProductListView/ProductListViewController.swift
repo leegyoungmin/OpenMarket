@@ -55,16 +55,7 @@ private extension ProductListViewController {
         viewModel.$collectionCase
             .sink { [weak self] in
                 self?.setNavigationLeadingImage(with: $0.systemImageName)
-                switch $0 {
-                case .list:
-                    self?.setListCollectionView()
-                    
-                case .gridTwoColumn:
-                    self?.setGridCollectionView(width: 2)
-                    
-                case .gridThreeColumn:
-                    self?.setGridCollectionView(width: 3)
-                }
+                self?.setCollectionView(viewType: $0)
             }
             .store(in: &subscribers)
     }
@@ -78,18 +69,100 @@ private extension ProductListViewController {
         snapshot.appendItems(datas, toSection: 0)
         dataSource?.apply(snapshot)
     }
+    
+    func reloadData(snapshot: NSDiffableDataSourceSnapshot<Int, Product>) {
+        dataSource?.apply(snapshot, animatingDifferences: true)
+    }
+}
+
+// MARK: Configure CollectionView Common
+private extension ProductListViewController {
+    func setCollectionView(viewType: ProductListViewModel.CollectionViewCase) {
+        listCollectionView.collectionViewLayout = configureLayout(width: viewType.numberOfColumns)
+        
+        if let snapshot = dataSource?.snapshot() {
+            dataSource = configureDataSource(viewType: viewType)
+            reloadData(snapshot: snapshot)
+            return
+        }
+        
+        dataSource = configureDataSource(viewType: viewType)
+    }
+    
+    
+    
+    func configureDataSource(
+        viewType: ProductListViewModel.CollectionViewCase
+    ) -> UICollectionViewDiffableDataSource<Int, Product> {
+        if viewType == .list {
+            return configureListDataSource()
+        }
+        
+        return configureGridDataSource(viewType: viewType)
+    }
+    
+    // NSCollection Item 구성 함수
+    func configureItem(width: Int) -> NSCollectionLayoutItem {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(CGFloat(10 / width) / 10),
+            heightDimension: .fractionalHeight(1.0)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        if width == 2 {
+            item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 12, bottom: 5, trailing: 12)
+            return item
+        }
+        
+        if width == 3 {
+            item.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: .flexible(5), top: .flexible(0), trailing: .flexible(5), bottom: .flexible(0))
+            return item
+        }
+        
+        return item
+    }
+    
+    // NSCollection Group 구성 함수
+    func configureGroup(with item: NSCollectionLayoutItem, width: Int) -> NSCollectionLayoutGroup {
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: width == 1 ? .estimated(110) : width == 2 ? .fractionalHeight(0.3) : .fractionalHeight(0.2)
+        )
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        if width >= 3 {
+            group.interItemSpacing = .flexible(5)
+            return group
+        }
+        
+        return group
+    }
+    
+    // NSCollection Section 구성 함수
+    func configureSection(with group: NSCollectionLayoutGroup) -> NSCollectionLayoutSection {
+        let spacing = CGFloat(10)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = spacing
+        
+        return section
+    }
+    
+    // Layout 구성 함수
+    func configureLayout(width: Int) -> UICollectionViewCompositionalLayout {
+        let item = configureItem(width: width)
+        let group = configureGroup(with: item, width: width)
+        let section = configureSection(with: group)
+        
+        return UICollectionViewCompositionalLayout(section: section)
+    }
 }
 
 // MARK: Configure List CollectionView
 private extension ProductListViewController {
-    func setListCollectionView() {
-        listCollectionView.collectionViewLayout = configureGridLayout(widthCount: 1)
-        dataSource = configureListDataSource()
-    }
-    
     func configureListCellRegistration() -> UICollectionView.CellRegistration<ProductListCell, Product> {
         return UICollectionView.CellRegistration<ProductListCell, Product> { cell, indexPath, item in
-            cell.update(with: item)
+            cell.update(viewType: .list, with: item)
         }
     }
     
@@ -109,45 +182,19 @@ private extension ProductListViewController {
 
 // MARK: Configure Grid CollectionView
 private extension ProductListViewController {
-    func setGridCollectionView(width: Int) {
-        listCollectionView.collectionViewLayout = configureGridLayout(widthCount: width)
-        dataSource = configureGridDataSource()
-    }
-    
-    func configureGridLayout(widthCount: Int) -> UICollectionViewCompositionalLayout {
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(CGFloat(10 / widthCount) / 10),
-            heightDimension: .fractionalHeight(1.0)
-        )
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        if widthCount == 2 {
-            item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 12, bottom: 5, trailing: 12)
-        }
-        
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1),
-            heightDimension: widthCount == 1 ? .estimated(110) : .fractionalHeight(0.3)
-        )
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-//        group.interItemSpacing = .flexible(5)
-        
-        let spacing = CGFloat(10)
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = spacing
-        
-        let layout = UICollectionViewCompositionalLayout(section: section)
-        return layout
-    }
-    
-    func configureGridCellRegistration() -> UICollectionView.CellRegistration<ProductGridCell, Product> {
+    func configureGridCellRegistration(
+        viewType: ProductListViewModel.CollectionViewCase = .list
+    ) -> UICollectionView.CellRegistration<ProductGridCell, Product> {
         return UICollectionView.CellRegistration<ProductGridCell, Product> { cell, indexPath, item in
-            cell.update(with: item)
+            cell.update(viewType: viewType, with: item)
         }
     }
     
-    func configureGridDataSource() -> UICollectionViewDiffableDataSource<Int, Product> {
-        let registration = configureGridCellRegistration()
+    func configureGridDataSource(
+        viewType: ProductListViewModel.CollectionViewCase
+    ) -> UICollectionViewDiffableDataSource<Int, Product> {
+        let registration = configureGridCellRegistration(viewType: viewType)
+        
         return UICollectionViewDiffableDataSource(
             collectionView: listCollectionView
         ) { collectionView, indexPath, item in
