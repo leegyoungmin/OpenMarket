@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18259D3329D2B84E0073E0D5 /* ThumbnailImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18259D3229D2B84E0073E0D5 /* ThumbnailImageView.swift */; };
 		183AFF4529CC2116008108CB /* ProductListRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183AFF4429CC2116008108CB /* ProductListRepository.swift */; };
 		183AFF5729CDD5D4008108CB /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183AFF5629CDD5D4008108CB /* UIFont+Extension.swift */; };
 		183AFF5929CDD669008108CB /* ProductGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183AFF5829CDD669008108CB /* ProductGridCell.swift */; };
@@ -28,6 +29,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		18259D3229D2B84E0073E0D5 /* ThumbnailImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailImageView.swift; sourceTree = "<group>"; };
 		183AFF4429CC2116008108CB /* ProductListRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListRepository.swift; sourceTree = "<group>"; };
 		183AFF5629CDD5D4008108CB /* UIFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
 		183AFF5829CDD669008108CB /* ProductGridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductGridCell.swift; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				183AFF5629CDD5D4008108CB /* UIFont+Extension.swift */,
+				18259D3229D2B84E0073E0D5 /* ThumbnailImageView.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -284,6 +287,7 @@
 				18E1715B29C9FA69007F606E /* ProductListService.swift in Sources */,
 				183AFF5B29CDD69D008108CB /* ProductListCollectionViewCell.swift in Sources */,
 				18E1715529C9F2C9007F606E /* AppCoordinator.swift in Sources */,
+				18259D3329D2B84E0073E0D5 /* ThumbnailImageView.swift in Sources */,
 				183AFF5729CDD5D4008108CB /* UIFont+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

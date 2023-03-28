@@ -12,12 +12,9 @@ final class ProductGridCell: UICollectionViewCell, ProductListCollectionViewCell
     
     var viewModel: ProductCellViewModel?
     
-    var thumbnailImage: UIImageView = {
-        let imageView = UIImageView()
+    var thumbnailImage: ThumbnailImageView = {
+        let imageView = ThumbnailImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = 12
-        imageView.setContentHuggingPriority(.defaultLow, for: .vertical)
         return imageView
     }()
     
@@ -81,10 +78,9 @@ extension ProductGridCell {
         let safeArea = contentView.safeAreaLayoutGuide
         
         NSLayoutConstraint.activate([
-            thumbnailImage.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 16),
+            thumbnailImage.topAnchor.constraint(equalTo: safeArea.topAnchor),
             thumbnailImage.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             thumbnailImage.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
-            thumbnailImage.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.6),
             
             titleLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 12),
             titleLabel.topAnchor.constraint(equalTo: thumbnailImage.bottomAnchor, constant: 16),

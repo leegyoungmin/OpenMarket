@@ -13,12 +13,9 @@ final class ProductListCell: UICollectionViewCell, ProductListCollectionViewCell
     var viewModel: ProductCellViewModel?
     
     // MARK: - View Properties
-    let thumbnailImage: UIImageView = {
-        let imageView = UIImageView()
+    let thumbnailImage: ThumbnailImageView = {
+        let imageView = ThumbnailImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        imageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        imageView.setContentHuggingPriority(.defaultHigh, for: .vertical)
         return imageView
     }()
     
@@ -65,7 +62,7 @@ final class ProductListCell: UICollectionViewCell, ProductListCollectionViewCell
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        thumbnailImage.image = nil
+        thumbnailImage.resetImage()
     }
 }
 

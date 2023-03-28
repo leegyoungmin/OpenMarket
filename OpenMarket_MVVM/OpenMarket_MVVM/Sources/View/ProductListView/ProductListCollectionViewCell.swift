@@ -9,7 +9,7 @@ import UIKit
 
 protocol ProductListCollectionViewCell: UICollectionViewCell {
     var viewModel: ProductCellViewModel? { get }
-    var thumbnailImage: UIImageView { get }
+    var thumbnailImage: ThumbnailImageView { get }
     var titleLabel: UILabel { get }
     var priceLabel: UILabel { get }
     var remainStockLabel: UILabel { get }
@@ -44,7 +44,7 @@ extension ProductListCollectionViewCell {
             .receive(on: DispatchQueue.main)
             .replaceNil(with: Data())
             .sink {
-                self.thumbnailImage.image = UIImage(data: $0)
+                self.thumbnailImage.setImage(with: $0)
             }
             .store(in: &cancellables)
     }
