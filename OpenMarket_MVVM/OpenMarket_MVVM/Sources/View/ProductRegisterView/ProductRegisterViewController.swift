@@ -50,20 +50,17 @@ extension ProductRegisterViewController: PHPickerViewControllerDelegate {
         let item = results.first?.itemProvider
         
         picker.dismiss(animated: true)
-        
-        if let item = item, item.canLoadObject(ofClass: UIImage.self) {
+        decodeImageData(with: item)
+    }
+    
+    func decodeImageData(with itemProvider: NSItemProvider?) {
+        if let item = itemProvider, item.canLoadObject(ofClass: UIImage.self) {
             item.loadObject(ofClass: UIImage.self) { image, error in
                 guard let image = image as? UIImage,
                       let data = image.pngData() else { return }
+                
                 DispatchQueue.main.async {
-                    self.imageQueue.enqueue(data, with: self.targetIndex)
-                    var images = self.imageQueue.flatten().map(ImageItem.init)
-                    
-                    if self.imageQueue.isFull == false {
-                        images.append(ImageItem())
-                    }
-                    
-                    self.setSnapshot(with: images)
+                    self.setImageData(with: data)
                 }
             }
         }
@@ -71,6 +68,16 @@ extension ProductRegisterViewController: PHPickerViewControllerDelegate {
 }
 
 private extension ProductRegisterViewController {
+    func setImageData(with data: Data) {
+        imageQueue.enqueue(data, with: self.targetIndex)
+        var images = imageQueue.flatten().map(ImageItem.init)
+        if images.count < 5 {
+            images.append(ImageItem())
+        }
+        
+        setSnapshot(with: images)
+    }
+    
     func setSnapshot(with items: [ImageItem]) {
         var snapshot = NSDiffableDataSourceSnapshot<Int, ImageItem>()
         snapshot.appendSections([0])
@@ -83,16 +90,6 @@ private extension ProductRegisterViewController {
         snapshot.reloadItems(items)
         dataSource?.apply(snapshot)
     }
-    
-//    func insertItem(with item: ImageItem) {
-//        let indexPath = IndexPath(row: selectedIndex, section: 0)
-//
-//        guard var snapshot = dataSource?.snapshot(),
-//              let firstItem = dataSource?.itemIdentifier(for: indexPath) else { return }
-//
-//        snapshot.insertItems([item], beforeItem: firstItem)
-//        dataSource?.apply(snapshot)
-//    }
     
     func addSnapshot(with item: ImageItem, to section: Int) {
         guard var snapshot = dataSource?.snapshot() else { return }
