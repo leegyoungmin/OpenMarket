@@ -4,15 +4,11 @@
 //
 //  Copyright (c) 2023 Minii All rights reserved.
 
+import Combine
 import UIKit
 import PhotosUI
 
 final class ProductRegisterViewController: UIViewController, UIPickerViewDelegate {
-    struct ImageItem: Hashable {
-        let id = UUID()
-        var data: Data? = nil
-    }
-    
     // View Properties
     private let imageRegisterCollectionView: UICollectionView = {
         let layout = UICollectionViewLayout()
@@ -81,23 +77,28 @@ final class ProductRegisterViewController: UIViewController, UIPickerViewDelegat
     }()
     
     // Properties
-    private var dataSource: UICollectionViewDiffableDataSource<Int, ImageItem>?
-    private var targetIndex: Int = 0
-    private var imageQueue = CircularQueue<Data>(count: 5)
+    private let viewModel = ProductRegisterViewModel()
+    private var dataSource: UICollectionViewDiffableDataSource<Int, ProductRegisterViewModel.ImageItem>?
+    private var cancellables = Set<AnyCancellable>()
     
     // LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
         configureUI()
-        setSnapshot(with: [ImageItem()])
+        
+        viewModel.$imageItemDatas
+            .sink { [weak self] items in
+                self?.setSnapshot(with: items)
+            }
+            .store(in: &cancellables)
     }
 }
 
 // MARK: - CollectionView Delegate
 extension ProductRegisterViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.targetIndex = indexPath.row
+        viewModel.updateSelectedIndex(with: indexPath.row)
         let controller = UIImagePickerController()
         controller.sourceType = .photoLibrary
         controller.allowsEditing = true
@@ -132,32 +133,14 @@ extension ProductRegisterViewController: UIImagePickerControllerDelegate, UINavi
 // MARK: - Data Method
 private extension ProductRegisterViewController {
     func setImageData(with data: Data) {
-        imageQueue.enqueue(data, with: self.targetIndex)
-        var images = imageQueue.flatten().map(ImageItem.init)
-        if images.count < 5 {
-            images.append(ImageItem())
-        }
-        
-        setSnapshot(with: images)
+        viewModel.setImageData(with: data)
     }
     
-    func setSnapshot(with items: [ImageItem]) {
-        var snapshot = NSDiffableDataSourceSnapshot<Int, ImageItem>()
+    func setSnapshot(with items: [ProductRegisterViewModel.ImageItem]) {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, ProductRegisterViewModel.ImageItem>()
         snapshot.appendSections([0])
         snapshot.appendItems(items)
         dataSource?.apply(snapshot, animatingDifferences: true)
-    }
-    
-    func addSnapshot(with items: [ImageItem], to section: Int) {
-        guard var snapshot = dataSource?.snapshot() else { return }
-        snapshot.reloadItems(items)
-        dataSource?.apply(snapshot)
-    }
-    
-    func addSnapshot(with item: ImageItem, to section: Int) {
-        guard var snapshot = dataSource?.snapshot() else { return }
-        snapshot.appendItems([item], toSection: section)
-        dataSource?.apply(snapshot)
     }
 }
 
@@ -169,16 +152,16 @@ private extension ProductRegisterViewController {
         dataSource = configureDataSource()
     }
     
-    func configureImageCellRegistration() -> UICollectionView.CellRegistration<ProductRegisterImageCell, ImageItem> {
+    func configureImageCellRegistration() -> UICollectionView.CellRegistration<ProductRegisterImageCell, ProductRegisterViewModel.ImageItem> {
         return UICollectionView.CellRegistration { cell, indexPath, item in
             cell.setImage(with: item.data)
         }
     }
     
-    func configureDataSource() -> UICollectionViewDiffableDataSource<Int, ImageItem> {
+    func configureDataSource() -> UICollectionViewDiffableDataSource<Int, ProductRegisterViewModel.ImageItem> {
         let imageCellRegistration = configureImageCellRegistration()
         
-        return UICollectionViewDiffableDataSource<Int, ImageItem>(
+        return UICollectionViewDiffableDataSource<Int, ProductRegisterViewModel.ImageItem>(
             collectionView: imageRegisterCollectionView
         ) { collectionView, indexPath, itemIdentifier in
             return collectionView.dequeueConfiguredReusableCell(using: imageCellRegistration, for: indexPath, item: itemIdentifier)
