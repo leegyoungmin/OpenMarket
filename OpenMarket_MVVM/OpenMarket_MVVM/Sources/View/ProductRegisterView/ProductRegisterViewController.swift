@@ -10,9 +10,7 @@ import PhotosUI
 final class ProductRegisterViewController: UIViewController, UIPickerViewDelegate {
     struct ImageItem: Hashable {
         let id = UUID()
-        var data: Data = Data()
-        
-        static var defaultImages: [Self] = [.init(), .init(), .init(), .init(), .init()]
+        var data: Data? = nil
     }
     
     private let imageRegisterCollectionView: UICollectionView = {
@@ -29,13 +27,15 @@ final class ProductRegisterViewController: UIViewController, UIPickerViewDelegat
         configureCollectionView()
         configureUI()
         setInitSnapshot()
-        addSnapshot(with: ImageItem.defaultImages, to: 0)
+        addSnapshot(with: ImageItem(), to: 0)
     }
 }
 
 extension ProductRegisterViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.selectedIndex = indexPath.row
         var configure = PHPickerConfiguration()
+        configure.filter = .images
         configure.selectionLimit = 1
         
         let picker = PHPickerViewController(configuration: configure)
@@ -46,7 +46,19 @@ extension ProductRegisterViewController: UICollectionViewDelegate {
 
 extension ProductRegisterViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        print(results)
+        let item = results.first?.itemProvider
+        
+        picker.dismiss(animated: true)
+        
+        if let item = item, item.canLoadObject(ofClass: UIImage.self) {
+            item.loadObject(ofClass: UIImage.self) { image, error in
+                guard let image = image as? UIImage,
+                      let data = image.pngData() else { return }
+                DispatchQueue.main.async {
+                    self.insertItem(with: ImageItem(data: data))
+                }
+            }
+        }
     }
 }
 
@@ -60,6 +72,22 @@ private extension ProductRegisterViewController {
     func addSnapshot(with items: [ImageItem], to section: Int) {
         guard var snapshot = dataSource?.snapshot() else { return }
         snapshot.appendItems(items, toSection: section)
+        dataSource?.apply(snapshot)
+    }
+    
+    func insertItem(with item: ImageItem) {
+        let indexPath = IndexPath(row: selectedIndex, section: 0)
+        
+        guard var snapshot = dataSource?.snapshot(),
+              let firstItem = dataSource?.itemIdentifier(for: indexPath) else { return }
+        
+        if selectedIndex >= 4 {
+            selectedIndex = 4
+            snapshot.reloadItems(<#T##identifiers: [ImageItem]##[ImageItem]#>)
+        }
+        
+        
+        snapshot.insertItems([item], beforeItem: firstItem)
         dataSource?.apply(snapshot)
     }
     
