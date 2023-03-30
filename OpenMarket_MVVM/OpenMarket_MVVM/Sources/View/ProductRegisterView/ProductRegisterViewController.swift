@@ -162,13 +162,19 @@ private extension ProductRegisterViewController {
     }
     
     func configureItem() -> NSCollectionLayoutItem {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .fractionalHeight(1)
+        )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         return item
     }
     
     func configureGroup(with item: NSCollectionLayoutItem) -> NSCollectionLayoutGroup {
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.4), heightDimension: .fractionalWidth(0.4))
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(0.4),
+            heightDimension: .fractionalWidth(0.4)
+        )
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         return group
     }
@@ -177,7 +183,7 @@ private extension ProductRegisterViewController {
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = 10
         section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
-        section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
         return section
     }
     
@@ -193,6 +199,7 @@ private extension ProductRegisterViewController {
 private extension ProductRegisterViewController {
     func configureUI() {
         view.backgroundColor = .systemBackground
+        configureNavigationBar()
         addChildComponents()
         makeConstraints()
     }
@@ -211,7 +218,7 @@ private extension ProductRegisterViewController {
             imageRegisterCollectionView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.25),
             
             nameTextField.leadingAnchor.constraint(equalTo: imageRegisterCollectionView.leadingAnchor, constant: 12),
-            nameTextField.topAnchor.constraint(equalTo: imageRegisterCollectionView.bottomAnchor, constant: 12),
+            nameTextField.topAnchor.constraint(equalTo: imageRegisterCollectionView.bottomAnchor),
             nameTextField.trailingAnchor.constraint(equalTo: imageRegisterCollectionView.trailingAnchor, constant: -12),
             
             priceTextField.leadingAnchor.constraint(equalTo: nameTextField.leadingAnchor),
@@ -231,6 +238,10 @@ private extension ProductRegisterViewController {
             descriptionTextView.trailingAnchor.constraint(equalTo: stockTextField.trailingAnchor),
             descriptionTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+    
+    func configureNavigationBar() {
+        navigationItem.title = "상품 등록"
     }
 }
 
