@@ -21,19 +21,20 @@ final class ProductRegisterViewController: UIViewController, UIPickerViewDelegat
     }()
     
     private var dataSource: UICollectionViewDiffableDataSource<Int, ImageItem>?
+    private var targetIndex: Int = 0
+    private var imageQueue = CircularQueue<Data>(count: 5)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
         configureUI()
-        setInitSnapshot()
-        addSnapshot(with: ImageItem(), to: 0)
+        setSnapshot(with: [ImageItem()])
     }
 }
 
 extension ProductRegisterViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.selectedIndex = indexPath.row
+        self.targetIndex = indexPath.row
         var configure = PHPickerConfiguration()
         configure.filter = .images
         configure.selectionLimit = 1
@@ -55,7 +56,14 @@ extension ProductRegisterViewController: PHPickerViewControllerDelegate {
                 guard let image = image as? UIImage,
                       let data = image.pngData() else { return }
                 DispatchQueue.main.async {
-                    self.insertItem(with: ImageItem(data: data))
+                    self.imageQueue.enqueue(data, with: self.targetIndex)
+                    var images = self.imageQueue.flatten().map(ImageItem.init)
+                    
+                    if self.imageQueue.isFull == false {
+                        images.append(ImageItem())
+                    }
+                    
+                    self.setSnapshot(with: images)
                 }
             }
         }
@@ -63,33 +71,28 @@ extension ProductRegisterViewController: PHPickerViewControllerDelegate {
 }
 
 private extension ProductRegisterViewController {
-    func setInitSnapshot() {
+    func setSnapshot(with items: [ImageItem]) {
         var snapshot = NSDiffableDataSourceSnapshot<Int, ImageItem>()
         snapshot.appendSections([0])
-        dataSource?.apply(snapshot, animatingDifferences: false)
+        snapshot.appendItems(items)
+        dataSource?.apply(snapshot, animatingDifferences: true)
     }
     
     func addSnapshot(with items: [ImageItem], to section: Int) {
         guard var snapshot = dataSource?.snapshot() else { return }
-        snapshot.appendItems(items, toSection: section)
+        snapshot.reloadItems(items)
         dataSource?.apply(snapshot)
     }
     
-    func insertItem(with item: ImageItem) {
-        let indexPath = IndexPath(row: selectedIndex, section: 0)
-        
-        guard var snapshot = dataSource?.snapshot(),
-              let firstItem = dataSource?.itemIdentifier(for: indexPath) else { return }
-        
-        if selectedIndex >= 4 {
-            selectedIndex = 4
-            snapshot.reloadItems(<#T##identifiers: [ImageItem]##[ImageItem]#>)
-        }
-        
-        
-        snapshot.insertItems([item], beforeItem: firstItem)
-        dataSource?.apply(snapshot)
-    }
+//    func insertItem(with item: ImageItem) {
+//        let indexPath = IndexPath(row: selectedIndex, section: 0)
+//
+//        guard var snapshot = dataSource?.snapshot(),
+//              let firstItem = dataSource?.itemIdentifier(for: indexPath) else { return }
+//
+//        snapshot.insertItems([item], beforeItem: firstItem)
+//        dataSource?.apply(snapshot)
+//    }
     
     func addSnapshot(with item: ImageItem, to section: Int) {
         guard var snapshot = dataSource?.snapshot() else { return }
