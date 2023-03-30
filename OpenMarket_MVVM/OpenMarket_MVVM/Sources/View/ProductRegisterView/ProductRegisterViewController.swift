@@ -20,6 +20,47 @@ final class ProductRegisterViewController: UIViewController, UIPickerViewDelegat
         return collectionView
     }()
     
+    private let nameTextField: UITextField = {
+        let nameTextField = UITextField()
+        nameTextField.translatesAutoresizingMaskIntoConstraints = false
+        nameTextField.placeholder = "상품명"
+        nameTextField.borderStyle = .roundedRect
+        return nameTextField
+    }()
+    
+    private let priceTextField: UITextField = {
+        let priceTextField = UITextField()
+        priceTextField.translatesAutoresizingMaskIntoConstraints = false
+        priceTextField.placeholder = "상품 가격"
+        priceTextField.keyboardType = .numberPad
+        priceTextField.borderStyle = .roundedRect
+        return priceTextField
+    }()
+    
+    private let bargainPriceTextField: UITextField = {
+        let bargainTextField = UITextField()
+        bargainTextField.translatesAutoresizingMaskIntoConstraints = false
+        bargainTextField.placeholder = "할인 금액"
+        bargainTextField.keyboardType = .numberPad
+        bargainTextField.borderStyle = .roundedRect
+        return bargainTextField
+    }()
+    
+    private let stockTextField: UITextField = {
+        let stockTextField = UITextField()
+        stockTextField.translatesAutoresizingMaskIntoConstraints = false
+        stockTextField.placeholder = "재고 수량"
+        stockTextField.keyboardType = .numberPad
+        stockTextField.borderStyle = .roundedRect
+        return stockTextField
+    }()
+    
+    private let descriptionTextView: UITextView = {
+        let textView = UITextView()
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        return textView
+    }()
+    
     private var dataSource: UICollectionViewDiffableDataSource<Int, ImageItem>?
     private var targetIndex: Int = 0
     private var imageQueue = CircularQueue<Data>(count: 5)
@@ -40,6 +81,12 @@ extension ProductRegisterViewController: UICollectionViewDelegate {
         controller.allowsEditing = true
         controller.delegate = self
         present(controller, animated: true)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y > 0 || scrollView.contentOffset.y < 0 {
+            scrollView.contentOffset.y = 0
+        }
     }
 }
 
@@ -145,12 +192,13 @@ private extension ProductRegisterViewController {
 
 private extension ProductRegisterViewController {
     func configureUI() {
+        view.backgroundColor = .systemBackground
         addChildComponents()
         makeConstraints()
     }
     
     func addChildComponents() {
-        [imageRegisterCollectionView].forEach {
+        [imageRegisterCollectionView, nameTextField, priceTextField, bargainPriceTextField, stockTextField, descriptionTextView].forEach {
             view.addSubview($0)
         }
     }
@@ -160,7 +208,28 @@ private extension ProductRegisterViewController {
             imageRegisterCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             imageRegisterCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             imageRegisterCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            imageRegisterCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            imageRegisterCollectionView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.25),
+            
+            nameTextField.leadingAnchor.constraint(equalTo: imageRegisterCollectionView.leadingAnchor, constant: 12),
+            nameTextField.topAnchor.constraint(equalTo: imageRegisterCollectionView.bottomAnchor, constant: 12),
+            nameTextField.trailingAnchor.constraint(equalTo: imageRegisterCollectionView.trailingAnchor, constant: -12),
+            
+            priceTextField.leadingAnchor.constraint(equalTo: nameTextField.leadingAnchor),
+            priceTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 12),
+            priceTextField.trailingAnchor.constraint(equalTo: nameTextField.trailingAnchor),
+            
+            bargainPriceTextField.leadingAnchor.constraint(equalTo: priceTextField.leadingAnchor),
+            bargainPriceTextField.topAnchor.constraint(equalTo: priceTextField.bottomAnchor, constant: 12),
+            bargainPriceTextField.trailingAnchor.constraint(equalTo: priceTextField.trailingAnchor),
+            
+            stockTextField.leadingAnchor.constraint(equalTo: bargainPriceTextField.leadingAnchor),
+            stockTextField.topAnchor.constraint(equalTo: bargainPriceTextField.bottomAnchor, constant: 12),
+            stockTextField.trailingAnchor.constraint(equalTo: bargainPriceTextField.trailingAnchor),
+            
+            descriptionTextView.leadingAnchor.constraint(equalTo: stockTextField.leadingAnchor),
+            descriptionTextView.topAnchor.constraint(equalTo: stockTextField.bottomAnchor, constant: 12),
+            descriptionTextView.trailingAnchor.constraint(equalTo: stockTextField.trailingAnchor),
+            descriptionTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
 }

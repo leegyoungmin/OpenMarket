@@ -11,6 +11,8 @@ final class ProductRegisterImageCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.cornerRadius = 12
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -18,6 +20,7 @@ final class ProductRegisterImageCell: UICollectionViewCell {
         super.layoutSubviews()
         
         configureUI()
+        layer.cornerRadius = 12
     }
     
     func setImage(with data: Data?) {
@@ -27,7 +30,7 @@ final class ProductRegisterImageCell: UICollectionViewCell {
         }
         
         if data == nil {
-            self.backgroundColor = .gray
+            self.backgroundColor = .secondarySystemBackground
             self.imageView.image = UIImage(systemName: "plus.circle")
             return
         }
