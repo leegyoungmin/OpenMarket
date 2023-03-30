@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "jayson-hinrichsen-Hag11EnqNgc-unsplash.jpg",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "jayson-hinrichsen-Hag11EnqNgc-unsplash 1.jpg",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "jayson-hinrichsen-Hag11EnqNgc-unsplash 2.jpg",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
