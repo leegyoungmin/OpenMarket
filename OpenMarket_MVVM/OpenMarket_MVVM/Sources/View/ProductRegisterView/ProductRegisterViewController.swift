@@ -9,6 +9,8 @@ import UIKit
 import PhotosUI
 
 final class ProductRegisterViewController: UIViewController, UIPickerViewDelegate {
+    typealias ImageItem = ProductRegisterViewModel.ImageItem
+    
     // View Properties
     private let imageRegisterCollectionView: UICollectionView = {
         let layout = UICollectionViewLayout()
@@ -78,7 +80,7 @@ final class ProductRegisterViewController: UIViewController, UIPickerViewDelegat
     
     // Properties
     private let viewModel = ProductRegisterViewModel()
-    private var dataSource: UICollectionViewDiffableDataSource<Int, ProductRegisterViewModel.ImageItem>?
+    private var dataSource: UICollectionViewDiffableDataSource<Int, ImageItem>?
     private var cancellables = Set<AnyCancellable>()
     
     // LifeCycle
@@ -86,12 +88,7 @@ final class ProductRegisterViewController: UIViewController, UIPickerViewDelegat
         super.viewDidLoad()
         configureCollectionView()
         configureUI()
-        
-        viewModel.$imageItemDatas
-            .sink { [weak self] items in
-                self?.setSnapshot(with: items)
-            }
-            .store(in: &cancellables)
+        bind()
     }
 }
 
@@ -130,14 +127,24 @@ extension ProductRegisterViewController: UIImagePickerControllerDelegate, UINavi
     }
 }
 
+private extension ProductRegisterViewController {
+    func bind() {
+        viewModel.$imageItemDatas
+            .sink { [weak self] items in
+                self?.setSnapshot(with: items)
+            }
+            .store(in: &cancellables)
+    }
+}
+
 // MARK: - Data Method
 private extension ProductRegisterViewController {
     func setImageData(with data: Data) {
         viewModel.setImageData(with: data)
     }
     
-    func setSnapshot(with items: [ProductRegisterViewModel.ImageItem]) {
-        var snapshot = NSDiffableDataSourceSnapshot<Int, ProductRegisterViewModel.ImageItem>()
+    func setSnapshot(with items: [ImageItem]) {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, ImageItem>()
         snapshot.appendSections([0])
         snapshot.appendItems(items)
         dataSource?.apply(snapshot, animatingDifferences: true)
@@ -152,16 +159,16 @@ private extension ProductRegisterViewController {
         dataSource = configureDataSource()
     }
     
-    func configureImageCellRegistration() -> UICollectionView.CellRegistration<ProductRegisterImageCell, ProductRegisterViewModel.ImageItem> {
+    func configureImageCellRegistration() -> UICollectionView.CellRegistration<ProductRegisterImageCell, ImageItem> {
         return UICollectionView.CellRegistration { cell, indexPath, item in
             cell.setImage(with: item.data)
         }
     }
     
-    func configureDataSource() -> UICollectionViewDiffableDataSource<Int, ProductRegisterViewModel.ImageItem> {
+    func configureDataSource() -> UICollectionViewDiffableDataSource<Int, ImageItem> {
         let imageCellRegistration = configureImageCellRegistration()
         
-        return UICollectionViewDiffableDataSource<Int, ProductRegisterViewModel.ImageItem>(
+        return UICollectionViewDiffableDataSource<Int, ImageItem>(
             collectionView: imageRegisterCollectionView
         ) { collectionView, indexPath, itemIdentifier in
             return collectionView.dequeueConfiguredReusableCell(using: imageCellRegistration, for: indexPath, item: itemIdentifier)
@@ -242,31 +249,3 @@ private extension ProductRegisterViewController {
         navigationItem.title = "상품 등록"
     }
 }
-
-// MARK: - Previews
-#if DEBUG
-import SwiftUI
-
-private struct ViewControllerRepresentable: UIViewControllerRepresentable {
-    let viewController: UIViewController
-    
-    init(controller: UIViewController) {
-        self.viewController = controller
-    }
-    func makeUIViewController(context: Context) -> some UIViewController {
-        return viewController
-    }
-    func updateUIViewController(
-        _ uiViewController: UIViewControllerType,
-        context: Context
-    ) { }
-}
-
-struct ProductRegisterView_Previews: PreviewProvider {
-    static var previews: some View {
-        ViewControllerRepresentable(
-            controller: ProductRegisterViewController()
-        )
-    }
-}
-#endif
