@@ -35,35 +35,28 @@ final class ProductRegisterViewController: UIViewController, UIPickerViewDelegat
 extension ProductRegisterViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.targetIndex = indexPath.row
-        var configure = PHPickerConfiguration()
-        configure.filter = .images
-        configure.selectionLimit = 1
-        
-        let picker = PHPickerViewController(configuration: configure)
-        picker.delegate = self
-        present(picker, animated: true)
+        let controller = UIImagePickerController()
+        controller.sourceType = .photoLibrary
+        controller.allowsEditing = true
+        controller.delegate = self
+        present(controller, animated: true)
     }
 }
 
-extension ProductRegisterViewController: PHPickerViewControllerDelegate {
-    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        let item = results.first?.itemProvider
-        
-        picker.dismiss(animated: true)
-        decodeImageData(with: item)
+extension ProductRegisterViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(
+        _ picker: UIImagePickerController,
+        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]
+    ) {
+        dismiss(animated: true)
+        if let image = info[.editedImage] as? UIImage,
+           let data = image.pngData() {
+            setImageData(with: data)
+        }
     }
     
-    func decodeImageData(with itemProvider: NSItemProvider?) {
-        if let item = itemProvider, item.canLoadObject(ofClass: UIImage.self) {
-            item.loadObject(ofClass: UIImage.self) { image, error in
-                guard let image = image as? UIImage,
-                      let data = image.pngData() else { return }
-                
-                DispatchQueue.main.async {
-                    self.setImageData(with: data)
-                }
-            }
-        }
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true)
     }
 }
 
@@ -128,7 +121,7 @@ private extension ProductRegisterViewController {
     }
     
     func configureGroup(with item: NSCollectionLayoutItem) -> NSCollectionLayoutGroup {
-        let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(100), heightDimension: .absolute(100))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.4), heightDimension: .fractionalWidth(0.4))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         return group
     }

@@ -27,9 +27,16 @@ final class ProductRegisterImageCell: UICollectionViewCell {
         }
         
         if data == nil {
+            self.backgroundColor = .gray
             self.imageView.image = UIImage(systemName: "plus.circle")
             return
         }
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.backgroundColor = .clear
+        self.imageView.image = nil
     }
 }
 
