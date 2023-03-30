@@ -5,10 +5,14 @@
 //  Copyright (c) 2023 Minii All rights reserved.
 
 import UIKit
+import PhotosUI
 
-final class ProductRegisterViewController: UIViewController {
+final class ProductRegisterViewController: UIViewController, UIPickerViewDelegate {
     struct ImageItem: Hashable {
-        var data: Data
+        let id = UUID()
+        var data: Data = Data()
+        
+        static var defaultImages: [Self] = [.init(), .init(), .init(), .init(), .init()]
     }
     
     private let imageRegisterCollectionView: UICollectionView = {
@@ -25,6 +29,24 @@ final class ProductRegisterViewController: UIViewController {
         configureCollectionView()
         configureUI()
         setInitSnapshot()
+        addSnapshot(with: ImageItem.defaultImages, to: 0)
+    }
+}
+
+extension ProductRegisterViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        var configure = PHPickerConfiguration()
+        configure.selectionLimit = 1
+        
+        let picker = PHPickerViewController(configuration: configure)
+        picker.delegate = self
+        present(picker, animated: true)
+    }
+}
+
+extension ProductRegisterViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        print(results)
     }
 }
 
@@ -33,6 +55,12 @@ private extension ProductRegisterViewController {
         var snapshot = NSDiffableDataSourceSnapshot<Int, ImageItem>()
         snapshot.appendSections([0])
         dataSource?.apply(snapshot, animatingDifferences: false)
+    }
+    
+    func addSnapshot(with items: [ImageItem], to section: Int) {
+        guard var snapshot = dataSource?.snapshot() else { return }
+        snapshot.appendItems(items, toSection: section)
+        dataSource?.apply(snapshot)
     }
     
     func addSnapshot(with item: ImageItem, to section: Int) {
@@ -45,6 +73,7 @@ private extension ProductRegisterViewController {
 private extension ProductRegisterViewController {
     func configureCollectionView() {
         imageRegisterCollectionView.collectionViewLayout = configureLayout()
+        imageRegisterCollectionView.delegate = self
         dataSource = configureDataSource()
     }
     

@@ -21,6 +21,10 @@ final class ProductRegisterImageCell: UICollectionViewCell {
     }
     
     func setImage(with data: Data) {
+        if data.isEmpty {
+            self.imageView.image = UIImage(systemName: "plus.circle")
+            return
+        }
         self.imageView.image = UIImage(data: data)
     }
 }
