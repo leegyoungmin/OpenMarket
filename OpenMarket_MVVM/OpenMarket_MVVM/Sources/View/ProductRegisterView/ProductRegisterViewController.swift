@@ -7,66 +7,88 @@
 import UIKit
 
 final class ProductRegisterViewController: UIViewController {
+    struct ImageItem: Hashable {
+        var data: Data
+    }
+    
     private let imageRegisterCollectionView: UICollectionView = {
-        let collectionView = UICollectionView(
-            frame: .zero,
-            collectionViewLayout: .init()
-        )
+        let layout = UICollectionViewLayout()
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
     
-    private var dataSource: UICollectionViewDiffableDataSource<Int, Int>?
+    private var dataSource: UICollectionViewDiffableDataSource<Int, ImageItem>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureCollectionView()
         configureUI()
-        imageRegisterCollectionView.collectionViewLayout = configureLayout()
-        configureDataSource()
-        
-        let items = Array(1...100)
-        var snapshot = NSDiffableDataSourceSnapshot<Int, Int>()
-        snapshot.appendSections([0])
-        dataSource?.apply(snapshot, animatingDifferences: false)
-        
-        var itemSnapshot = NSDiffableDataSourceSectionSnapshot<Int>()
-        itemSnapshot.append(items)
-        dataSource?.apply(itemSnapshot, to: 0)
+        setInitSnapshot()
     }
 }
 
 private extension ProductRegisterViewController {
-    func configureDataSource() {
-        let registration = UICollectionView.CellRegistration<UICollectionViewCell, Int> { cell, indexPath, item in
-            
-            var content = UIListContentConfiguration.valueCell()
-            content.image = UIImage(named: "exampleImage")
-            content.imageProperties.cornerRadius = 10
-            content.directionalLayoutMargins = .zero
-            content.imageProperties.maximumSize = CGSize(width: 100, height: 100)
-            cell.contentConfiguration = content
-            
-            var background = UIBackgroundConfiguration.listPlainCell()
-            background.cornerRadius = 10
-            cell.backgroundConfiguration = background
-        }
-        
-        dataSource = UICollectionViewDiffableDataSource<Int, Int>(
-            collectionView: imageRegisterCollectionView
-        ) { collectionView, indexPath, itemIdentifier in
-            return collectionView.dequeueConfiguredReusableCell(using: registration, for: indexPath, item: itemIdentifier)
+    func setInitSnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, ImageItem>()
+        snapshot.appendSections([0])
+        dataSource?.apply(snapshot, animatingDifferences: false)
+    }
+    
+    func addSnapshot(with item: ImageItem, to section: Int) {
+        guard var snapshot = dataSource?.snapshot() else { return }
+        snapshot.appendItems([item], toSection: section)
+        dataSource?.apply(snapshot)
+    }
+}
+
+private extension ProductRegisterViewController {
+    func configureCollectionView() {
+        imageRegisterCollectionView.collectionViewLayout = configureLayout()
+        dataSource = configureDataSource()
+    }
+    
+    func configureImageCellRegistration() -> UICollectionView.CellRegistration<ProductRegisterImageCell, ImageItem> {
+        return UICollectionView.CellRegistration { cell, indexPath, item in
+            cell.setImage(with: item.data)
         }
     }
-    func configureLayout() -> UICollectionViewLayout {
+    
+    func configureDataSource() -> UICollectionViewDiffableDataSource<Int, ImageItem> {
+        let imageCellRegistration = configureImageCellRegistration()
+        
+        return UICollectionViewDiffableDataSource<Int, ImageItem>(
+            collectionView: imageRegisterCollectionView
+        ) { collectionView, indexPath, itemIdentifier in
+            return collectionView.dequeueConfiguredReusableCell(using: imageCellRegistration, for: indexPath, item: itemIdentifier)
+        }
+    }
+    
+    func configureItem() -> NSCollectionLayoutItem {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
+        return item
+    }
+    
+    func configureGroup(with item: NSCollectionLayoutItem) -> NSCollectionLayoutGroup {
         let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(100), heightDimension: .absolute(100))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        return group
+    }
+    
+    func configureSection(with group: NSCollectionLayoutGroup) -> NSCollectionLayoutSection {
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = 10
         section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
         section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+        return section
+    }
+    
+    func configureLayout() -> UICollectionViewLayout {
+        let item = configureItem()
+        let group = configureGroup(with: item)
+        let section = configureSection(with: group)
+        
         return UICollectionViewCompositionalLayout(section: section)
     }
 }
