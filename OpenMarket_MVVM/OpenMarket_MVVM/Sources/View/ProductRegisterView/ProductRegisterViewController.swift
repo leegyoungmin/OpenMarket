@@ -13,13 +13,13 @@ final class ProductRegisterViewController: UIViewController, UIPickerViewDelegat
         var data: Data? = nil
     }
     
+    // View Properties
     private let imageRegisterCollectionView: UICollectionView = {
         let layout = UICollectionViewLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
-    
     private let nameTextField: UITextField = {
         let nameTextField = UITextField()
         nameTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -27,16 +27,21 @@ final class ProductRegisterViewController: UIViewController, UIPickerViewDelegat
         nameTextField.borderStyle = .roundedRect
         return nameTextField
     }()
-    
     private let priceTextField: UITextField = {
         let priceTextField = UITextField()
         priceTextField.translatesAutoresizingMaskIntoConstraints = false
         priceTextField.placeholder = "상품 가격"
         priceTextField.keyboardType = .numberPad
         priceTextField.borderStyle = .roundedRect
+        priceTextField.setContentHuggingPriority(.defaultLow, for: .horizontal)
         return priceTextField
     }()
-    
+    private let currencySegmentControl: UISegmentedControl = {
+        let control = UISegmentedControl(items: ["KRW", "USD"])
+        control.selectedSegmentIndex = 0
+        control.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        return control
+    }()
     private let bargainPriceTextField: UITextField = {
         let bargainTextField = UITextField()
         bargainTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -45,7 +50,6 @@ final class ProductRegisterViewController: UIViewController, UIPickerViewDelegat
         bargainTextField.borderStyle = .roundedRect
         return bargainTextField
     }()
-    
     private let stockTextField: UITextField = {
         let stockTextField = UITextField()
         stockTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -54,17 +58,34 @@ final class ProductRegisterViewController: UIViewController, UIPickerViewDelegat
         stockTextField.borderStyle = .roundedRect
         return stockTextField
     }()
-    
     private let descriptionTextView: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
     }()
+    private let priceStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.distribution = .fill
+        stackView.axis = .horizontal
+        stackView.spacing = 12
+        return stackView
+    }()
+    private let totalStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.distribution = .equalSpacing
+        stackView.axis = .vertical
+        stackView.spacing = 12
+        return stackView
+    }()
     
+    // Properties
     private var dataSource: UICollectionViewDiffableDataSource<Int, ImageItem>?
     private var targetIndex: Int = 0
     private var imageQueue = CircularQueue<Data>(count: 5)
     
+    // LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
@@ -73,6 +94,7 @@ final class ProductRegisterViewController: UIViewController, UIPickerViewDelegat
     }
 }
 
+// MARK: - CollectionView Delegate
 extension ProductRegisterViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.targetIndex = indexPath.row
@@ -89,7 +111,7 @@ extension ProductRegisterViewController: UICollectionViewDelegate {
         }
     }
 }
-
+// MARK: - ImagePickerViewControllerDelegate
 extension ProductRegisterViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(
         _ picker: UIImagePickerController,
@@ -107,6 +129,7 @@ extension ProductRegisterViewController: UIImagePickerControllerDelegate, UINavi
     }
 }
 
+// MARK: - Data Method
 private extension ProductRegisterViewController {
     func setImageData(with data: Data) {
         imageQueue.enqueue(data, with: self.targetIndex)
@@ -138,6 +161,7 @@ private extension ProductRegisterViewController {
     }
 }
 
+// MARK: - CollectionView Configure Method
 private extension ProductRegisterViewController {
     func configureCollectionView() {
         imageRegisterCollectionView.collectionViewLayout = configureLayout()
@@ -196,6 +220,7 @@ private extension ProductRegisterViewController {
     }
 }
 
+// MARK: - Configure UI Method
 private extension ProductRegisterViewController {
     func configureUI() {
         view.backgroundColor = .systemBackground
@@ -205,7 +230,9 @@ private extension ProductRegisterViewController {
     }
     
     func addChildComponents() {
-        [imageRegisterCollectionView, nameTextField, priceTextField, bargainPriceTextField, stockTextField, descriptionTextView].forEach {
+        [priceTextField, currencySegmentControl].forEach(priceStackView.addArrangedSubview)
+        [nameTextField, priceStackView, bargainPriceTextField, stockTextField].forEach(totalStackView.addArrangedSubview)
+        [imageRegisterCollectionView, totalStackView, descriptionTextView].forEach {
             view.addSubview($0)
         }
     }
@@ -217,25 +244,13 @@ private extension ProductRegisterViewController {
             imageRegisterCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             imageRegisterCollectionView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.25),
             
-            nameTextField.leadingAnchor.constraint(equalTo: imageRegisterCollectionView.leadingAnchor, constant: 12),
-            nameTextField.topAnchor.constraint(equalTo: imageRegisterCollectionView.bottomAnchor),
-            nameTextField.trailingAnchor.constraint(equalTo: imageRegisterCollectionView.trailingAnchor, constant: -12),
+            totalStackView.leadingAnchor.constraint(equalTo: imageRegisterCollectionView.leadingAnchor, constant: 12),
+            totalStackView.topAnchor.constraint(equalTo: imageRegisterCollectionView.bottomAnchor),
+            totalStackView.trailingAnchor.constraint(equalTo: imageRegisterCollectionView.trailingAnchor, constant: -12),
             
-            priceTextField.leadingAnchor.constraint(equalTo: nameTextField.leadingAnchor),
-            priceTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 12),
-            priceTextField.trailingAnchor.constraint(equalTo: nameTextField.trailingAnchor),
-            
-            bargainPriceTextField.leadingAnchor.constraint(equalTo: priceTextField.leadingAnchor),
-            bargainPriceTextField.topAnchor.constraint(equalTo: priceTextField.bottomAnchor, constant: 12),
-            bargainPriceTextField.trailingAnchor.constraint(equalTo: priceTextField.trailingAnchor),
-            
-            stockTextField.leadingAnchor.constraint(equalTo: bargainPriceTextField.leadingAnchor),
-            stockTextField.topAnchor.constraint(equalTo: bargainPriceTextField.bottomAnchor, constant: 12),
-            stockTextField.trailingAnchor.constraint(equalTo: bargainPriceTextField.trailingAnchor),
-            
-            descriptionTextView.leadingAnchor.constraint(equalTo: stockTextField.leadingAnchor),
-            descriptionTextView.topAnchor.constraint(equalTo: stockTextField.bottomAnchor, constant: 12),
-            descriptionTextView.trailingAnchor.constraint(equalTo: stockTextField.trailingAnchor),
+            descriptionTextView.leadingAnchor.constraint(equalTo: totalStackView.leadingAnchor),
+            descriptionTextView.topAnchor.constraint(equalTo: totalStackView.bottomAnchor, constant: 12),
+            descriptionTextView.trailingAnchor.constraint(equalTo: totalStackView.trailingAnchor),
             descriptionTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
@@ -245,6 +260,7 @@ private extension ProductRegisterViewController {
     }
 }
 
+// MARK: - Previews
 #if DEBUG
 import SwiftUI
 

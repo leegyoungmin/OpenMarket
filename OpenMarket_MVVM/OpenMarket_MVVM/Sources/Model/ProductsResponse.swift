@@ -27,7 +27,7 @@ struct ProductsResponse: Codable {
     }
 }
 
-enum Currency: String, Codable {
+enum Currency: String, Codable, CaseIterable {
     case KRW
     case USD
 }
