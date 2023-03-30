@@ -18,6 +18,11 @@ class AppCoordinator: Coordinator {
     func start() {
         let productsListViewController = ProductListViewController()
         productsListViewController.coordinator = self
-        navigationController.pushViewController(productsListViewController, animated: true)
+        navigationController.pushViewController(productsListViewController, animated: false)
+    }
+    
+    func presentRegisterController() {
+        let registerController = ProductRegisterViewController()
+        navigationController.pushViewController(registerController, animated: true)
     }
 }

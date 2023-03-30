@@ -232,7 +232,17 @@ private extension ProductListViewController {
             image: UIImage(systemName: "square.grid.2x2"),
             primaryAction: toggleViewStyle
         )
+        
+        let presentAction = UIAction { _ in
+            self.coordinator?.presentRegisterController()
+        }
+        let presentButton = UIBarButtonItem(
+            image: UIImage(systemName: "plus.circle"),
+            primaryAction: presentAction
+        )
+        
         navigationItem.setLeftBarButton(viewShapeChangeButton, animated: true)
+        navigationItem.setRightBarButton(presentButton, animated: true)
     }
     
     func handleViewStyle(_ action: UIAction) {
