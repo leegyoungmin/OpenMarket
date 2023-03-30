@@ -8,18 +8,27 @@ import Combine
 import Foundation
 
 protocol ImageLoadable: AnyObject {
+    var imageLoadTask: Cancellable? { get }
     func fetchImage(imagePath: String) -> AnyPublisher<Data, Error>
+    func cancel()
 }
 
 final class ImageLoader: ImageLoadable {
+    var imageLoadTask: Cancellable?
+    
     func fetchImage(imagePath: String) -> AnyPublisher<Data, Error> {
         guard let url = URL(string: imagePath) else {
             return Fail(error: ImageLoadError.invalidURL).eraseToAnyPublisher()
         }
-        
-        return URLSession.shared.dataTaskPublisher(for: url)
+        let task = URLSession.shared.dataTaskPublisher(for: url)
             .tryMap(\.data)
             .eraseToAnyPublisher()
+        
+        return task
+    }
+    
+    func cancel() {
+        imageLoadTask?.cancel()
     }
 }
 

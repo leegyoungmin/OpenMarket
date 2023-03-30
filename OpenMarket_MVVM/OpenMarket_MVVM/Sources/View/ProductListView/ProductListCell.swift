@@ -68,6 +68,7 @@ final class ProductListCell: UICollectionViewCell, ProductListCollectionViewCell
     override func prepareForReuse() {
         super.prepareForReuse()
         
+        viewModel?.cancel()
         thumbnailImage.resetImage()
     }
 }

@@ -31,4 +31,8 @@ class ProductCellViewModel {
             }
             .store(in: &cancellables)
     }
+    
+    func cancel() {
+        service.cancel()
+    }
 }

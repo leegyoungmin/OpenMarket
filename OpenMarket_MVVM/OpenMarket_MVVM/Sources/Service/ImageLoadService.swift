@@ -10,9 +10,11 @@ import Foundation
 protocol ImageLoadServicing {
     var imageLoadRepository: ImageLoadable { get }
     func loadImageData(path: String) -> AnyPublisher<Data, Never>
+    func cancel()
 }
 
 final class ImageLoadService: ImageLoadServicing {
+    var imageLoadTask: Cancellable?
     var imageLoadRepository: ImageLoadable
     
     init(imageLoadRepository: ImageLoadable = ImageLoader()) {
@@ -24,5 +26,9 @@ final class ImageLoadService: ImageLoadServicing {
             .fetchImage(imagePath: path)
             .replaceError(with: Data())
             .eraseToAnyPublisher()
+    }
+    
+    func cancel() {
+        imageLoadRepository.cancel()
     }
 }

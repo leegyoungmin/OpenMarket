@@ -7,7 +7,6 @@
 import UIKit
 
 final class ThumbnailImageView: UIView {
-    
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false

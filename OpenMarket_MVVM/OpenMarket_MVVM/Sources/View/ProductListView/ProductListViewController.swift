@@ -89,8 +89,6 @@ private extension ProductListViewController {
         dataSource = configureDataSource(viewType: viewType)
     }
     
-    
-    
     func configureDataSource(
         viewType: ProductListViewModel.CollectionViewCase
     ) -> UICollectionViewDiffableDataSource<Int, Product> {

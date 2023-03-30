@@ -71,6 +71,13 @@ final class ProductGridCell: UICollectionViewCell, ProductListCollectionViewCell
         self.viewModel = ProductCellViewModel(product: product)
         bind()
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        viewModel?.cancel()
+        self.thumbnailImage.resetImage()
+    }
 }
 
 extension ProductGridCell {
