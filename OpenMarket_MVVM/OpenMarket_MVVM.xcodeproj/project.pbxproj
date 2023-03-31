@@ -30,6 +30,7 @@
 		18E1715529C9F2C9007F606E /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E1715429C9F2C9007F606E /* AppCoordinator.swift */; };
 		18E1715829C9F3C3007F606E /* ProductListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E1715729C9F3C3007F606E /* ProductListViewModel.swift */; };
 		18E1715B29C9FA69007F606E /* ProductListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E1715A29C9FA69007F606E /* ProductListService.swift */; };
+		18F7B4BB29D6DB8400225B81 /* UITextField + Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F7B4BA29D6DB8400225B81 /* UITextField + Combine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		18E1715429C9F2C9007F606E /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		18E1715729C9F3C3007F606E /* ProductListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListViewModel.swift; sourceTree = "<group>"; };
 		18E1715A29C9FA69007F606E /* ProductListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListService.swift; sourceTree = "<group>"; };
+		18F7B4BA29D6DB8400225B81 /* UITextField + Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField + Combine.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 				183AFF5629CDD5D4008108CB /* UIFont+Extension.swift */,
 				18259D3229D2B84E0073E0D5 /* ThumbnailImageView.swift */,
 				189E0FA829D5A36D00C5471D /* CircularQueue.swift */,
+				18F7B4BA29D6DB8400225B81 /* UITextField + Combine.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -309,6 +312,7 @@
 				18AF746629D1E042003C3F71 /* ImageLoadService.swift in Sources */,
 				18E1714E29C9A493007F606E /* ProductListCell.swift in Sources */,
 				18E1713329C99EE4007F606E /* AppDelegate.swift in Sources */,
+				18F7B4BB29D6DB8400225B81 /* UITextField + Combine.swift in Sources */,
 				18AF746229D1D8A8003C3F71 /* ProductCellViewModel.swift in Sources */,
 				189E0FAC29D5CB6D00C5471D /* ProductRegisterViewModel.swift in Sources */,
 				18E1713529C99EE4007F606E /* SceneDelegate.swift in Sources */,

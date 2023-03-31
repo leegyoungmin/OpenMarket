@@ -134,6 +134,40 @@ private extension ProductRegisterViewController {
                 self?.setSnapshot(with: items)
             }
             .store(in: &cancellables)
+        
+        nameTextField.textPublisher
+            .sink { [weak self] in
+                self?.viewModel.setName(with: $0)
+            }
+            .store(in: &cancellables)
+        
+        priceTextField.textPublisher
+            .compactMap { Double($0) }
+            .sink { [weak self] in
+                self?.viewModel.setPrice(with: $0)
+            }
+            .store(in: &cancellables)
+        
+        bargainPriceTextField.textPublisher
+            .compactMap { Double($0) }
+            .sink { [weak self] in
+                self?.viewModel.setBargainPrice(with: $0)
+            }
+            .store(in: &cancellables)
+        
+        stockTextField.textPublisher
+            .compactMap { Int($0) }
+            .sink { [weak self] in
+                self?.viewModel.setStock(with: $0)
+            }
+            .store(in: &cancellables)
+        
+        descriptionTextView.textPublisher
+            .sink { [weak self] in
+                self?.viewModel.setDescription(with: $0)
+            }
+            .store(in: &cancellables)
+        
     }
 }
 
@@ -247,5 +281,13 @@ private extension ProductRegisterViewController {
     
     func configureNavigationBar() {
         navigationItem.title = "상품 등록"
+        
+//        let saveAction = UIAction { _ in
+//            viewmode
+//        }
+//
+//        let saveButton = UIBarButtonItem(title: "올리기", primaryAction: <#T##UIAction?#>)
     }
 }
+
+
