@@ -18,65 +18,9 @@ final class ProductRegisterViewController: UIViewController, UIPickerViewDelegat
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
-    private let nameTextField: UITextField = {
-        let nameTextField = UITextField()
-        nameTextField.translatesAutoresizingMaskIntoConstraints = false
-        nameTextField.placeholder = "상품명"
-        nameTextField.borderStyle = .roundedRect
-        return nameTextField
-    }()
-    private let priceTextField: UITextField = {
-        let priceTextField = UITextField()
-        priceTextField.translatesAutoresizingMaskIntoConstraints = false
-        priceTextField.placeholder = "상품 가격"
-        priceTextField.keyboardType = .numberPad
-        priceTextField.borderStyle = .roundedRect
-        priceTextField.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        return priceTextField
-    }()
-    private let currencySegmentControl: UISegmentedControl = {
-        let control = UISegmentedControl(items: ["KRW", "USD"])
-        control.selectedSegmentIndex = 0
-        control.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        return control
-    }()
-    private let bargainPriceTextField: UITextField = {
-        let bargainTextField = UITextField()
-        bargainTextField.translatesAutoresizingMaskIntoConstraints = false
-        bargainTextField.placeholder = "할인 금액"
-        bargainTextField.keyboardType = .numberPad
-        bargainTextField.borderStyle = .roundedRect
-        return bargainTextField
-    }()
-    private let stockTextField: UITextField = {
-        let stockTextField = UITextField()
-        stockTextField.translatesAutoresizingMaskIntoConstraints = false
-        stockTextField.placeholder = "재고 수량"
-        stockTextField.keyboardType = .numberPad
-        stockTextField.borderStyle = .roundedRect
-        return stockTextField
-    }()
-    private let descriptionTextView: UITextView = {
-        let textView = UITextView()
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        return textView
-    }()
-    private let priceStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.distribution = .fill
-        stackView.axis = .horizontal
-        stackView.spacing = 12
-        return stackView
-    }()
-    private let totalStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.distribution = .equalSpacing
-        stackView.axis = .vertical
-        stackView.spacing = 12
-        return stackView
-    }()
+    
+    private let registerInputView = ProductRegisterInputView()
+    
     
     // Properties
     private let viewModel = ProductRegisterViewModel()
@@ -139,21 +83,21 @@ private extension ProductRegisterViewController {
     }
     
     func bindToViewModel() {
-        nameTextField.textPublisher
+        registerInputView.nameTextField.textPublisher
             .assign(to: \.name, on: viewModel)
             .store(in: &cancellables)
-        
-        priceTextField.textPublisher
+
+        registerInputView.priceTextField.textPublisher
             .compactMap { Double($0) }
             .assign(to: \.price, on: viewModel)
             .store(in: &cancellables)
-        
-        bargainPriceTextField.textPublisher
+
+        registerInputView.bargainPriceTextField.textPublisher
             .compactMap { Double($0) }
             .assign(to: \.bargainPrice, on: viewModel)
             .store(in: &cancellables)
-        
-        descriptionTextView.textPublisher
+
+        registerInputView.descriptionTextView.textPublisher
             .compactMap { $0 }
             .assign(to: \.description, on: viewModel)
             .store(in: &cancellables)
@@ -243,9 +187,8 @@ private extension ProductRegisterViewController {
     }
     
     func addChildComponents() {
-        [priceTextField, currencySegmentControl].forEach(priceStackView.addArrangedSubview)
-        [nameTextField, priceStackView, bargainPriceTextField, stockTextField].forEach(totalStackView.addArrangedSubview)
-        [imageRegisterCollectionView, totalStackView, descriptionTextView].forEach {
+        [imageRegisterCollectionView, registerInputView].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
     }
@@ -257,14 +200,10 @@ private extension ProductRegisterViewController {
             imageRegisterCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             imageRegisterCollectionView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.25),
             
-            totalStackView.leadingAnchor.constraint(equalTo: imageRegisterCollectionView.leadingAnchor, constant: 12),
-            totalStackView.topAnchor.constraint(equalTo: imageRegisterCollectionView.bottomAnchor),
-            totalStackView.trailingAnchor.constraint(equalTo: imageRegisterCollectionView.trailingAnchor, constant: -12),
-            
-            descriptionTextView.leadingAnchor.constraint(equalTo: totalStackView.leadingAnchor),
-            descriptionTextView.topAnchor.constraint(equalTo: totalStackView.bottomAnchor, constant: 12),
-            descriptionTextView.trailingAnchor.constraint(equalTo: totalStackView.trailingAnchor),
-            descriptionTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            registerInputView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            registerInputView.topAnchor.constraint(equalTo: imageRegisterCollectionView.bottomAnchor),
+            registerInputView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            registerInputView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     
