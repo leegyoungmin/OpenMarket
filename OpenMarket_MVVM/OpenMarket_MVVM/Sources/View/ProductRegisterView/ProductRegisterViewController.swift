@@ -88,7 +88,9 @@ final class ProductRegisterViewController: UIViewController, UIPickerViewDelegat
         super.viewDidLoad()
         configureCollectionView()
         configureUI()
-        bind()
+        
+        bindToViewModel()
+        bindFromViewModel()
     }
 }
 
@@ -128,46 +130,33 @@ extension ProductRegisterViewController: UIImagePickerControllerDelegate, UINavi
 }
 
 private extension ProductRegisterViewController {
-    func bind() {
+    func bindFromViewModel() {
         viewModel.$imageItemDatas
             .sink { [weak self] items in
                 self?.setSnapshot(with: items)
             }
             .store(in: &cancellables)
-        
+    }
+    
+    func bindToViewModel() {
         nameTextField.textPublisher
-            .sink { [weak self] in
-                self?.viewModel.setName(with: $0)
-            }
+            .assign(to: \.name, on: viewModel)
             .store(in: &cancellables)
         
         priceTextField.textPublisher
             .compactMap { Double($0) }
-            .sink { [weak self] in
-                self?.viewModel.setPrice(with: $0)
-            }
+            .assign(to: \.price, on: viewModel)
             .store(in: &cancellables)
         
         bargainPriceTextField.textPublisher
             .compactMap { Double($0) }
-            .sink { [weak self] in
-                self?.viewModel.setBargainPrice(with: $0)
-            }
-            .store(in: &cancellables)
-        
-        stockTextField.textPublisher
-            .compactMap { Int($0) }
-            .sink { [weak self] in
-                self?.viewModel.setStock(with: $0)
-            }
+            .assign(to: \.bargainPrice, on: viewModel)
             .store(in: &cancellables)
         
         descriptionTextView.textPublisher
-            .sink { [weak self] in
-                self?.viewModel.setDescription(with: $0)
-            }
+            .compactMap { $0 }
+            .assign(to: \.description, on: viewModel)
             .store(in: &cancellables)
-        
     }
 }
 
