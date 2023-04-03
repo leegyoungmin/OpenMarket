@@ -28,3 +28,13 @@ extension UITextView {
         .eraseToAnyPublisher()
     }
 }
+
+extension UISegmentedControl {
+    var currencyChangedPublisher: AnyPublisher<Currency, Never> {
+        controlPublisher(for: .valueChanged)
+            .compactMap { $0 as? UISegmentedControl }
+            .compactMap { $0?.selectedSegmentIndex }
+            .compactMap { Currency(intValue: $0) }
+            .eraseToAnyPublisher()
+    }
+}

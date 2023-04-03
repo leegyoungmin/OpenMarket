@@ -91,6 +91,11 @@ private extension ProductRegisterViewController {
             .compactMap { Double($0) }
             .assign(to: \.price, on: viewModel)
             .store(in: &cancellables)
+        
+        registerInputView.currencySegmentControl
+            .currencyChangedPublisher
+            .assign(to: \.currency, on: viewModel)
+            .store(in: &cancellables)
 
         registerInputView.bargainPriceTextField.textPublisher
             .compactMap { Double($0) }
@@ -210,11 +215,12 @@ private extension ProductRegisterViewController {
     func configureNavigationBar() {
         navigationItem.title = "상품 등록"
         
-//        let saveAction = UIAction { _ in
-//            viewmode
-//        }
-//
-//        let saveButton = UIBarButtonItem(title: "올리기", primaryAction: <#T##UIAction?#>)
+        let saveAction = UIAction { _ in
+            
+        }
+        
+        let saveButton = UIBarButtonItem(title: "올리기", primaryAction: saveAction)
+        navigationItem.rightBarButtonItem = saveButton
     }
 }
 

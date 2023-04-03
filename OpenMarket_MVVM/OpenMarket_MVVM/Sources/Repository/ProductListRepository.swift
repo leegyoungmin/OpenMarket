@@ -36,6 +36,7 @@ final class ProductListRepository: ProductListLoadable {
 extension ProductListRepository {
     enum API {
         case loadProducts(pageNumber: Int, count: Int)
+//        case saveProduct(Product)
     }
 }
 

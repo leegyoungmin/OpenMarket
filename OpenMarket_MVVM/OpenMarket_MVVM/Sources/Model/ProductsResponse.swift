@@ -32,6 +32,19 @@ enum Currency: String, Codable, CaseIterable {
     case USD
 }
 
+extension Currency {
+    init?(intValue: Int) {
+        switch intValue {
+        case 0:
+            self = .KRW
+        case 1:
+            self = .USD
+        default:
+            return nil
+        }
+    }
+}
+
 struct Product: Codable, Hashable {
     let id: Int
     let vendorId: Int
