@@ -216,7 +216,7 @@ private extension ProductRegisterViewController {
         navigationItem.title = "상품 등록"
         
         let saveAction = UIAction { _ in
-            
+            self.viewModel.registerProduct()
         }
         
         let saveButton = UIBarButtonItem(title: "올리기", primaryAction: saveAction)
