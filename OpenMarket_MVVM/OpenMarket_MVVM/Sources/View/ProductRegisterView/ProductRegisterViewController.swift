@@ -96,6 +96,11 @@ private extension ProductRegisterViewController {
             .currencyChangedPublisher
             .assign(to: \.currency, on: viewModel)
             .store(in: &cancellables)
+        
+        registerInputView.stockTextField.textPublisher
+            .compactMap { Int($0) }
+            .assign(to: \.stock, on: viewModel)
+            .store(in: &cancellables)
 
         registerInputView.bargainPriceTextField.textPublisher
             .compactMap { Double($0) }
