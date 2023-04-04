@@ -13,6 +13,8 @@ protocol ProductListLoadable: AnyObject {
         count: Int,
         type: T.Type
     ) -> AnyPublisher<T, Error>
+    
+    func saveData(params: Data,images: [Data], identifier: Data) -> AnyPublisher<Bool, Error>
 }
 
 final class ProductListRepository: ProductListLoadable {
@@ -22,7 +24,7 @@ final class ProductListRepository: ProductListLoadable {
         type: T.Type
     ) -> AnyPublisher<T, Error> {
         let api = API.loadProducts(pageNumber: pageNumber, count: count)
-        guard let url = try? api.configureURL() else {
+        guard let url = try? api.configureRequest() else {
             return Fail(error: API.APIError.invalidURL).eraseToAnyPublisher()
         }
         
@@ -31,12 +33,53 @@ final class ProductListRepository: ProductListLoadable {
             .decode(type: T.self, decoder: JSONDecoder())
             .eraseToAnyPublisher()
     }
+    
+    func saveData(params: Data, images: [Data], identifier: Data) -> AnyPublisher<Bool, Error> {
+        let register = ProductRegister(params: params, imageDatas: images, identifier: identifier)
+        let api = API.saveProduct(id: NSUUID().uuidString, register)
+        
+        guard let request = try? api.configureRequest() else {
+            return Fail(error: API.APIError.invalidURL).eraseToAnyPublisher()
+        }
+        return URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { (_, response) -> Bool in
+                guard let response = response as? HTTPURLResponse,
+                      (200...300) ~= response.statusCode else {
+                    
+                    throw URLError(.badServerResponse)
+                }
+                
+                return true
+            }
+            .eraseToAnyPublisher()
+    }
 }
 
 extension ProductListRepository {
     enum API {
         case loadProducts(pageNumber: Int, count: Int)
-//        case saveProduct(Product)
+        case saveProduct(id: String, ProductRegister)
+    }
+    
+    struct ProductRegister {
+        let params: Data
+        let imageDatas: [Data]
+        let identifier: Data
+        
+        var headers: [HTTPHeader] {
+            var headerList = [HTTPHeader]()
+            
+            imageDatas.forEach {
+                let header = HTTPHeader(name: "images", mimeType: "image/png", data: $0)
+                headerList.append(header)
+            }
+            
+            headerList.append(HTTPHeader(name: "params", mimeType: "application/json", data: params))
+            
+            headerList.append(HTTPHeader(name: "identifier", mimeType: "text/plain", data: identifier))
+            
+            return headerList
+        }
     }
 }
 
@@ -49,10 +92,41 @@ extension ProductListRepository.API {
         return "https://openmarket.yagom-academy.kr"
     }
     
-    var path: String {
+    var method: String {
         switch self {
         case .loadProducts:
+            return "GET"
+        case .saveProduct:
+            return "POST"
+        }
+    }
+    
+    var header: [String: String] {
+        switch self {
+        case .loadProducts:
+            return [:]
+        case .saveProduct(let id, _):
+            return [
+                "identifier": "d94a4ffb-6941-11ed-a917-a7e99e3bb892",
+                "Content-Type": "multipart/form-data; boundary=\(id)"
+            ]
+        }
+    }
+    
+    var path: String {
+        switch self {
+        case .loadProducts, .saveProduct:
             return "/api/products"
+        }
+    }
+    
+    var body: Data? {
+        switch self {
+        case .saveProduct(let id, let productData):
+            let partFormBody = MultipartFormData(headers: productData.headers, id: id)
+            return partFormBody.boundaryData()
+        default:
+            return nil
         }
     }
     
@@ -63,16 +137,28 @@ extension ProductListRepository.API {
                 URLQueryItem(name: "page_no", value: pageNumber.description),
                 URLQueryItem(name: "items_per_page", value: count.description)
             ]
+            
+        case .saveProduct:
+            return []
         }
     }
     
-    func configureURL() throws -> URL? {
+    func configureRequest() throws -> URLRequest? {
         var components = URLComponents(string: baseURL)
         
         components?.path = path
         components?.queryItems = queryItems
         
         guard let url = components?.url else { throw APIError.invalidURL }
-        return url
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = method
+        
+        header.forEach {
+            request.setValue($0.value, forHTTPHeaderField: $0.key)
+        }
+        request.httpBody = body
+        
+        return request
     }
 }
