@@ -234,7 +234,7 @@ private extension ProductListViewController {
         )
         
         let presentAction = UIAction { _ in
-            self.coordinator?.presentRegisterController()
+            self.coordinator?.registerSubscription()
         }
         let presentButton = UIBarButtonItem(
             image: UIImage(systemName: "plus.circle"),

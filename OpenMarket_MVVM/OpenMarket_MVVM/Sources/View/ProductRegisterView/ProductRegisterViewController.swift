@@ -23,6 +23,7 @@ final class ProductRegisterViewController: UIViewController, UIPickerViewDelegat
     
     
     // Properties
+    weak var coordinator: ProductListCoordinator?
     private let viewModel = ProductRegisterViewModel()
     private var dataSource: UICollectionViewDiffableDataSource<Int, ImageItem>?
     private var cancellables = Set<AnyCancellable>()
@@ -35,6 +36,12 @@ final class ProductRegisterViewController: UIViewController, UIPickerViewDelegat
         
         bindToViewModel()
         bindFromViewModel()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        coordinator?.didFinishRegister()
     }
 }
 

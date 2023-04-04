@@ -9,7 +9,7 @@ import Foundation
 
 class ProductListViewModel: ObservableObject {
     private var pageNumber: Int = 1
-    private var elementCount: Int = 30
+    private var elementCount: Int = 10
     
     @Published private(set) var products: [Product] = []
     @Published private(set) var collectionCase: CollectionViewCase = .list
