@@ -49,22 +49,22 @@ class NetworkManager<T: Decodable> {
             return
         }
         
-        let task = session.dataTask(with: request) { data, response, error in
-            self.testData = data
-            if let error = error {
-                completion(.failure(.requestError(error: error)))
-                return
-            }
-
-            guard let response = response as? HTTPURLResponse,
-                  (200..<300) ~= response.statusCode else {
-                completion(.failure(.invalidStatusCode))
-                return
-            }
-            
-            completion(.success(true))
-        }
-        
-        task.resume()
+//        let task = session.dataTask(with: request) { data, response, error in
+//            self.testData = data
+//            if let error = error {
+//                completion(.failure(.requestError(error: error)))
+//                return
+//            }
+//
+//            guard let response = response as? HTTPURLResponse,
+//                  (200..<300) ~= response.statusCode else {
+//                completion(.failure(.invalidStatusCode))
+//                return
+//            }
+//
+//            completion(.success(true))
+//        }
+//
+//        task.resume()
     }
 }

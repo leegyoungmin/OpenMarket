@@ -38,7 +38,7 @@ struct HttpBody {
             data.appendString("Content-Type: \(contentType.rawValue)\(nextLine)\(nextLine)")
         }
         
-        data.append(self.data)
+//        data.append(self.data)
         data.appendString(nextLine + nextLine)
         return data as Data
     }
