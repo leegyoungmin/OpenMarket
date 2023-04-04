@@ -10,6 +10,7 @@ import Combine
 protocol ProductListServicing {
     var productsListRepository: ProductListLoadable { get }
     func loadProducts(pageNumber: Int, count: Int) -> AnyPublisher<[Product], Error>
+    func saveProduct(params: Data, images: [Data], identifier: Data) -> AnyPublisher<Bool, Never>
 }
 
 final class ProductListService: ProductListServicing {
@@ -23,6 +24,12 @@ final class ProductListService: ProductListServicing {
         return productsListRepository
             .fetchData(pageNumber: pageNumber, count: count, type: ProductsResponse.self)
             .map(\.items)
+            .eraseToAnyPublisher()
+    }
+    
+    func saveProduct(params: Data, images: [Data], identifier: Data) -> AnyPublisher<Bool, Never> {
+        return productsListRepository.saveData(params: params, images: images, identifier: identifier)
+            .replaceError(with: false)
             .eraseToAnyPublisher()
     }
 }
