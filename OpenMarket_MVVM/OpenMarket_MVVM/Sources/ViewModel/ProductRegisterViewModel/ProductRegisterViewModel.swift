@@ -8,6 +8,13 @@ import Combine
 import Foundation
 
 final class ProductRegisterViewModel {
+    enum ProductRegisterState {
+        case ready
+        case loading
+        case finish
+        case error
+    }
+    
     struct ImageItem: Hashable {
         let id = UUID()
         var data: Data? = nil
@@ -40,6 +47,8 @@ final class ProductRegisterViewModel {
     @Published var stock: Int?
     @Published var description: String?
     @Published var cancellables = Set<AnyCancellable>()
+    
+    var uploadState = CurrentValueSubject<ProductRegisterState, Never>(.ready)
 
     func setImageData(with data: Data) {
         self.imageDatas.enqueue(data, with: selectedIndex)
@@ -74,10 +83,14 @@ final class ProductRegisterViewModel {
         guard let identifier = "d94a4ffb-6941-11ed-a917-a7e99e3bb892".data(using: .utf8) else { return }
         let images = imageItemDatas.compactMap(\.data)
         
+        uploadState.send(.loading)
+        
         productListService.saveProduct(params: params, images: images, identifier: identifier)
             .sink {
                 if $0 {
-                    print("Success save")
+                    self.uploadState.send(.finish)
+                } else {
+                    self.uploadState.send(.error)
                 }
             }
             .store(in: &cancellables)

@@ -23,6 +23,7 @@ class ProductListCoordinator: Coordinator {
     }
     
     func didFinishRegister() {
+        navigationController.popViewController(animated: true)
         parentCoordinator?.childDidFinish(self)
     }
 }

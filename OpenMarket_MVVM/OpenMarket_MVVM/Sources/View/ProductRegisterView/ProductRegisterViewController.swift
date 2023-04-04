@@ -82,9 +82,30 @@ extension ProductRegisterViewController: UIImagePickerControllerDelegate, UINavi
 
 private extension ProductRegisterViewController {
     func bindFromViewModel() {
+        let activityView = UIActivityIndicatorView()
+        
         viewModel.$imageItemDatas
             .sink { [weak self] items in
                 self?.setSnapshot(with: items)
+            }
+            .store(in: &cancellables)
+        
+        viewModel.uploadState
+            .receive(on: DispatchQueue.main)
+            .sink {
+                switch $0 {
+                case .loading:
+                    self.view.addSubview(activityView)
+                    
+                case .finish:
+                    self.coordinator?.didFinishRegister()
+                    
+                case .error:
+                    activityView.removeFromSuperview()
+                    
+                default:
+                    break
+                }
             }
             .store(in: &cancellables)
     }
