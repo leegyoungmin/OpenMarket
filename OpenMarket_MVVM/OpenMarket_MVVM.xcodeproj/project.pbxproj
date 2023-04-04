@@ -19,6 +19,9 @@
 		189E0FA729D57B2900C5471D /* ProductRegisterImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189E0FA629D57B2900C5471D /* ProductRegisterImageCell.swift */; };
 		189E0FA929D5A36D00C5471D /* CircularQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189E0FA829D5A36D00C5471D /* CircularQueue.swift */; };
 		189E0FAC29D5CB6D00C5471D /* ProductRegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189E0FAB29D5CB6D00C5471D /* ProductRegisterViewModel.swift */; };
+		18A33EAF29DC1D6A009194F5 /* MultipartFormable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A33EAE29DC1D6A009194F5 /* MultipartFormable.swift */; };
+		18A33EB129DC1D92009194F5 /* NSMutableData + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A33EB029DC1D92009194F5 /* NSMutableData + Extension.swift */; };
+		18A33EB329DC1DCF009194F5 /* RegisterProductMultipartForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A33EB229DC1DCF009194F5 /* RegisterProductMultipartForm.swift */; };
 		18AF746229D1D8A8003C3F71 /* ProductCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AF746129D1D8A8003C3F71 /* ProductCellViewModel.swift */; };
 		18AF746429D1DDE9003C3F71 /* ImageLoadRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AF746329D1DDE9003C3F71 /* ImageLoadRepository.swift */; };
 		18AF746629D1E042003C3F71 /* ImageLoadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AF746529D1E042003C3F71 /* ImageLoadService.swift */; };
@@ -49,6 +52,9 @@
 		189E0FA629D57B2900C5471D /* ProductRegisterImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRegisterImageCell.swift; sourceTree = "<group>"; };
 		189E0FA829D5A36D00C5471D /* CircularQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularQueue.swift; sourceTree = "<group>"; };
 		189E0FAB29D5CB6D00C5471D /* ProductRegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRegisterViewModel.swift; sourceTree = "<group>"; };
+		18A33EAE29DC1D6A009194F5 /* MultipartFormable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartFormable.swift; sourceTree = "<group>"; };
+		18A33EB029DC1D92009194F5 /* NSMutableData + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableData + Extension.swift"; sourceTree = "<group>"; };
+		18A33EB229DC1DCF009194F5 /* RegisterProductMultipartForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterProductMultipartForm.swift; sourceTree = "<group>"; };
 		18AF746129D1D8A8003C3F71 /* ProductCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCellViewModel.swift; sourceTree = "<group>"; };
 		18AF746329D1DDE9003C3F71 /* ImageLoadRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoadRepository.swift; sourceTree = "<group>"; };
 		18AF746529D1E042003C3F71 /* ImageLoadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoadService.swift; sourceTree = "<group>"; };
@@ -96,6 +102,7 @@
 				189E0FA829D5A36D00C5471D /* CircularQueue.swift */,
 				18F7B4BA29D6DB8400225B81 /* Pubishers.swift */,
 				186F183729DAAEF400577142 /* UIControl+Combine.swift */,
+				18A33EB029DC1D92009194F5 /* NSMutableData + Extension.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -104,6 +111,8 @@
 			isa = PBXGroup;
 			children = (
 				186F184029DAD8C300577142 /* HTTPHeader.swift */,
+				18A33EAE29DC1D6A009194F5 /* MultipartFormable.swift */,
+				18A33EB229DC1DCF009194F5 /* RegisterProductMultipartForm.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -328,6 +337,7 @@
 				18E1713729C99EE4007F606E /* ProductListViewController.swift in Sources */,
 				18E1715329C9F112007F606E /* Coordinator.swift in Sources */,
 				18AF746629D1E042003C3F71 /* ImageLoadService.swift in Sources */,
+				18A33EAF29DC1D6A009194F5 /* MultipartFormable.swift in Sources */,
 				186F183629DAA98200577142 /* ProductRegisterInputView.swift in Sources */,
 				18E1714E29C9A493007F606E /* ProductListCell.swift in Sources */,
 				18E1713329C99EE4007F606E /* AppDelegate.swift in Sources */,
@@ -340,7 +350,9 @@
 				186F184129DAD8C300577142 /* HTTPHeader.swift in Sources */,
 				18E1715B29C9FA69007F606E /* ProductListService.swift in Sources */,
 				183AFF5B29CDD69D008108CB /* ProductListCollectionViewCell.swift in Sources */,
+				18A33EB329DC1DCF009194F5 /* RegisterProductMultipartForm.swift in Sources */,
 				18E1715529C9F2C9007F606E /* AppCoordinator.swift in Sources */,
+				18A33EB129DC1D92009194F5 /* NSMutableData + Extension.swift in Sources */,
 				189E0FA529D56B7400C5471D /* ProductRegisterViewController.swift in Sources */,
 				18259D3329D2B84E0073E0D5 /* ThumbnailImageView.swift in Sources */,
 				189E0FA729D57B2900C5471D /* ProductRegisterImageCell.swift in Sources */,

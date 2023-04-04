@@ -70,13 +70,13 @@ extension ProductListRepository {
             var headerList = [HTTPHeader]()
             
             imageDatas.forEach {
-                let header = HTTPHeader(name: "images", mimeType: "image/png", data: $0)
+                let header = HTTPHeader(name: "images", mimeType: .png, data: $0)
                 headerList.append(header)
             }
             
-            headerList.append(HTTPHeader(name: "params", mimeType: "application/json", data: params))
+            headerList.append(HTTPHeader(name: "params", mimeType: .json, data: params))
             
-            headerList.append(HTTPHeader(name: "identifier", mimeType: "text/plain", data: identifier))
+            headerList.append(HTTPHeader(name: "identifier", mimeType: .text, data: identifier))
             
             return headerList
         }
@@ -123,8 +123,10 @@ extension ProductListRepository.API {
     var body: Data? {
         switch self {
         case .saveProduct(let id, let productData):
-            let partFormBody = MultipartFormData(headers: productData.headers, id: id)
-            return partFormBody.boundaryData()
+            return RegisterProductMultipartForm(
+                id: id,
+                headers: productData.headers
+            ).generateBodyData()
         default:
             return nil
         }

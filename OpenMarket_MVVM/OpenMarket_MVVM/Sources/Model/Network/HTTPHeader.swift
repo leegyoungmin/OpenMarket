@@ -8,50 +8,32 @@ import Foundation
 
 struct HTTPHeader {
     let name: String
-    let mimeType: String
+    let mimeType: MimeType
     let data: Data
     
-    init(name: String, mimeType: String, data: Data) {
+    init(name: String, mimeType: MimeType, data: Data) {
         self.name = name
         self.mimeType = mimeType
         self.data = data
     }
 }
 
-struct MultipartFormData {
-    let headers: [HTTPHeader]
-    let id: String
-    
-    func boundaryData() -> Data {
-        let boundary = "--\(id)"
-        let data = NSMutableData()
+extension HTTPHeader {
+    enum MimeType: CustomStringConvertible {
+        case png
+        case text
+        case json
         
-        for header in headers {
-            data.appendString(with: boundary + "\r\n")
-            data.appendString(with: "Content-Disposition: form-data; name=\"\(header.name)\"")
-            
-            if header.mimeType == "image/png" {
-                data.appendString(with: "; filename=\"productImage.png\"\r\n")
-                data.appendString(with: "Content-Type: \(header.mimeType)\r\n")
-            } else {
-                data.appendString(with: "\r\n")
-                data.appendString(with: "Content-Type: \(header.mimeType)\r\n")
+        var description: String {
+            switch self {
+            case .png:
+                return "image/png"
+            case .text:
+                return "text/plain"
+            case .json:
+                return "application/json"
             }
-            
-            data.appendString(with: "\r\n")
-            data.append(header.data)
-            data.appendString(with: "\r\n")
         }
-        
-        data.appendString(with: "--\(id)--\r\n")
-        return data as Data
     }
 }
 
-private extension NSMutableData {
-    func appendString(with value: String) {
-        if let data = value.data(using: .utf8) {
-            self.append(data)
-        }
-    }
-}
