@@ -40,6 +40,17 @@ extension ProductListCollectionViewCell {
             }
             .store(in: &cancellables)
         
+        viewModel?.isOutOfStock
+            .sink { [weak self] in
+                if $0 {
+                    self?.remainStockLabel.textColor = .red
+                    self?.remainStockLabel.text = "품절"
+                } else {
+                    self?.remainStockLabel.textColor = .label
+                }
+            }
+            .store(in: &cancellables)
+        
         viewModel?.$imageData
             .receive(on: DispatchQueue.main)
             .replaceNil(with: Data())

@@ -18,12 +18,16 @@ class ProductCellViewModel {
     @Published private(set) var price: String = ""
     @Published private(set) var stock: Int = 0
     
+    private(set) var isOutOfStock = CurrentValueSubject<Bool, Never>(false)
+    
     init(product: Product) {
         self.title = product.name
         self.description = product.description
         self.price = product.currency.rawValue + " " + product.price.description
         self.stock = product.stock
         self.product = product
+        
+        self.isOutOfStock.send(stock == .zero)
         
         service.loadImageData(path: product.thumbnail)
             .sink { [weak self] in
