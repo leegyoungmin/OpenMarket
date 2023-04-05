@@ -22,8 +22,11 @@ class ProductListCoordinator: Coordinator {
         navigationController.pushViewController(registerViewController, animated: true)
     }
     
-    func didFinishRegister() {
+    func popRegisterViewController() {
         navigationController.popViewController(animated: true)
+    }
+    
+    func didFinishRegister() {
         parentCoordinator?.childDidFinish(self)
     }
 }

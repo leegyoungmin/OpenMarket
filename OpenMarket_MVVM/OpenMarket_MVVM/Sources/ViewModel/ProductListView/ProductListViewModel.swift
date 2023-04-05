@@ -36,6 +36,16 @@ class ProductListViewModel: ObservableObject {
             .store(in: &subscribers)
     }
     
+    func reloadData() {
+        let count = (pageNumber * elementCount)
+        apiService.loadProducts(pageNumber: 1, count: count)
+            .replaceError(with: [])
+            .sink {
+                self.products = $0
+            }
+            .store(in: &subscribers)
+    }
+    
     func toggleCollectionCase() {
         switch collectionCase {
         case .list:

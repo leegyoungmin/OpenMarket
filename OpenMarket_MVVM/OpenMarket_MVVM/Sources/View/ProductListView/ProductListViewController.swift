@@ -34,7 +34,7 @@ class ProductListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        viewModel.fetchNextPage()
+        viewModel.reloadData()
     }
 }
 
@@ -77,7 +77,7 @@ private extension ProductListViewController {
     }
     
     func reloadData(snapshot: NSDiffableDataSourceSnapshot<Int, Product>) {
-        dataSource?.apply(snapshot, animatingDifferences: true)
+        dataSource?.apply(snapshot)
     }
 }
 

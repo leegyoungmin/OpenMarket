@@ -46,6 +46,7 @@ extension Currency {
 }
 
 struct Product: Codable, Hashable {
+    var itemId = UUID()
     let id: Int
     let vendorId: Int
     let vendorName: String

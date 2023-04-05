@@ -98,7 +98,7 @@ private extension ProductRegisterViewController {
                     self.view.addSubview(activityView)
                     
                 case .finish:
-                    self.coordinator?.didFinishRegister()
+                    self.coordinator?.popRegisterViewController()
                     
                 case .error:
                     activityView.removeFromSuperview()
