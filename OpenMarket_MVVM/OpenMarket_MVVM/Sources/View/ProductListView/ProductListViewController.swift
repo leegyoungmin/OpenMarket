@@ -30,6 +30,12 @@ class ProductListViewController: UIViewController {
         configureUI()
         bind()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        viewModel.fetchNextPage()
+    }
 }
 
 // MARK: - CollectionView Delegate
@@ -37,7 +43,7 @@ extension ProductListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if let itemCount = dataSource?.snapshot().numberOfItems(inSection: 0),
            (itemCount - 1) == indexPath.row {
-            viewModel.fetchProducts()
+            viewModel.fetchNextPage()
         }
     }
 }

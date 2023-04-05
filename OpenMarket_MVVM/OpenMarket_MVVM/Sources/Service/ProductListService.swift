@@ -16,7 +16,7 @@ protocol ProductListServicing {
 final class ProductListService: ProductListServicing {
     private(set) var productsListRepository: ProductListLoadable
     
-    init(productsListRepository: ProductListLoadable) {
+    init(productsListRepository: ProductListLoadable = ProductListRepository()) {
         self.productsListRepository = productsListRepository
     }
     

@@ -14,7 +14,11 @@ protocol ProductListLoadable: AnyObject {
         type: T.Type
     ) -> AnyPublisher<T, Error>
     
-    func saveData(params: Data,images: [Data], identifier: Data) -> AnyPublisher<Bool, Error>
+    func saveData(
+        params: Data,
+        images: [Data],
+        identifier: Data
+    ) -> AnyPublisher<Bool, Error>
 }
 
 final class ProductListRepository: ProductListLoadable {

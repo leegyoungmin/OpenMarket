@@ -17,12 +17,11 @@ class ProductListViewModel: ObservableObject {
     private let apiService: ProductListServicing
     private var subscribers = Set<AnyCancellable>()
     
-    init(apiService: ProductListServicing = ProductListService(productsListRepository: ProductListRepository())) {
+    init(apiService: ProductListServicing = ProductListService()) {
         self.apiService = apiService
-        fetchProducts()
     }
     
-    func fetchProducts() {
+    func fetchNextPage() {
         apiService.loadProducts(pageNumber: pageNumber, count: elementCount)
             .sink { completion in
                 switch completion {
