@@ -8,28 +8,6 @@ import Combine
 import Foundation
 
 final class ProductRegisterViewModel {
-    enum ProductRegisterState {
-        case ready
-        case loading
-        case finish
-        case error
-    }
-    
-    struct ImageItem: Hashable {
-        let id = UUID()
-        var data: Data? = nil
-    }
-    
-    struct RegisterProduct: Codable {
-        let name: String
-        let description: String
-        let price: String
-        let currency: String
-        let discountedPrice: String
-        let stock: String
-        var secret: String = "mgf4rzxzpe4gkpf5"
-    }
-    
     private let productListService: ProductListServicing
     
     init(productListService: ProductListServicing = ProductListService(productsListRepository: ProductListRepository())) {
@@ -94,5 +72,29 @@ final class ProductRegisterViewModel {
                 }
             }
             .store(in: &cancellables)
+    }
+}
+
+extension ProductRegisterViewModel {
+    enum ProductRegisterState {
+        case ready
+        case loading
+        case finish
+        case error
+    }
+    
+    struct ImageItem: Hashable {
+        let id = UUID()
+        var data: Data? = nil
+    }
+    
+    struct RegisterProduct: Codable {
+        let name: String
+        let description: String
+        let price: String
+        let currency: String
+        let discountedPrice: String
+        let stock: String
+        var secret: String = "mgf4rzxzpe4gkpf5"
     }
 }
