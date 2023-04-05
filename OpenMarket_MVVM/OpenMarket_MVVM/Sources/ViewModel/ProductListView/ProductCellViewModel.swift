@@ -37,6 +37,6 @@ class ProductCellViewModel {
     }
     
     func cancel() {
-        service.cancel()
+        cancellables.forEach { $0.cancel() }
     }
 }
