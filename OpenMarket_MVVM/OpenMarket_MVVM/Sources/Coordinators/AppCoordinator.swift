@@ -22,7 +22,17 @@ class AppCoordinator: Coordinator {
     }
     
     func registerSubscription() {
-        let child = ProductListCoordinator(navigationController: navigationController)
+        let child = ProductRegisterCoordinator(navigationController: navigationController)
+        child.parentCoordinator = self
+        childCoordinators.append(child)
+        child.start()
+    }
+    
+    func detailSubscription(id: Int) {
+        let child = ProductDetailCoordinator(
+            id: id,
+            navigationController: navigationController
+        )
         child.parentCoordinator = self
         childCoordinators.append(child)
         child.start()

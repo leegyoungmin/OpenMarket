@@ -40,11 +40,20 @@ class ProductListViewController: UIViewController {
 
 // MARK: - CollectionView Delegate
 extension ProductListViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
         if let itemCount = dataSource?.snapshot().numberOfItems(inSection: 0),
            (itemCount - 1) == indexPath.row {
             viewModel.fetchNextPage()
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let id = viewModel.products[indexPath.row].id
+        coordinator?.detailSubscription(id: id)
     }
 }
 

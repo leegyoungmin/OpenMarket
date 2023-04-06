@@ -23,7 +23,7 @@ final class ProductRegisterViewController: UIViewController, UIPickerViewDelegat
     
     
     // Properties
-    weak var coordinator: ProductListCoordinator?
+    weak var coordinator: ProductRegisterCoordinator?
     private let viewModel = ProductRegisterViewModel()
     private var dataSource: UICollectionViewDiffableDataSource<Int, ImageItem>?
     private var cancellables = Set<AnyCancellable>()

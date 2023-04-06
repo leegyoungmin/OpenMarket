@@ -62,12 +62,13 @@ final class ProductDetailViewController: UIViewController {
 
 private extension ProductDetailViewController {
     func configureUI() {
+        view.backgroundColor = .systemBackground
         configureHierarchy()
         makeConstraints()
     }
     
     func configureHierarchy() {
-        view = contentScrollView
+        view.addSubview(contentScrollView)
         contentScrollView.addSubview(contentView)
         
         [pageCollectionView, pageControl, informationView].forEach {
@@ -77,6 +78,11 @@ private extension ProductDetailViewController {
     
     func makeConstraints() {
         NSLayoutConstraint.activate([
+            contentScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            contentScrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            contentScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            contentScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
             contentView.leadingAnchor.constraint(equalTo: contentScrollView.leadingAnchor),
             contentView.topAnchor.constraint(equalTo: contentScrollView.topAnchor),
             contentView.trailingAnchor.constraint(equalTo: contentScrollView.trailingAnchor),

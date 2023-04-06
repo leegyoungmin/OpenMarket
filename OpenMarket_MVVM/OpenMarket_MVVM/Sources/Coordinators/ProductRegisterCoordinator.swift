@@ -6,7 +6,7 @@
 
 import UIKit
 
-class ProductListCoordinator: Coordinator {
+class ProductRegisterCoordinator: Coordinator {
     weak var parentCoordinator: AppCoordinator?
     var childCoordinators: [Coordinator] = []
     
