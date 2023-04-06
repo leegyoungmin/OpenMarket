@@ -43,6 +43,12 @@ final class ProductRegisterViewController: UIViewController, UIPickerViewDelegat
         
         coordinator?.didFinishRegister()
     }
+    
+    override func updateViewConstraints() {
+        super.updateViewConstraints()
+        
+        print(#function)
+    }
 }
 
 // MARK: - CollectionView Delegate

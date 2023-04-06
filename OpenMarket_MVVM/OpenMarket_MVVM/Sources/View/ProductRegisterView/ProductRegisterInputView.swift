@@ -68,14 +68,28 @@ final class ProductRegisterInputView: UIView {
         return stackView
     }()
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configureUI()
+    }
+    
+    convenience init() {
+        self.init(frame: .zero)
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    private func configureUI() {
+        addChildComponents()
+        configureHirecy()
+    }
+    
+    private func addChildComponents() {
         [priceTextField, currencySegmentControl].forEach(priceStackView.addArrangedSubview)
         [nameTextField, priceStackView, bargainPriceTextField, stockTextField].forEach(totalStackView.addArrangedSubview)
         [totalStackView, descriptionTextView].forEach(addSubview)
-        
-        configureHirecy()
     }
     
     private func configureHirecy() {
