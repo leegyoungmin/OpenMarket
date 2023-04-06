@@ -21,15 +21,15 @@ final class ProductDetailViewController: UIViewController {
         return contentView
     }()
     
-    private let pageCollectionView: UICollectionView = {
+    private let pageCollectionView: ProductThumbnailCollectionView = {
         let layout = UICollectionViewFlowLayout()
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        layout.scrollDirection = .horizontal
+        let collectionView = ProductThumbnailCollectionView(layout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(
             ProductDetailImageCell.self,
             forCellWithReuseIdentifier: ProductDetailImageCell.identifier
         )
-        layout.scrollDirection = .horizontal
         collectionView.isPagingEnabled = true
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
@@ -48,80 +48,19 @@ final class ProductDetailViewController: UIViewController {
         return control
     }()
     
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .boldSystemFont(ofSize: 30)
-        return label
-    }()
-    
-    private let descriptionTextView: UITextView = {
-        let textView = UITextView()
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.font = .preferredFont(forTextStyle: .body)
-        textView.isEditable = false
-        textView.isScrollEnabled = false
-        textView.textContainerInset = .zero
-        textView.contentInset = .zero
-        textView.scrollIndicatorInsets = .zero
-        return textView
+    private let informationView: ProductDetailInformationView = {
+        let view = ProductDetailInformationView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        pageCollectionView.delegate = self
-        pageCollectionView.dataSource = self
         configureUI()
     }
 }
 
-extension ProductDetailViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        return collectionView.bounds.size
-    }
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        minimumLineSpacingForSectionAt section: Int
-    ) -> CGFloat {
-        return .zero
-    }
-    
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        let page = Int(targetContentOffset.pointee.x / view.frame.width)
-        pageControl.currentPage = page
-    }
-}
-
-extension ProductDetailViewController: UICollectionViewDataSource {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        numberOfItemsInSection section: Int
-    ) -> Int {
-        return 5
-    }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        cellForItemAt indexPath: IndexPath
-    ) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: ProductDetailImageCell.identifier,
-            for: indexPath
-        )
-        
-        guard let cell = cell as? ProductDetailImageCell else {
-            return UICollectionViewCell()
-        }
-        cell.setImage(with: UIImage(systemName: "person.circle") ?? UIImage())
-        return cell
-    }
-}
 
 private extension ProductDetailViewController {
     func configureUI() {
@@ -133,7 +72,7 @@ private extension ProductDetailViewController {
         view = contentScrollView
         contentScrollView.addSubview(contentView)
         
-        [pageCollectionView, pageControl, titleLabel, descriptionTextView].forEach {
+        [pageCollectionView, pageControl, informationView].forEach {
             contentView.addSubview($0)
         }
     }
@@ -154,55 +93,10 @@ private extension ProductDetailViewController {
             pageControl.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor),
             pageControl.topAnchor.constraint(equalTo: pageCollectionView.bottomAnchor, constant: 12),
             
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 12),
-            titleLabel.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: 12),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -12),
-            
-            descriptionTextView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            descriptionTextView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
-            descriptionTextView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            descriptionTextView.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor)
-        ])
-    }
-}
-
-class ProductDetailImageCell: UICollectionViewCell {
-    private let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        configureUI()
-    }
-    
-    func setImage(with image: UIImage) {
-        self.imageView.image = image
-    }
-}
-
-private extension ProductDetailImageCell {
-    static let identifier = String(describing: ProductDetailImageCell.self.self)
-    
-    func configureUI() {
-        configureHierarchy()
-        makeConstraints()
-    }
-    
-    func configureHierarchy() {
-        [imageView].forEach(contentView.addSubview)
-    }
-    
-    func makeConstraints() {
-        NSLayoutConstraint.activate([
-            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            informationView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 12),
+            informationView.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: 12),
+            informationView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -12),
+            informationView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
 }
