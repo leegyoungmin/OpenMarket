@@ -32,6 +32,7 @@
 		18BDAFB829DEA5D40046BD9A /* ProductDetailInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BDAFB729DEA5D40046BD9A /* ProductDetailInformationView.swift */; };
 		18BDAFBB29DEA8420046BD9A /* ProductDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BDAFBA29DEA8420046BD9A /* ProductDetailViewModel.swift */; };
 		18BDAFBD29DEAB370046BD9A /* ProductDetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BDAFBC29DEAB370046BD9A /* ProductDetailCoordinator.swift */; };
+		18BDAFBF29DEB0E90046BD9A /* DetailProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BDAFBE29DEB0E90046BD9A /* DetailProduct.swift */; };
 		18E1713329C99EE4007F606E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E1713229C99EE4007F606E /* AppDelegate.swift */; };
 		18E1713529C99EE4007F606E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E1713429C99EE4007F606E /* SceneDelegate.swift */; };
 		18E1713729C99EE4007F606E /* ProductListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E1713629C99EE4007F606E /* ProductListViewController.swift */; };
@@ -73,6 +74,7 @@
 		18BDAFB729DEA5D40046BD9A /* ProductDetailInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailInformationView.swift; sourceTree = "<group>"; };
 		18BDAFBA29DEA8420046BD9A /* ProductDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewModel.swift; sourceTree = "<group>"; };
 		18BDAFBC29DEAB370046BD9A /* ProductDetailCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailCoordinator.swift; sourceTree = "<group>"; };
+		18BDAFBE29DEB0E90046BD9A /* DetailProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProduct.swift; sourceTree = "<group>"; };
 		18E1712F29C99EE4007F606E /* OpenMarket_MVVM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenMarket_MVVM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18E1713229C99EE4007F606E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		18E1713429C99EE4007F606E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 			children = (
 				186F183F29DAD8B900577142 /* Network */,
 				18E1714F29C9B537007F606E /* ProductsResponse.swift */,
+				18BDAFBE29DEB0E90046BD9A /* DetailProduct.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -397,6 +400,7 @@
 				18BDAFB629DEA5660046BD9A /* ReusableView.swift in Sources */,
 				18AF746229D1D8A8003C3F71 /* ProductCellViewModel.swift in Sources */,
 				189E0FAC29D5CB6D00C5471D /* ProductRegisterViewModel.swift in Sources */,
+				18BDAFBF29DEB0E90046BD9A /* DetailProduct.swift in Sources */,
 				18E1713529C99EE4007F606E /* SceneDelegate.swift in Sources */,
 				183AFF5929CDD669008108CB /* ProductGridCell.swift in Sources */,
 				18EF329729DD453600768A19 /* ProductDetailViewController.swift in Sources */,
