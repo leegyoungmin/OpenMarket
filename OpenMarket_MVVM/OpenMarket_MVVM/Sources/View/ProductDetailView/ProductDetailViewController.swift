@@ -22,9 +22,7 @@ final class ProductDetailViewController: UIViewController {
     }()
     
     private let pageCollectionView: ProductThumbnailCollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        let collectionView = ProductThumbnailCollectionView(layout: layout)
+        let collectionView = ProductThumbnailCollectionView()
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(
             ProductDetailImageCell.self,

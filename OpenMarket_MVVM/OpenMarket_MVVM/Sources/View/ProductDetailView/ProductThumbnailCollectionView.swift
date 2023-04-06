@@ -14,7 +14,9 @@ class ProductThumbnailCollectionView: UICollectionView {
         dataSource = self
     }
     
-    convenience init(layout: UICollectionViewLayout) {
+    convenience init() {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
         self.init(frame: .zero, collectionViewLayout: layout)
     }
     
