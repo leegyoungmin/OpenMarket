@@ -14,6 +14,11 @@ protocol ProductListLoadable: AnyObject {
         type: T.Type
     ) -> AnyPublisher<T, Error>
     
+    func fetchData<T: Decodable>(
+        id: Int,
+        type: T.Type
+    ) -> AnyPublisher<T, Error>
+    
     func saveData(
         params: Data,
         images: [Data],
@@ -33,6 +38,19 @@ final class ProductListRepository: ProductListLoadable {
         }
         
         return URLSession.shared.dataTaskPublisher(for: url)
+            .map(\.data)
+            .decode(type: T.self, decoder: JSONDecoder())
+            .eraseToAnyPublisher()
+    }
+    
+    func fetchData<T: Decodable>(id: Int, type: T.Type) -> AnyPublisher<T, Error> {
+        let api = API.detailProduct(id: id)
+        
+        guard let request = try? api.configureRequest() else {
+            return Fail(error: API.APIError.invalidURL).eraseToAnyPublisher()
+        }
+        
+        return URLSession.shared.dataTaskPublisher(for: request)
             .map(\.data)
             .decode(type: T.self, decoder: JSONDecoder())
             .eraseToAnyPublisher()
