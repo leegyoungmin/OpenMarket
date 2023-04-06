@@ -63,6 +63,7 @@ extension ProductListRepository {
     enum API {
         case loadProducts(pageNumber: Int, count: Int)
         case saveProduct(id: String, ProductRegister)
+        case detailProduct(id: Int)
     }
     
     struct ProductRegister {
@@ -98,7 +99,7 @@ extension ProductListRepository.API {
     
     var method: String {
         switch self {
-        case .loadProducts:
+        case .loadProducts, .detailProduct:
             return "GET"
         case .saveProduct:
             return "POST"
@@ -107,7 +108,7 @@ extension ProductListRepository.API {
     
     var header: [String: String] {
         switch self {
-        case .loadProducts:
+        case .loadProducts, .detailProduct:
             return [:]
         case .saveProduct(let id, _):
             return [
@@ -121,6 +122,9 @@ extension ProductListRepository.API {
         switch self {
         case .loadProducts, .saveProduct:
             return "/api/products"
+            
+        case .detailProduct(let id):
+            return "/api/products/\(id)"
         }
     }
     
@@ -144,7 +148,7 @@ extension ProductListRepository.API {
                 URLQueryItem(name: "items_per_page", value: count.description)
             ]
             
-        case .saveProduct:
+        case .saveProduct, .detailProduct:
             return []
         }
     }
