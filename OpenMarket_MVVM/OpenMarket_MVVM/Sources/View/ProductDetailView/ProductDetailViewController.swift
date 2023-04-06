@@ -52,6 +52,19 @@ final class ProductDetailViewController: UIViewController {
         return view
     }()
     
+    private let viewModel: ProductDetailViewModel
+    
+    init(viewModel: ProductDetailViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        viewModel = ProductDetailViewModel(id: 0)
+        super.init(coder: coder)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

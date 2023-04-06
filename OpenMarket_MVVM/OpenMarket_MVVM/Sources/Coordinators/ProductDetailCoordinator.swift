@@ -19,7 +19,8 @@ class ProductDetailCoordinator: Coordinator {
     }
     
     func start() {
-        let itemViewController = ProductDetailViewController()
+        let viewModel = ProductDetailViewModel(id: productId)
+        let itemViewController = ProductDetailViewController(viewModel: viewModel)
         navigationController.pushViewController(itemViewController, animated: true)
     }
     
