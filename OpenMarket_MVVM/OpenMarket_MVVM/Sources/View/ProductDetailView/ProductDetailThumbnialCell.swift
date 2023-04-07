@@ -14,14 +14,32 @@ class ProductDetailImageCell: UICollectionViewCell {
         return imageView
     }()
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    private var imageLoadTask: URLSessionDataTask?
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
         configureUI()
     }
     
-    func setImage(with image: UIImage) {
-        self.imageView.image = image
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    func setImage(with imageURL: String) {
+        guard let url = URL(string: imageURL) else {
+            return
+        }
+        
+        imageLoadTask = URLSession.shared.dataTask(with: url) { data, _, _ in
+            guard let data = data else { return }
+            
+            DispatchQueue.main.async {
+                self.imageView.image = UIImage(data: data)
+            }
+        }
+        
+        imageLoadTask?.resume()
     }
 }
 

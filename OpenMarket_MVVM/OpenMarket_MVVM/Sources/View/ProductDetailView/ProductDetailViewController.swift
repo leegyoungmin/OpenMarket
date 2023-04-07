@@ -4,6 +4,7 @@
 //
 //  Copyright (c) 2023 Minii All rights reserved.
 
+import Combine
 import UIKit
 
 final class ProductDetailViewController: UIViewController {
@@ -53,6 +54,7 @@ final class ProductDetailViewController: UIViewController {
     }()
     
     private let viewModel: ProductDetailViewModel
+    private var cancellables = Set<AnyCancellable>()
     
     init(viewModel: ProductDetailViewModel) {
         self.viewModel = viewModel
@@ -69,9 +71,22 @@ final class ProductDetailViewController: UIViewController {
         super.viewDidLoad()
         
         configureUI()
+        
+        bindFromViewModel()
     }
 }
 
+private extension ProductDetailViewController {
+    func bindFromViewModel() {
+        viewModel.$product
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { product in
+                self.pageCollectionView.setImageDatas(with: product.images)
+            }
+            .store(in: &cancellables)
+    }
+}
 
 private extension ProductDetailViewController {
     func configureUI() {

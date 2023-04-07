@@ -14,6 +14,8 @@ class ProductThumbnailCollectionView: UICollectionView {
         dataSource = self
     }
     
+    private var imageDatas: [ImageData] = []
+    
     convenience init() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -23,6 +25,12 @@ class ProductThumbnailCollectionView: UICollectionView {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
+    
+    func setImageDatas(with datas: [ImageData]) {
+        print(datas)
+        self.imageDatas = datas
+        self.reloadData()
+    }
 }
 
 extension ProductThumbnailCollectionView: UICollectionViewDataSource {
@@ -30,7 +38,7 @@ extension ProductThumbnailCollectionView: UICollectionViewDataSource {
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        return 5
+        return imageDatas.count
     }
     
     func collectionView(
@@ -46,7 +54,8 @@ extension ProductThumbnailCollectionView: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        cell.setImage(with: UIImage(systemName: "person.circle") ?? UIImage())
+        let item = imageDatas[indexPath.row]
+        cell.setImage(with: item.url)
         
         return cell
     }
