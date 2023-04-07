@@ -38,3 +38,11 @@ extension UISegmentedControl {
             .eraseToAnyPublisher()
     }
 }
+
+extension UIPageControl {
+    var currentPageChangedPublisher: AnyPublisher<Int, Never> {
+        controlPublisher(for: .valueChanged)
+            .compactMap { ($0 as? UIPageControl)?.currentPage }
+            .eraseToAnyPublisher()
+    }
+}

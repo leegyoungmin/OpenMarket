@@ -59,7 +59,6 @@ final class ProductDetailViewController: UIViewController {
     init(viewModel: ProductDetailViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        
     }
     
     required init?(coder: NSCoder) {
@@ -70,9 +69,28 @@ final class ProductDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        pageCollectionView.detailImagesDelegate = self
+        
         configureUI()
         
         bindFromViewModel()
+        bindToViewModel()
+    }
+}
+
+extension ProductDetailViewController: ProductDetailScrollDelegate {
+    func productDetailCollectionView(
+        collectionView: UICollectionView,
+        numberOfImages imagesCount: Int
+    ) {
+        pageControl.numberOfPages = imagesCount
+    }
+    
+    func productDetailCollectionView(
+        collectionView: UICollectionView,
+        currentIndex index: Int
+    ) {
+        pageControl.currentPage = index
     }
 }
 
@@ -83,6 +101,18 @@ private extension ProductDetailViewController {
             .receive(on: DispatchQueue.main)
             .sink { product in
                 self.pageCollectionView.setImageDatas(with: product.images)
+            }
+            .store(in: &cancellables)
+    }
+    
+    func bindToViewModel() {
+        pageControl.currentPageChangedPublisher
+            .sink {
+                self.pageCollectionView.scrollToItem(
+                    at: IndexPath(row: $0, section: 0),
+                    at: .centeredHorizontally,
+                    animated: true
+                )
             }
             .store(in: &cancellables)
     }

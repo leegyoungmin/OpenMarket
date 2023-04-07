@@ -6,6 +6,18 @@
 
 import UIKit
 
+protocol ProductDetailScrollDelegate: AnyObject {
+    func productDetailCollectionView(
+        collectionView: UICollectionView,
+        numberOfImages imagesCount: Int
+    )
+    
+    func productDetailCollectionView(
+        collectionView: UICollectionView,
+        currentIndex index: Int
+    )
+}
+
 class ProductThumbnailCollectionView: UICollectionView {
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
@@ -14,6 +26,7 @@ class ProductThumbnailCollectionView: UICollectionView {
         dataSource = self
     }
     
+    weak var detailImagesDelegate: ProductDetailScrollDelegate?
     private var imageDatas: [ImageData] = []
     
     convenience init() {
@@ -27,8 +40,11 @@ class ProductThumbnailCollectionView: UICollectionView {
     }
     
     func setImageDatas(with datas: [ImageData]) {
-        print(datas)
         self.imageDatas = datas
+        detailImagesDelegate?.productDetailCollectionView(
+            collectionView: self,
+            numberOfImages: datas.count
+        )
         self.reloadData()
     }
 }
@@ -76,5 +92,14 @@ extension ProductThumbnailCollectionView: UICollectionViewDelegateFlowLayout {
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         return collectionView.bounds.size
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let width = scrollView.frame.width
+        let page = Int(scrollView.contentOffset.x / width)
+        detailImagesDelegate?.productDetailCollectionView(
+            collectionView: self,
+            currentIndex: page
+        )
     }
 }
