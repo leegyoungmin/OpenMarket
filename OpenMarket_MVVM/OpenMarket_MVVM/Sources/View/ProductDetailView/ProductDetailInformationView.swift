@@ -11,7 +11,6 @@ final class ProductDetailInformationView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .title1).bold()
-        label.text = "MacBook Pro"
         return label
     }()
     
@@ -21,7 +20,6 @@ final class ProductDetailInformationView: UIView {
         label.font = .preferredFont(forTextStyle: .title3)
         label.textColor = .secondaryLabel
         label.textAlignment = .right
-        label.text = "남은 수량 : 149"
         return label
     }()
     
@@ -29,7 +27,6 @@ final class ProductDetailInformationView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .title3)
-        label.text = "KRW 2,300,000\nKRW 2,100,000"
         label.numberOfLines = 2
         label.textAlignment = .left
         return label
@@ -62,9 +59,9 @@ final class ProductDetailInformationView: UIView {
     
     func updateData(with product: DetailProduct) {
         self.titleLabel.text = product.name
-        self.stockLabel.text = product.stock.description
+        self.stockLabel.text = "남은 수량 : \(product.stock.description)"
         self.descriptionTextView.text = product.description
-        self.priceLabel.text = product.price.description
+        self.priceLabel.text = product.currencyNumber()
     }
 }
 
