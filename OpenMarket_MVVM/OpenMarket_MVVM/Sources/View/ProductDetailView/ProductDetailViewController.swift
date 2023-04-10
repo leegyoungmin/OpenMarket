@@ -123,6 +123,7 @@ private extension ProductDetailViewController {
 private extension ProductDetailViewController {
     func configureUI() {
         view.backgroundColor = .systemBackground
+        configureNavigationBar()
         configureHierarchy()
         makeConstraints()
     }
@@ -162,5 +163,28 @@ private extension ProductDetailViewController {
             informationView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -12),
             informationView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
+    }
+    
+    func configureNavigationBar() {
+        let editAction = UIAction { _ in
+            let controller = self.configureEditActionSheet()
+            self.present(controller, animated: true)
+        }
+        let editButton = UIBarButtonItem(
+            image: UIImage(systemName: "pencil.circle"),
+            primaryAction: editAction
+        )
+        navigationItem.rightBarButtonItem = editButton
+    }
+    
+    func configureEditActionSheet() -> UIAlertController {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let deleteAction = UIAlertAction(title: "삭제", style: .destructive)
+        let editAction = UIAlertAction(title: "수정", style: .default)
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        
+        [deleteAction, editAction, cancelAction].forEach(alertController.addAction)
+        
+        return alertController
     }
 }
