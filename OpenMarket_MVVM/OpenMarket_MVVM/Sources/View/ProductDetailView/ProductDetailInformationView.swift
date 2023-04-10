@@ -61,7 +61,7 @@ final class ProductDetailInformationView: UIView {
         self.titleLabel.text = product.name
         self.stockLabel.text = "남은 수량 : \(product.stock.description)"
         self.descriptionTextView.text = product.description
-        self.priceLabel.text = product.currencyNumber()
+        self.priceLabel.attributedText = product.priceDescription()
     }
 }
 
