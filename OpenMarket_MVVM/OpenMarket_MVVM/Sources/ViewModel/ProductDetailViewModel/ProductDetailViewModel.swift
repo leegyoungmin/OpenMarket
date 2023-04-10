@@ -30,7 +30,6 @@ final class ProductDetailViewModel {
                     return
                 }
             } receiveValue: {
-                print($0)
                 self.product = $0
             }
             .store(in: &cancellables)

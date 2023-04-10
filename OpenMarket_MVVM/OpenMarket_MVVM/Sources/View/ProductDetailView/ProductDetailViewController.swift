@@ -76,6 +76,7 @@ final class ProductDetailViewController: UIViewController {
         bindFromViewModel()
         bindToViewModel()
     }
+    
 }
 
 extension ProductDetailViewController: ProductDetailScrollDelegate {
@@ -101,6 +102,7 @@ private extension ProductDetailViewController {
             .receive(on: DispatchQueue.main)
             .sink { product in
                 self.pageCollectionView.setImageDatas(with: product.images)
+                self.informationView.updateData(with: product)
             }
             .store(in: &cancellables)
     }

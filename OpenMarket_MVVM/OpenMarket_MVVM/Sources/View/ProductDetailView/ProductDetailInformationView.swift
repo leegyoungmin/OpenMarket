@@ -10,7 +10,7 @@ final class ProductDetailInformationView: UIView {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .boldSystemFont(ofSize: 30)
+        label.font = .preferredFont(forTextStyle: .title1).bold()
         label.text = "MacBook Pro"
         return label
     }()
@@ -18,7 +18,7 @@ final class ProductDetailInformationView: UIView {
     private let stockLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .preferredFont(forTextStyle: .body)
+        label.font = .preferredFont(forTextStyle: .title3)
         label.textColor = .secondaryLabel
         label.textAlignment = .right
         label.text = "남은 수량 : 149"
@@ -31,7 +31,7 @@ final class ProductDetailInformationView: UIView {
         label.font = .preferredFont(forTextStyle: .title3)
         label.text = "KRW 2,300,000\nKRW 2,100,000"
         label.numberOfLines = 2
-        label.textAlignment = .right
+        label.textAlignment = .left
         return label
     }()
     
@@ -59,6 +59,13 @@ final class ProductDetailInformationView: UIView {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
+    
+    func updateData(with product: DetailProduct) {
+        self.titleLabel.text = product.name
+        self.stockLabel.text = product.stock.description
+        self.descriptionTextView.text = product.description
+        self.priceLabel.text = product.price.description
+    }
 }
 
 private extension ProductDetailInformationView {
@@ -76,6 +83,7 @@ private extension ProductDetailInformationView {
             titleLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 12),
             titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 12),
             
+            stockLabel.topAnchor.constraint(equalTo: titleLabel.topAnchor),
             stockLabel.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: 8),
             stockLabel.bottomAnchor.constraint(equalTo: titleLabel.bottomAnchor),
             stockLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -12),
