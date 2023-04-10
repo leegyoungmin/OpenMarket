@@ -24,6 +24,9 @@ protocol ProductListLoadable: AnyObject {
         images: [Data],
         identifier: Data
     ) -> AnyPublisher<Bool, Error>
+    
+    func getURI(with id: String) -> AnyPublisher<String, Error>
+    func deleteData(with id: String) -> AnyPublisher<Bool, Error>
 }
 
 final class ProductListRepository: ProductListLoadable {
@@ -75,6 +78,44 @@ final class ProductListRepository: ProductListLoadable {
             }
             .eraseToAnyPublisher()
     }
+    
+    func getURI(with id: String) -> AnyPublisher<String, Error> {
+        let api = API.deleteURI(id: id)
+        
+        guard let request = try? api.configureRequest() else {
+            return Fail(error: API.APIError.invalidURL).eraseToAnyPublisher()
+        }
+        
+        return URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { data, response in
+                guard let response = response as? HTTPURLResponse,
+                      (200..<300) ~= response.statusCode else {
+                    throw API.APIError.invalidURL
+                }
+                
+                return String(data: data, encoding: .utf8) ?? ""
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    func deleteData(with path: String) -> AnyPublisher<Bool, Error> {
+        let api = API.deleteProduct(path: path)
+        
+        guard let request = try? api.configureRequest() else {
+            return Fail(error: API.APIError.invalidURL).eraseToAnyPublisher()
+        }
+        
+        return URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { data, response in
+                guard let response = response as? HTTPURLResponse,
+                      (200...300) ~= response.statusCode else {
+                    throw URLError(.badServerResponse)
+                }
+                
+                return true
+            }
+            .eraseToAnyPublisher()
+    }
 }
 
 extension ProductListRepository {
@@ -82,6 +123,8 @@ extension ProductListRepository {
         case loadProducts(pageNumber: Int, count: Int)
         case saveProduct(id: String, ProductRegister)
         case detailProduct(id: Int)
+        case deleteURI(id: String)
+        case deleteProduct(path: String)
     }
     
     struct ProductRegister {
@@ -119,8 +162,11 @@ extension ProductListRepository.API {
         switch self {
         case .loadProducts, .detailProduct:
             return "GET"
-        case .saveProduct:
+        case .saveProduct, .deleteURI:
             return "POST"
+            
+        case .deleteProduct:
+            return "DELETE"
         }
     }
     
@@ -133,6 +179,12 @@ extension ProductListRepository.API {
                 "identifier": "d94a4ffb-6941-11ed-a917-a7e99e3bb892",
                 "Content-Type": "multipart/form-data; boundary=\(id)"
             ]
+            
+        case .deleteURI, .deleteProduct:
+            return [
+                "identifier": "d94a4ffb-6941-11ed-a917-a7e99e3bb892",
+                "Content-Type": "application/json"
+            ]
         }
     }
     
@@ -143,6 +195,12 @@ extension ProductListRepository.API {
             
         case .detailProduct(let id):
             return "/api/products/\(id)"
+            
+        case .deleteURI(let id):
+            return "/api/products/\(id)/archived"
+            
+        case .deleteProduct(let path):
+            return path
         }
     }
     
@@ -153,6 +211,15 @@ extension ProductListRepository.API {
                 id: id,
                 headers: productData.headers
             ).generateBodyData()
+            
+        case .deleteURI:
+            let encoder = JSONEncoder()
+            
+            guard let jsonData = try? encoder.encode(["secret": "mgf4rzxzpe4gkpf5"]) else {
+                return nil
+            }
+            
+            return jsonData
         default:
             return nil
         }
@@ -166,7 +233,7 @@ extension ProductListRepository.API {
                 URLQueryItem(name: "items_per_page", value: count.description)
             ]
             
-        case .saveProduct, .detailProduct:
+        default:
             return []
         }
     }
@@ -186,7 +253,6 @@ extension ProductListRepository.API {
             request.setValue($0.value, forHTTPHeaderField: $0.key)
         }
         request.httpBody = body
-        
         return request
     }
 }

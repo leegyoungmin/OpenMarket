@@ -12,6 +12,7 @@ protocol ProductListServicing {
     func loadProducts(pageNumber: Int, count: Int) -> AnyPublisher<[Product], Error>
     func loadProduct(id: Int) -> AnyPublisher<DetailProduct, Error>
     func saveProduct(params: Data, images: [Data], identifier: Data) -> AnyPublisher<Bool, Never>
+    func deleteProduct(with id: String) -> AnyPublisher<Bool, Never>
 }
 
 final class ProductListService: ProductListServicing {
@@ -36,6 +37,17 @@ final class ProductListService: ProductListServicing {
     
     func saveProduct(params: Data, images: [Data], identifier: Data) -> AnyPublisher<Bool, Never> {
         return productsListRepository.saveData(params: params, images: images, identifier: identifier)
+            .replaceError(with: false)
+            .eraseToAnyPublisher()
+    }
+    
+    func deleteProduct(with id: String) -> AnyPublisher<Bool, Never> {
+        return productsListRepository.getURI(with: id)
+            .flatMap { path -> AnyPublisher<Bool, Never> in
+                return self.productsListRepository.deleteData(with: path)
+                    .replaceError(with: false)
+                    .eraseToAnyPublisher()
+            }
             .replaceError(with: false)
             .eraseToAnyPublisher()
     }
