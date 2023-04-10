@@ -33,6 +33,13 @@ final class ProductDetailViewModel {
                 self.product = $0
             }
             .store(in: &cancellables)
+    }
+    
+    func deleteProduct() {
+        
+        detailItemService.deleteProduct(with: id.description)
+            .sink { print($0) }
+            .store(in: &cancellables)
 
     }
 }
