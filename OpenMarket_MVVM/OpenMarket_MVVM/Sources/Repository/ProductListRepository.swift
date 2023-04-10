@@ -25,8 +25,8 @@ protocol ProductListLoadable: AnyObject {
         identifier: Data
     ) -> AnyPublisher<Bool, Error>
     
-    func getURI(with id: String) -> AnyPublisher<String, Error>
-    func deleteData(with id: String) -> AnyPublisher<Bool, Error>
+    func getURI(id: String, password: String) -> AnyPublisher<String, Error>
+    func deleteData(with path: String) -> AnyPublisher<Bool, Error>
 }
 
 final class ProductListRepository: ProductListLoadable {
@@ -79,8 +79,8 @@ final class ProductListRepository: ProductListLoadable {
             .eraseToAnyPublisher()
     }
     
-    func getURI(with id: String) -> AnyPublisher<String, Error> {
-        let api = API.deleteURI(id: id)
+    func getURI(id: String, password: String) -> AnyPublisher<String, Error> {
+        let api = API.deleteURI(id: id, password: password)
         
         guard let request = try? api.configureRequest() else {
             return Fail(error: API.APIError.invalidURL).eraseToAnyPublisher()
@@ -123,7 +123,7 @@ extension ProductListRepository {
         case loadProducts(pageNumber: Int, count: Int)
         case saveProduct(id: String, ProductRegister)
         case detailProduct(id: Int)
-        case deleteURI(id: String)
+        case deleteURI(id: String, password: String)
         case deleteProduct(path: String)
     }
     
@@ -196,7 +196,7 @@ extension ProductListRepository.API {
         case .detailProduct(let id):
             return "/api/products/\(id)"
             
-        case .deleteURI(let id):
+        case .deleteURI(let id, _):
             return "/api/products/\(id)/archived"
             
         case .deleteProduct(let path):
@@ -212,10 +212,10 @@ extension ProductListRepository.API {
                 headers: productData.headers
             ).generateBodyData()
             
-        case .deleteURI:
+        case .deleteURI(_, let password):
             let encoder = JSONEncoder()
             
-            guard let jsonData = try? encoder.encode(["secret": "mgf4rzxzpe4gkpf5"]) else {
+            guard let jsonData = try? encoder.encode(["secret": password]) else {
                 return nil
             }
             

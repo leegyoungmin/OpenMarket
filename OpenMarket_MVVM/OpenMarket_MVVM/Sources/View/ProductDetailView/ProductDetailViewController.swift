@@ -180,7 +180,8 @@ private extension ProductDetailViewController {
     func configureEditActionSheet() -> UIAlertController {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
-            self.viewModel.deleteProduct()
+            let deleteController = self.configureDeleteAlert()
+            self.present(deleteController, animated: true)
         }
         let editAction = UIAlertAction(title: "수정", style: .default)
         let cancelAction = UIAlertAction(title: "취소", style: .cancel)
@@ -188,5 +189,26 @@ private extension ProductDetailViewController {
         [deleteAction, editAction, cancelAction].forEach(alertController.addAction)
         
         return alertController
+    }
+    
+    func configureDeleteAlert() -> UIAlertController {
+        let controller = UIAlertController(title: "상품 삭제", message: "정말 삭제하시겠습니까?\n삭제를 원하시면 비밀번호를 작성해주세요.", preferredStyle: .alert)
+        
+        controller.addTextField {
+            $0.placeholder = "비밀번호를 입력해주세요."
+        }
+        
+        let confirmAction = UIAlertAction(title: "확인", style: .default) { _ in
+            guard let textField = controller.textFields?.first,
+                  let password = textField.text else { return }
+            
+            self.viewModel.deleteProduct(password: password)
+        }
+        
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        
+        [cancelAction, confirmAction].forEach(controller.addAction)
+        
+        return controller
     }
 }

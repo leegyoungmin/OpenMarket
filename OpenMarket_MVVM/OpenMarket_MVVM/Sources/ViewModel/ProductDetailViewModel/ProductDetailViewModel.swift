@@ -35,9 +35,8 @@ final class ProductDetailViewModel {
             .store(in: &cancellables)
     }
     
-    func deleteProduct() {
-        
-        detailItemService.deleteProduct(with: id.description)
+    func deleteProduct(password: String) {
+        detailItemService.deleteProduct(with: id.description, password: password)
             .sink { print($0) }
             .store(in: &cancellables)
 
