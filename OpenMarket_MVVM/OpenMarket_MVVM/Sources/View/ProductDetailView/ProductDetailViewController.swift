@@ -179,7 +179,9 @@ private extension ProductDetailViewController {
     
     func configureEditActionSheet() -> UIAlertController {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let deleteAction = UIAlertAction(title: "삭제", style: .destructive)
+        let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
+            self.viewModel.deleteProduct()
+        }
         let editAction = UIAlertAction(title: "수정", style: .default)
         let cancelAction = UIAlertAction(title: "취소", style: .cancel)
         
