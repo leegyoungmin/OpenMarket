@@ -21,6 +21,7 @@ class ProductDetailCoordinator: Coordinator {
     func start() {
         let viewModel = ProductDetailViewModel(id: productId)
         let itemViewController = ProductDetailViewController(viewModel: viewModel)
+        itemViewController.coordinator = self
         navigationController.pushViewController(itemViewController, animated: true)
     }
     
@@ -28,7 +29,7 @@ class ProductDetailCoordinator: Coordinator {
         navigationController.popViewController(animated: true)
     }
     
-    func didFinishRegister() {
+    func didFinishDetail() {
         parentCoordinator?.childDidFinish(self)
     }
 }
