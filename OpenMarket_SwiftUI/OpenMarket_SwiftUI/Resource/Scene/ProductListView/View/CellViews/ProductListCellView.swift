@@ -6,6 +6,7 @@
 
 import SwiftUI
 
+// MARK: Content View
 struct ProductListCellView: View {
   let product: Product
   var body: some View {
@@ -13,22 +14,10 @@ struct ProductListCellView: View {
       HStack {
         thumbnailImage(with: product.thumbnail)
 
-        VStack {
-          HStack {
-            Text(product.name)
-              .font(.title3)
-            
-            Spacer()
-            
-            Text("잔여 수량 : \(product.stock)")
-          }
+        VStack(spacing: Constants.cellContentSpacing) {
+          titleSection
           
-          HStack {
-            Text("\(product.currency.rawValue) \(Int(product.price))").strikethrough().foregroundColor(.red)
-            + Text(" \(product.currency.rawValue) \(Int(product.bargainPrice))")
-            
-            Spacer()
-          }
+          priceSection
         }
       }
       
@@ -38,14 +27,14 @@ struct ProductListCellView: View {
   }
 }
 
+// MARK: Child View Components
 private extension ProductListCellView {
-  @ViewBuilder
-  func thumbnailImage(with path: String) -> some View {
+  @ViewBuilder func thumbnailImage(with path: String) -> some View {
     AsyncImage(url: URL(string: path)) { image in
       image
         .resizable()
         .scaledToFit()
-        .frame(width: 80, height: 80, alignment: .center)
+        .frame(height: Constants.imageHeight)
         .cornerRadius(12)
     } placeholder: {
       progressView
@@ -54,17 +43,68 @@ private extension ProductListCellView {
   
   var progressView: some View {
     ProgressView()
-      .frame(width: 80, height: 80, alignment: .center)
+      .scaledToFit()
+      .frame(width: Constants.imageHeight, height: Constants.imageHeight)
       .progressViewStyle(.circular)
       .background(.thickMaterial)
       .cornerRadius(12)
   }
+  
+  var titleSection: some View {
+    HStack {
+      Text(product.name)
+        .font(.title3)
+      
+      Spacer()
+      
+      Text(Constants.stockPlaceholder + product.stock.description)
+    }
+  }
+  
+  @ViewBuilder
+  func originPriceLabel(
+    to price: Double,
+    with currency: Currency
+  ) -> some View {
+    Text(product.currency.rawValue + " " + Int(price).description)
+      .strikethrough()
+      .foregroundColor(.red)
+  }
+  
+  @ViewBuilder
+  func bargainPriceLabel(
+    to price: Double,
+    with currency: Currency
+  ) -> some View {
+    Text(product.currency.rawValue + " " + Int(price).description)
+  }
+  
+  var priceSection: some View {
+    HStack {
+      Text(product.currency.rawValue + " " + Int(product.price).description)
+        .strikethrough(color: .red)
+        .foregroundColor(.red)
+      
+      Text(product.currency.rawValue + " " + Int(product.bargainPrice).description)
+      Spacer()
+    }
+  }
 }
 
+// MARK: Name Space
+private extension ProductListCellView {
+  enum Constants {
+    static let cellContentSpacing: CGFloat = 10
+    static let imageHeight: CGFloat = 80
+    static let stockPlaceholder: String = "잔여 수량 : "
+  }
+}
+
+// MARK: Previews
 struct ProductListCellView_Previews: PreviewProvider {
   static let mockProduct = Product.mockData
   static var previews: some View {
     ProductListCellView(product: mockProduct)
-      .previewLayout(.sizeThatFits)
+      .previewLayout(.fixed(width: UIScreen.main.bounds.width, height: 100))
   }
 }
