@@ -8,36 +8,22 @@ import Foundation
 import Combine
 
 final class ProductListViewModel: ObservableObject {
+  private let marketWebRepository: MarketProductRepository
   private var page: Int = 1
   private var itemCount: Int = 10
   private var cancellables = Set<AnyCancellable>()
   
   @Published var products: [Product] = []
   
-  init() {
-    self.fetchProducts()
+  init(marketWebRepository: MarketProductRepository = MarketProductConcreteRepository()) {
+    self.marketWebRepository = marketWebRepository
+    fetchProducts()
   }
   
   func fetchProducts() {
-    var components = URLComponents(string: "https://openmarket.yagom-academy.kr")
-    
-    components?.path = "/api/products"
-    components?.queryItems = [
-      .init(name: "page_no", value: page.description),
-      .init(name: "items_per_page", value: itemCount.description)
-    ]
-    
-    guard let request = components?.url else { return }
-    
-    URLSession.shared.dataTaskPublisher(for: request)
+    marketWebRepository.loadProducts(with: page, itemCount: 10)
       .receive(on: DispatchQueue.main)
-      .map(\.data)
-      .decode(type: ProductsResponse.self, decoder: JSONDecoder())
-      .sink { completion in
-        print(completion)
-      } receiveValue: { response in
-        self.products = response.items
-      }
+      .assign(to: \.products, on: self)
       .store(in: &cancellables)
   }
 }
