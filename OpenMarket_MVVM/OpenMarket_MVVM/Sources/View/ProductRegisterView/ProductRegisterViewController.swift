@@ -23,10 +23,20 @@ final class ProductRegisterViewController: UIViewController, UIPickerViewDelegat
     
     
     // Properties
-    weak var coordinator: ProductRegisterCoordinator?
-    private let viewModel = ProductRegisterViewModel()
+    weak var coordinator: Coordinator?
+    private let viewModel: ProductRegisterViewModel?
     private var dataSource: UICollectionViewDiffableDataSource<Int, ImageItem>?
     private var cancellables = Set<AnyCancellable>()
+    
+    init(viewModel: ProductRegisterViewModel = ProductRegisterViewModel(product: nil)) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        self.viewModel = ProductRegisterViewModel(product: nil)
+        super.init(coder: coder)
+    }
     
     // LifeCycle
     override func viewDidLoad() {
@@ -41,14 +51,17 @@ final class ProductRegisterViewController: UIViewController, UIPickerViewDelegat
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        coordinator?.didFinishRegister()
+        if let coordinator = coordinator as? ProductRegisterCoordinator {
+            coordinator.didFinishRegister()
+            return
+        }
     }
 }
 
 // MARK: - CollectionView Delegate
 extension ProductRegisterViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel.updateSelectedIndex(with: indexPath.row)
+        viewModel?.updateSelectedIndex(with: indexPath.row)
         let controller = UIImagePickerController()
         controller.sourceType = .photoLibrary
         controller.allowsEditing = true
@@ -84,13 +97,13 @@ private extension ProductRegisterViewController {
     func bindFromViewModel() {
         let activityView = UIActivityIndicatorView()
         
-        viewModel.$imageItemDatas
+        viewModel?.$imageItemDatas
             .sink { [weak self] items in
                 self?.setSnapshot(with: items)
             }
             .store(in: &cancellables)
         
-        viewModel.uploadState
+        viewModel?.uploadState
             .receive(on: DispatchQueue.main)
             .sink {
                 switch $0 {
@@ -98,8 +111,10 @@ private extension ProductRegisterViewController {
                     self.view.addSubview(activityView)
                     
                 case .finish:
-                    self.coordinator?.popRegisterViewController()
-                    
+                    if let registerCoordinator = self.coordinator as? ProductRegisterCoordinator {
+                        registerCoordinator.popRegisterViewController()
+                        return
+                    }
                 case .error:
                     activityView.removeFromSuperview()
                     
@@ -108,36 +123,72 @@ private extension ProductRegisterViewController {
                 }
             }
             .store(in: &cancellables)
+        
+        viewModel?.$name
+            .assign(to: \.nameTextField.text, on: registerInputView)
+            .store(in: &cancellables)
+        
+        viewModel?.$price
+            .compactMap { String($0 ?? .zero) }
+            .assign(to: \.priceTextField.text, on: registerInputView)
+            .store(in: &cancellables)
+        
+        viewModel?.$stock
+            .compactMap { String($0 ?? .zero) }
+            .assign(to: \.stockTextField.text, on: registerInputView)
+            .store(in: &cancellables)
+        
+        viewModel?.$bargainPrice
+            .map { bargainPrice -> String? in
+                guard let bargainPrice = bargainPrice else {
+                    return nil
+                }
+                
+                return String(bargainPrice)
+            }.sink {
+                self.registerInputView.bargainPriceTextField.text = $0
+            }
+            .store(in: &cancellables)
+        
+        viewModel?.$currency
+            .compactMap { $0.intValue }
+            .assign(to: \.currencySegmentControl.selectedSegmentIndex, on: registerInputView)
+            .store(in: &cancellables)
+        
+        viewModel?.$description
+            .assign(to: \.descriptionTextView.text, on: registerInputView)
+            .store(in: &cancellables)
     }
     
     func bindToViewModel() {
         registerInputView.nameTextField.textPublisher
-            .assign(to: \.name, on: viewModel)
+            .compactMap { $0 }
+            .sink { [weak self] in self?.viewModel?.name = $0 }
             .store(in: &cancellables)
 
         registerInputView.priceTextField.textPublisher
             .compactMap { Double($0) }
-            .assign(to: \.price, on: viewModel)
+            .sink { [weak self] in self?.viewModel?.price = $0 }
             .store(in: &cancellables)
         
         registerInputView.currencySegmentControl
             .currencyChangedPublisher
-            .assign(to: \.currency, on: viewModel)
+            .sink { [weak self] in self?.viewModel?.currency = $0 }
             .store(in: &cancellables)
         
         registerInputView.stockTextField.textPublisher
             .compactMap { Int($0) }
-            .assign(to: \.stock, on: viewModel)
+            .sink { [weak self] in self?.viewModel?.stock = $0 }
             .store(in: &cancellables)
 
         registerInputView.bargainPriceTextField.textPublisher
             .compactMap { Double($0) }
-            .assign(to: \.bargainPrice, on: viewModel)
+            .sink { [weak self] in self?.viewModel?.bargainPrice = $0 }
             .store(in: &cancellables)
 
         registerInputView.descriptionTextView.textPublisher
             .compactMap { $0 }
-            .assign(to: \.description, on: viewModel)
+            .sink { [weak self] in self?.viewModel?.description = $0 }
             .store(in: &cancellables)
     }
 }
@@ -145,7 +196,7 @@ private extension ProductRegisterViewController {
 // MARK: - Data Method
 private extension ProductRegisterViewController {
     func setImageData(with data: Data) {
-        viewModel.setImageData(with: data)
+        viewModel?.setImageData(with: data)
     }
     
     func setSnapshot(with items: [ImageItem]) {
@@ -249,7 +300,7 @@ private extension ProductRegisterViewController {
         navigationItem.title = "상품 등록"
         
         let saveAction = UIAction { _ in
-            self.viewModel.registerProduct()
+            self.viewModel?.registerProduct()
         }
         
         let saveButton = UIBarButtonItem(title: "올리기", primaryAction: saveAction)
