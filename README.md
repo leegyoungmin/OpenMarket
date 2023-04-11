@@ -1,3 +1,4 @@
+
 # 오픈마켓
 
 ## 목차
@@ -101,6 +102,33 @@
 ## 4.다이어그램
 - 파일 구조
 ```bash
+├── OpenMarket
+│   ├── NetworkUnitTest
+│   │   └── NetworkUnitTest.swift
+│   └── OpenMarket
+│       ├── Resource
+│       ├── Controller
+│       │   └── ViewController.swift
+│       ├── Extensions
+│       │   └── Networking
+│       │       └── Dictionary+.swift
+│       ├── Model
+│       │   └── Networking
+│       │       ├── APIType.swift
+│       │       ├── DTO
+│       │       │   ├── Currency.swift
+│       │       │   ├── Product.swift
+│       │       │   └── ProductListResponse.swift
+│       │       ├── NetworkError.swift
+│       │       ├── NetworkManager.swift
+│       │       ├── NetworkTypes
+│       │       │   └── OpenMarketAPI.swift
+│       │       └── TestDouble
+│       │           ├── StubURLSession.swift
+│       │           └── URLSessionProtocol.swift
+│       └── View
+│           └── Main.storyboard
+└── README.md
 ├── Controller
 │   ├── ProductsViewController.swift
 │   └── RegisterProductViewController.swift
@@ -153,6 +181,7 @@
 
 ## 5.실행화면
 #### STEP1
+
 ![testCoverage](https://i.imgur.com/2UZW8hG.png)
 
 ![netWorkView](https://i.imgur.com/M18lPLd.png)
@@ -200,6 +229,7 @@ class NetworkManager {
         ...
     }
 }
+
 ```
 ```swift
 protocol APIType {
@@ -329,7 +359,6 @@ func downSampling(scale: Double) -> UIImage {
     - [동시성 프로그래밍](https://yagom.net/courses/%EB%8F%99%EC%8B%9C%EC%84%B1-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-concurrency-programming/)
     - [Test Double](https://yagom.net/courses/unit-test-작성하기/lessons/테스트를-위한-객체-만들기/topic/test-double/)
     - [URLSession](https://developer.apple.com/documentation/foundation/urlsession)
-    - [UIAlertController](https://developer.apple.com/documentation/uikit/uialertcontroller)
 - MDN
     - [mdn POST](https://developer.mozilla.org/ko/docs/Web/HTTP/Methods/POST)
 ---
