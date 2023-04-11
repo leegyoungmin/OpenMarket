@@ -10,11 +10,12 @@
 		1825DF0A29E55293007BAE8D /* OpenMarket_SwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825DF0929E55293007BAE8D /* OpenMarket_SwiftUIApp.swift */; };
 		1825DF0C29E55293007BAE8D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825DF0B29E55293007BAE8D /* ContentView.swift */; };
 		1825DF0E29E55293007BAE8D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1825DF0D29E55293007BAE8D /* Assets.xcassets */; };
-		1825DF1129E55293007BAE8D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1825DF1029E55293007BAE8D /* Preview Assets.xcassets */; };
 		1825DF1929E56A0B007BAE8D /* ProductListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825DF1829E56A0B007BAE8D /* ProductListView.swift */; };
 		1825DF1D29E56AEE007BAE8D /* ProductListCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825DF1C29E56AEE007BAE8D /* ProductListCellView.swift */; };
 		1825DF1F29E56BB5007BAE8D /* ProductGridCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825DF1E29E56BB5007BAE8D /* ProductGridCellView.swift */; };
 		1825DF2329E56EAC007BAE8D /* ProductListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825DF2229E56EAC007BAE8D /* ProductListViewModel.swift */; };
+		183C312129E5716C00DFEBC0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 183C312029E5716C00DFEBC0 /* Preview Assets.xcassets */; };
+		183C312429E5719D00DFEBC0 /* ProductResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183C312329E5719D00DFEBC0 /* ProductResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,11 +23,12 @@
 		1825DF0929E55293007BAE8D /* OpenMarket_SwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenMarket_SwiftUIApp.swift; sourceTree = "<group>"; };
 		1825DF0B29E55293007BAE8D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		1825DF0D29E55293007BAE8D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		1825DF1029E55293007BAE8D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1825DF1829E56A0B007BAE8D /* ProductListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListView.swift; sourceTree = "<group>"; };
 		1825DF1C29E56AEE007BAE8D /* ProductListCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListCellView.swift; sourceTree = "<group>"; };
 		1825DF1E29E56BB5007BAE8D /* ProductGridCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductGridCellView.swift; sourceTree = "<group>"; };
 		1825DF2229E56EAC007BAE8D /* ProductListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListViewModel.swift; sourceTree = "<group>"; };
+		183C312029E5716C00DFEBC0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = "Preview Assets.xcassets"; path = "Preview Content/Preview Assets.xcassets"; sourceTree = "<group>"; };
+		183C312329E5719D00DFEBC0 /* ProductResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,21 +61,10 @@
 		1825DF0829E55293007BAE8D /* OpenMarket_SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
-				1825DF1729E56A01007BAE8D /* Scene */,
-				1825DF0929E55293007BAE8D /* OpenMarket_SwiftUIApp.swift */,
-				1825DF0B29E55293007BAE8D /* ContentView.swift */,
-				1825DF0D29E55293007BAE8D /* Assets.xcassets */,
-				1825DF0F29E55293007BAE8D /* Preview Content */,
+				1825DF2529E5712C007BAE8D /* Source */,
+				1825DF2429E57123007BAE8D /* Resource */,
 			);
 			path = OpenMarket_SwiftUI;
-			sourceTree = "<group>";
-		};
-		1825DF0F29E55293007BAE8D /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				1825DF1029E55293007BAE8D /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		1825DF1729E56A01007BAE8D /* Scene */ = {
@@ -117,6 +108,34 @@
 				1825DF2229E56EAC007BAE8D /* ProductListViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		1825DF2429E57123007BAE8D /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				183C312229E5719400DFEBC0 /* Model */,
+				1825DF1729E56A01007BAE8D /* Scene */,
+				1825DF0929E55293007BAE8D /* OpenMarket_SwiftUIApp.swift */,
+				1825DF0B29E55293007BAE8D /* ContentView.swift */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		1825DF2529E5712C007BAE8D /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				1825DF0D29E55293007BAE8D /* Assets.xcassets */,
+				183C312029E5716C00DFEBC0 /* Preview Assets.xcassets */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		183C312229E5719400DFEBC0 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				183C312329E5719D00DFEBC0 /* ProductResponse.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -177,7 +196,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1825DF1129E55293007BAE8D /* Preview Assets.xcassets in Resources */,
+				183C312129E5716C00DFEBC0 /* Preview Assets.xcassets in Resources */,
 				1825DF0E29E55293007BAE8D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -195,6 +214,7 @@
 				1825DF0C29E55293007BAE8D /* ContentView.swift in Sources */,
 				1825DF0A29E55293007BAE8D /* OpenMarket_SwiftUIApp.swift in Sources */,
 				1825DF1F29E56BB5007BAE8D /* ProductGridCellView.swift in Sources */,
+				183C312429E5719D00DFEBC0 /* ProductResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,7 +342,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"OpenMarket_SwiftUI/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "OpenMarket_SwiftUI/Source/Preview\\ Content/Preview\\ Assets.xcassets";
 				DEVELOPMENT_TEAM = BH7V49ZZ2G;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -331,6 +351,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -338,9 +359,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.minii.OpenMarket-SwiftUI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -351,7 +375,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"OpenMarket_SwiftUI/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "OpenMarket_SwiftUI/Source/Preview\\ Content/Preview\\ Assets.xcassets";
 				DEVELOPMENT_TEAM = BH7V49ZZ2G;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -360,6 +384,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -367,9 +392,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.minii.OpenMarket-SwiftUI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
