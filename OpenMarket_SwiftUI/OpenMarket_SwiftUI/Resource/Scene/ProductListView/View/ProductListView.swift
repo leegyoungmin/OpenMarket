@@ -6,6 +6,7 @@
 
 import SwiftUI
 
+// MARK: Content View
 struct ProductListDisplayView: View {
   @ObservedObject var viewModel: ProductListViewModel
   @Binding var selectedSection: ListSection
@@ -24,6 +25,7 @@ struct ProductListDisplayView: View {
   }
 }
 
+// MARK: Child View Components
 private extension ProductListDisplayView {
   struct ProductListView: View {
     @Binding var products: [Product]
@@ -32,9 +34,9 @@ private extension ProductListDisplayView {
       List {
         ForEach(products, id: \.self) { product in
           ProductListCellView(product: product)
+            .listRowInsets(Constants.rowEdge)
         }
-        .listRowSeparator(.visible)
-        .listRowInsets(EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
+        .listRowSeparator(.hidden)
       }
       .listStyle(.grouped)
     }
@@ -42,11 +44,10 @@ private extension ProductListDisplayView {
   
   struct ProductGridView: View {
     @Binding var products: [Product]
-    let columns = Array(repeating: GridItem(.flexible()), count: 2)
     
     var body: some View {
       ScrollView {
-        LazyVGrid(columns: columns) {
+        LazyVGrid(columns: Constants.columns) {
           ForEach(products, id: \.self) { number in
             ProductGridCellView()
               .padding()
@@ -57,6 +58,20 @@ private extension ProductListDisplayView {
   }
 }
 
+// MARK: Name Space
+private extension ProductListDisplayView.ProductListView {
+  enum Constants {
+    static let rowEdge = EdgeInsets(top: 5, leading: 5, bottom: .zero, trailing: 5)
+  }
+}
+
+private extension ProductListDisplayView.ProductGridView {
+  enum Constants {
+    static let columns = Array(repeating: GridItem(.flexible()), count: 2)
+  }
+}
+
+// MARK: Previews
 struct ProductListView_Previews: PreviewProvider {
   static var previews: some View {
     ProductListDisplayView(.constant(.grid))
