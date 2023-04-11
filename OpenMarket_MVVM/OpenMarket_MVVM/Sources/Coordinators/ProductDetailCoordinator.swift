@@ -29,6 +29,13 @@ class ProductDetailCoordinator: Coordinator {
         navigationController.popViewController(animated: true)
     }
     
+    func presentModifyViewController(with product: DetailProduct) {
+        let viewModel = ProductRegisterViewModel(product: product)
+        let modifyViewController = ProductRegisterViewController(viewModel: viewModel)
+        modifyViewController.coordinator = self
+        navigationController.pushViewController(modifyViewController, animated: true)
+    }
+    
     func didFinishDetail() {
         parentCoordinator?.childDidFinish(self)
     }

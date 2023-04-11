@@ -197,7 +197,10 @@ private extension ProductDetailViewController {
             let deleteController = self.configureDeleteAlert()
             self.present(deleteController, animated: true)
         }
-        let editAction = UIAlertAction(title: "수정", style: .default)
+        let editAction = UIAlertAction(title: "수정", style: .default) { _ in
+            guard let product = self.viewModel.product else { return }
+            self.coordinator?.presentModifyViewController(with: product)
+        }
         let cancelAction = UIAlertAction(title: "취소", style: .cancel)
         
         [deleteAction, editAction, cancelAction].forEach(alertController.addAction)
