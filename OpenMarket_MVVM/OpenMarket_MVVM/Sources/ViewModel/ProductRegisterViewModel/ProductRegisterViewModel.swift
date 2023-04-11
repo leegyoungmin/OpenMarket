@@ -9,9 +9,15 @@ import Foundation
 
 final class ProductRegisterViewModel {
     private let productListService: ProductListServicing
+    private let imageLoadService: ImageLoadServicing
     
-    init(product: DetailProduct?, productListService: ProductListServicing = ProductListService(productsListRepository: ProductListRepository())) {
+    init(
+        product: DetailProduct?,
+        productListService: ProductListServicing = ProductListService(),
+        imageLoadService: ImageLoadServicing = ImageLoadService()
+    ) {
         self.productListService = productListService
+        self.imageLoadService = imageLoadService
         
         self.name = product?.name
         self.price = product?.price
@@ -89,14 +95,9 @@ final class ProductRegisterViewModel {
     }
     
     func loadProductImageData(with url: String) {
-        guard let url = URL(string: url) else { return }
-        
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data else { return }
-            
-            self.setImageData(with: data)
-        }
-        .resume()
+        imageLoadService.loadImageData(path: url)
+            .sink { self.setImageData(with: $0) }
+            .store(in: &cancellables)
     }
 }
 

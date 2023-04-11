@@ -14,7 +14,10 @@ final class ProductDetailViewModel {
     @Published var product: DetailProduct?
     @Published var isDeleteProduct: Bool = false
     
-    init(id: Int, detailItemService: ProductListServicing = ProductListService()) {
+    init(
+        id: Int,
+        detailItemService: ProductListServicing = ProductListService()
+    ) {
         self.id = id
         self.detailItemService = detailItemService
         
