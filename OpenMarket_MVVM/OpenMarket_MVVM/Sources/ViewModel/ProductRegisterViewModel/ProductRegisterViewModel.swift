@@ -10,15 +10,27 @@ import Foundation
 final class ProductRegisterViewModel {
     private let productListService: ProductListServicing
     
-    init(productListService: ProductListServicing = ProductListService(productsListRepository: ProductListRepository())) {
+    init(product: DetailProduct?, productListService: ProductListServicing = ProductListService(productsListRepository: ProductListRepository())) {
         self.productListService = productListService
+        
+        self.name = product?.name
+        self.price = product?.price
+        self.bargainPrice = product?.bargainPrice
+        self.currency = product?.currency ?? .KRW
+        self.stock = product?.stock
+        self.description = product?.description
+        
+        product?.images.map(\.url).forEach {
+            print($0)
+            self.loadProductImageData(with: $0)
+        }
     }
     
     private var selectedIndex: Int = 0
     @Published private(set) var imageDatas = CircularQueue<Data>(count: 5)
     @Published private(set) var imageItemDatas: [ImageItem] = [ImageItem()]
     
-    @Published var name: String = ""
+    @Published var name: String? = ""
     @Published var price: Double?
     @Published var bargainPrice: Double?
     @Published var currency: Currency = .KRW
@@ -31,10 +43,12 @@ final class ProductRegisterViewModel {
     func setImageData(with data: Data) {
         self.imageDatas.enqueue(data, with: selectedIndex)
         var images = imageDatas.flatten().map { ImageItem(data: $0) }
+        
         if images.count < 5 {
             images.append(ImageItem())
         }
         self.imageItemDatas = images
+        selectedIndex += 1
     }
     
     func updateSelectedIndex(with index: Int) {
@@ -43,7 +57,7 @@ final class ProductRegisterViewModel {
     
     func generateParamsData() -> Data? {
         let product = RegisterProduct(
-            name: name,
+            name: name ?? "",
             description: description ?? "",
             price: price?.description ?? "1",
             currency: currency.rawValue,
@@ -72,6 +86,17 @@ final class ProductRegisterViewModel {
                 }
             }
             .store(in: &cancellables)
+    }
+    
+    func loadProductImageData(with url: String) {
+        guard let url = URL(string: url) else { return }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data else { return }
+            
+            self.setImageData(with: data)
+        }
+        .resume()
     }
 }
 
