@@ -12,6 +12,7 @@ final class ProductDetailViewModel {
     private var cancellables = Set<AnyCancellable>()
     
     @Published var product: DetailProduct?
+    @Published var isDeleteProduct: Bool = false
     
     init(id: Int, detailItemService: ProductListServicing = ProductListService()) {
         self.id = id
@@ -37,7 +38,10 @@ final class ProductDetailViewModel {
     
     func deleteProduct(password: String) {
         detailItemService.deleteProduct(with: id.description, password: password)
-            .sink { print($0) }
+            .sink { [weak self] in
+                guard let self = self else { return }
+                self.isDeleteProduct = $0
+            }
             .store(in: &cancellables)
 
     }
