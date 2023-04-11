@@ -7,26 +7,30 @@
 import SwiftUI
 
 struct ProductListDisplayView: View {
+  @ObservedObject var viewModel: ProductListViewModel
   @Binding var selectedSection: ListSection
   
   init(_ selectedSection: Binding<ListSection>) {
+    self._viewModel = ObservedObject(initialValue: ProductListViewModel())
     self._selectedSection = selectedSection
   }
   
   var body: some View {
     if selectedSection == .list {
-      ProductListView()
+      ProductListView(products: $viewModel.products)
     } else {
-      ProductGridView()
+      ProductGridView(products: $viewModel.products)
     }
   }
 }
 
 private extension ProductListDisplayView {
   struct ProductListView: View {
+    @Binding var products: [Int]
+    
     var body: some View {
       List {
-        ForEach(1..<100, id: \.self) { number in
+        ForEach(products, id: \.self) { number in
           HStack {
             ProductListCellView()
           }
@@ -37,12 +41,13 @@ private extension ProductListDisplayView {
   }
   
   struct ProductGridView: View {
+    @Binding var products: [Int]
     let columns = Array(repeating: GridItem(.flexible()), count: 2)
     
     var body: some View {
       ScrollView {
         LazyVGrid(columns: columns) {
-          ForEach(1..<100, id: \.self) { number in
+          ForEach(products, id: \.self) { number in
             ProductGridCellView()
               .padding()
           }

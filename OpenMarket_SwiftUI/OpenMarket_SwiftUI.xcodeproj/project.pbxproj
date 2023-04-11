@@ -14,6 +14,7 @@
 		1825DF1929E56A0B007BAE8D /* ProductListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825DF1829E56A0B007BAE8D /* ProductListView.swift */; };
 		1825DF1D29E56AEE007BAE8D /* ProductListCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825DF1C29E56AEE007BAE8D /* ProductListCellView.swift */; };
 		1825DF1F29E56BB5007BAE8D /* ProductGridCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825DF1E29E56BB5007BAE8D /* ProductGridCellView.swift */; };
+		1825DF2329E56EAC007BAE8D /* ProductListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825DF2229E56EAC007BAE8D /* ProductListViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		1825DF1829E56A0B007BAE8D /* ProductListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListView.swift; sourceTree = "<group>"; };
 		1825DF1C29E56AEE007BAE8D /* ProductListCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListCellView.swift; sourceTree = "<group>"; };
 		1825DF1E29E56BB5007BAE8D /* ProductGridCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductGridCellView.swift; sourceTree = "<group>"; };
+		1825DF2229E56EAC007BAE8D /* ProductListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,8 +87,8 @@
 		1825DF1A29E56AD4007BAE8D /* ProductListView */ = {
 			isa = PBXGroup;
 			children = (
-				1825DF1B29E56ADD007BAE8D /* CellViews */,
-				1825DF1829E56A0B007BAE8D /* ProductListView.swift */,
+				1825DF2129E56EA3007BAE8D /* ViewModel */,
+				1825DF2029E56E9D007BAE8D /* View */,
 			);
 			path = ProductListView;
 			sourceTree = "<group>";
@@ -98,6 +100,23 @@
 				1825DF1E29E56BB5007BAE8D /* ProductGridCellView.swift */,
 			);
 			path = CellViews;
+			sourceTree = "<group>";
+		};
+		1825DF2029E56E9D007BAE8D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				1825DF1829E56A0B007BAE8D /* ProductListView.swift */,
+				1825DF1B29E56ADD007BAE8D /* CellViews */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		1825DF2129E56EA3007BAE8D /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				1825DF2229E56EAC007BAE8D /* ProductListViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -172,6 +191,7 @@
 			files = (
 				1825DF1D29E56AEE007BAE8D /* ProductListCellView.swift in Sources */,
 				1825DF1929E56A0B007BAE8D /* ProductListView.swift in Sources */,
+				1825DF2329E56EAC007BAE8D /* ProductListViewModel.swift in Sources */,
 				1825DF0C29E55293007BAE8D /* ContentView.swift in Sources */,
 				1825DF0A29E55293007BAE8D /* OpenMarket_SwiftUIApp.swift in Sources */,
 				1825DF1F29E56BB5007BAE8D /* ProductGridCellView.swift in Sources */,
