@@ -53,6 +53,7 @@ final class ProductDetailViewController: UIViewController {
         return view
     }()
     
+    weak var coordinator: ProductDetailCoordinator?
     private let viewModel: ProductDetailViewModel
     private var cancellables = Set<AnyCancellable>()
     
@@ -77,6 +78,11 @@ final class ProductDetailViewController: UIViewController {
         bindToViewModel()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        coordinator?.didFinishDetail()
+    }
 }
 
 extension ProductDetailViewController: ProductDetailScrollDelegate {
@@ -103,6 +109,14 @@ private extension ProductDetailViewController {
             .sink { product in
                 self.pageCollectionView.setImageDatas(with: product.images)
                 self.informationView.updateData(with: product)
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$isDeleteProduct
+            .filter { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { _ in
+                self.coordinator?.popDetailViewController()
             }
             .store(in: &cancellables)
     }
