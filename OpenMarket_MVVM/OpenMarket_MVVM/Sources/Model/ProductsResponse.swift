@@ -30,6 +30,15 @@ struct ProductsResponse: Codable {
 enum Currency: String, Codable, CaseIterable {
     case KRW
     case USD
+    
+    var intValue: Int {
+        switch self {
+        case .KRW:
+            return 0
+        case .USD:
+            return 1
+        }
+    }
 }
 
 extension Currency {

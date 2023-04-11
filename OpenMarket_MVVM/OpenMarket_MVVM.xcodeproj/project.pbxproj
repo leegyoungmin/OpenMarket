@@ -161,9 +161,9 @@
 			isa = PBXGroup;
 			children = (
 				18E1715429C9F2C9007F606E /* AppCoordinator.swift */,
+				18BDAFBC29DEAB370046BD9A /* ProductDetailCoordinator.swift */,
 				18A33EB529DC2870009194F5 /* ProductRegisterCoordinator.swift */,
 				18E1715129C9F107007F606E /* Coordinator */,
-				18BDAFBC29DEAB370046BD9A /* ProductDetailCoordinator.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
