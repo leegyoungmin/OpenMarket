@@ -192,40 +192,38 @@ private extension ProductDetailViewController {
     }
     
     func configureEditActionSheet() -> UIAlertController {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
-            let deleteController = self.configureDeleteAlert()
-            self.present(deleteController, animated: true)
+      let controller = AlertConcreteBuilder(style: .actionSheet)
+        .setAction(title: "삭제", style: .destructive) { _ in
+          let deleteController = self.configureDeleteAlert()
+          self.present(deleteController, animated: true)
         }
-        let editAction = UIAlertAction(title: "수정", style: .default) { _ in
-            guard let product = self.viewModel.product else { return }
-            self.coordinator?.presentModifyViewController(with: product)
+        .setAction(title: "수정", style: .default) { _ in
+          guard let product = self.viewModel.product else { return }
+          self.coordinator?.presentModifyViewController(with: product)
         }
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
-        
-        [deleteAction, editAction, cancelAction].forEach(alertController.addAction)
-        
-        return alertController
+        .setAction(title: "취소", style: .cancel, completion: nil)
+        .generate()
+      
+      return controller
     }
-    
+  
     func configureDeleteAlert() -> UIAlertController {
-        let controller = UIAlertController(title: "상품 삭제", message: "정말 삭제하시겠습니까?\n삭제를 원하시면 비밀번호를 작성해주세요.", preferredStyle: .alert)
+      let controller = AlertConcreteBuilder(style: .alert)
+        .setTitle(with: "상품 삭제")
+        .setMessage(with: "정말 삭제하시겠습니까?\n삭제를 원하시면 비밀번호를 작성해주세요.")
+        .addTextField()
+        .setAction(title: "취소", style: .cancel, completion: nil)
+        .generate()
+      
+      let confirmAction = UIAlertAction(title: "확인", style: .default) { _ in
+        guard let textField = controller.textFields?.first,
+              let password = textField.text else { return }
         
-        controller.addTextField {
-            $0.placeholder = "비밀번호를 입력해주세요."
-        }
-        
-        let confirmAction = UIAlertAction(title: "확인", style: .default) { _ in
-            guard let textField = controller.textFields?.first,
-                  let password = textField.text else { return }
-            
-            self.viewModel.deleteProduct(password: password)
-        }
-        
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
-        
-        [cancelAction, confirmAction].forEach(controller.addAction)
-        
-        return controller
+        self.viewModel.deleteProduct(password: password)
+    }
+      
+      controller.addAction(confirmAction)
+      
+      return controller
     }
 }
