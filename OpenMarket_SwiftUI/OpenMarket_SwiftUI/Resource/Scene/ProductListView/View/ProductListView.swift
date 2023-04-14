@@ -38,7 +38,7 @@ private extension ProductListDisplayView {
         }
         .listRowSeparator(.hidden)
       }
-      .listStyle(.grouped)
+      .listStyle(.plain)
     }
   }
   
