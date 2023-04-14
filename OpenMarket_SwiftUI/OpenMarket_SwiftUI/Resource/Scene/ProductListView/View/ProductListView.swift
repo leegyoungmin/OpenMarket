@@ -63,8 +63,8 @@ private extension ProductListDisplayView {
         var body: some View {
             ScrollView {
                 LazyVGrid(columns: Constants.columns) {
-                    ForEach(products, id: \.self) { number in
-                        ProductGridCellView()
+                    ForEach(products, id: \.self) { product in
+                        ProductGridCellView(product: product)
                             .padding()
                     }
                 }
