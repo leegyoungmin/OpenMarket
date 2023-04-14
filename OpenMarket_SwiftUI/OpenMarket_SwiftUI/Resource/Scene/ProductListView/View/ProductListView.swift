@@ -88,21 +88,21 @@ extension ProductListDisplayView {
 
 // MARK: Name Space
 private extension ProductListDisplayView.ProductListView {
-  enum Constants {
-    static let rowEdge = EdgeInsets(top: 5, leading: 5, bottom: .zero, trailing: 5)
-  }
+    enum Constants {
+        static let rowEdge = EdgeInsets(top: 5, leading: 5, bottom: .zero, trailing: 5)
+    }
 }
 
 private extension ProductListDisplayView.ProductGridView {
-  enum Constants {
-    static let columns = Array(repeating: GridItem(.flexible()), count: 2)
-  }
+    enum Constants {
+        static let columns = Array(repeating: GridItem(.flexible()), count: 2)
+    }
 }
 
 // MARK: Previews
 struct ProductListView_Previews: PreviewProvider {
-  static var previews: some View {
-    ProductListDisplayView(.constant(.grid))
-    ProductListDisplayView(.constant(.list))
-  }
+    static var previews: some View {
+        ProductListDisplayView(.constant(.grid))
+        ProductListDisplayView(.constant(.list))
+    }
 }
