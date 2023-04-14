@@ -8,63 +8,63 @@ import Combine
 import Foundation
 
 protocol MarketProductRepository: WebRepository {
-  func loadProducts(with page: Int, itemCount: Int) -> AnyPublisher<ProductsResponse, Error>
+    func loadProducts(with page: Int) -> AnyPublisher<ProductsResponse, Error>
 }
 
 final class MarketProductConcreteRepository: MarketProductRepository {
-  func loadProducts(with page: Int, itemCount: Int) -> AnyPublisher<ProductsResponse, Error> {
-    let endPoint = API.loadProducts(page: page, itemCount: itemCount)
-    return requestNetwork(endPoint: endPoint, type: ProductsResponse.self)
-  }
+    func loadProducts(with page: Int) -> AnyPublisher<ProductsResponse, Error> {
+        let endPoint = API.loadProducts(page: page)
+        return requestNetwork(endPoint: endPoint, type: ProductsResponse.self)
+    }
 }
 
 extension MarketProductConcreteRepository {
-  enum API {
-    case loadProducts(page: Int, itemCount: Int)
-  }
+    enum API {
+        case loadProducts(page: Int, itemCount: Int = 10)
+    }
 }
 
 extension MarketProductConcreteRepository.API: EndPointing {
-  var baseURL: String {
-    return "https://openmarket.yagom-academy.kr"
-  }
-  
-  var path: String {
-    switch self {
-    case .loadProducts:
-      return "/api/products"
+    var baseURL: String {
+        return "https://openmarket.yagom-academy.kr"
     }
-  }
-  
-  var method: String {
-    switch self {
-    case .loadProducts:
-      return "GET"
+    
+    var path: String {
+        switch self {
+        case .loadProducts:
+            return "/api/products"
+        }
     }
-  }
-  var headers: [String : String] {
-    switch self {
-    case .loadProducts:
-      return [
-        "Content-Type": "application/json"
-      ]
+    
+    var method: String {
+        switch self {
+        case .loadProducts:
+            return "GET"
+        }
     }
-  }
-  
-  var queries: [String : String] {
-    switch self {
-    case .loadProducts(let page, let itemCount):
-      return [
-        "page_no": page.description,
-        "items_per_page": itemCount.description
-      ]
+    var headers: [String : String] {
+        switch self {
+        case .loadProducts:
+            return [
+                "Content-Type": "application/json"
+            ]
+        }
     }
-  }
-  
-  var body: Data? {
-    switch self {
-    case .loadProducts:
-      return nil
+    
+    var queries: [String : String] {
+        switch self {
+        case .loadProducts(let page, let itemCount):
+            return [
+                "page_no": page.description,
+                "items_per_page": itemCount.description
+            ]
+        }
     }
-  }
+    
+    var body: Data? {
+        switch self {
+        case .loadProducts:
+            return nil
+        }
+    }
 }
