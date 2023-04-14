@@ -18,9 +18,9 @@ struct ProductListDisplayView: View {
     
     var body: some View {
         if selectedSection == .list {
-            ProductListView(viewModel: viewModel, products: $viewModel.products)
+            ProductListView(viewModel: viewModel, isLoading: viewModel.canLoadNextPage, products: viewModel.products)
         } else {
-            ProductGridView(products: $viewModel.products)
+            ProductGridView(viewModel: viewModel, isLoading: viewModel.canLoadNextPage, products: viewModel.products)
         }
     }
 }
@@ -28,28 +28,25 @@ struct ProductListDisplayView: View {
 // MARK: Child View Components
 private extension ProductListDisplayView {
     struct ProductListView: View {
-        private var viewModel: ProductListViewModel
-        @Binding var products: [Product]
-        
-        init(viewModel: ProductListViewModel, products: Binding<[Product]>) {
-            self.viewModel = viewModel
-            self._products = .init(projectedValue: products)
-        }
+        var viewModel: ProductListViewModel
+        let isLoading: Bool
+        var products: [Product]
         
         var body: some View {
             List {
-                ForEach(products, id: \.self) { product in
+                ForEach(products, id: \.itemId) { product in
                     ProductListCellView(product: product)
                         .listRowInsets(Constants.rowEdge)
-                        .task { viewModel.isLastItem(with: product) }
+                        .onAppear {
+                            if product == self.products.last {
+                                viewModel.fetchProducts()
+                            }
+                        }
                 }
                 .listRowSeparator(.hidden)
                 
-                if viewModel.state == .loading {
-                    ProductListDisplayView.loadingProgressView
-                        .task {
-                            viewModel.fetchProducts()
-                        }
+                if isLoading {
+                    ProgressView()
                 }
             }
             .listStyle(.plain)
@@ -57,15 +54,24 @@ private extension ProductListDisplayView {
     }
     
     struct ProductGridView: View {
-        // TODO: - GRID 뷰 로딩 및 item 설정하기
-        @Binding var products: [Product]
+        var viewModel: ProductListViewModel
+        var isLoading: Bool
+        var products: [Product]
         
         var body: some View {
             ScrollView {
                 LazyVGrid(columns: Constants.columns) {
-                    ForEach(products, id: \.self) { product in
+                    ForEach(products, id: \.itemId) { product in
                         ProductGridCellView(product: product)
-                            .padding()
+                            .onAppear {
+                                if products.last == product {
+                                    viewModel.fetchProducts()
+                                }
+                            }
+                    }
+                    
+                    if isLoading {
+                        ProductListDisplayView.loadingProgressView
                     }
                 }
             }
