@@ -8,16 +8,13 @@ import Combine
 import Foundation
 
 protocol MarketProductRepository: WebRepository {
-  func loadProducts(with page: Int, itemCount: Int) -> AnyPublisher<[Product], Never>
+  func loadProducts(with page: Int, itemCount: Int) -> AnyPublisher<ProductsResponse, Error>
 }
 
 final class MarketProductConcreteRepository: MarketProductRepository {
-  func loadProducts(with page: Int, itemCount: Int) -> AnyPublisher<[Product], Never> {
+  func loadProducts(with page: Int, itemCount: Int) -> AnyPublisher<ProductsResponse, Error> {
     let endPoint = API.loadProducts(page: page, itemCount: itemCount)
     return requestNetwork(endPoint: endPoint, type: ProductsResponse.self)
-      .map(\.items)
-      .replaceError(with: [])
-      .eraseToAnyPublisher()
   }
 }
 
