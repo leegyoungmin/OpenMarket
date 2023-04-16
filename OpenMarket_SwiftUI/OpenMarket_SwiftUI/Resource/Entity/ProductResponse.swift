@@ -66,6 +66,18 @@ struct Product: Codable, Hashable {
     let stock: Int
     let createdDate: String
     let issuedDate: String
+
+    var priceDescription: String {
+        return currency.rawValue + " " + Int(price).description
+    }
+    
+    var bargainPriceDescription: String {
+        return currency.rawValue + " " + Int(bargainPrice).description
+    }
+    
+    var isDiscounted: Bool {
+        return !(discountedPrice == 0)
+    }
     
     enum CodingKeys: String, CodingKey {
         case id, vendorName, name, description, thumbnail, currency, price, stock

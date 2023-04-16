@@ -9,7 +9,7 @@ import SwiftUI
 struct ProductGridCellView: View {
     let product: Product
     var body: some View {
-        VStack {
+        VStack(alignment: .center) {
             AsyncImage(url: URL(string: product.thumbnail)) { image in
                 image
                     .resizable()
@@ -24,14 +24,32 @@ struct ProductGridCellView: View {
                     .cornerRadius(12)
             }
             
-            Text("Mac Book Pro")
+            Text(product.name)
                 .font(.title3)
                 .bold()
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
             
-            Text("USD 2,500").strikethrough().foregroundColor(.red)
-            + Text("\nUSD 2,000")
+            VStack {
+                if product.isDiscounted {
+                    Text(product.priceDescription)
+                        .strikethrough()
+                        .foregroundColor(.red)
+                        .lineLimit(1)
+                }
+                
+                Text(product.bargainPriceDescription)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+            }
+            .padding(5)
             
             Text("잔여 수량 : \(148)")
+        }
+        .padding()
+        .overlay {
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color.black)
         }
     }
 }
