@@ -28,23 +28,19 @@ struct ProductGridCellView: View {
                 .font(.title3)
                 .bold()
                 .lineLimit(1)
-                .minimumScaleFactor(0.5)
             
-            VStack {
-                if product.isDiscounted {
-                    Text(product.priceDescription)
-                        .strikethrough()
-                        .foregroundColor(.red)
-                        .lineLimit(1)
-                }
-                
-                Text(product.bargainPriceDescription)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.8)
-            }
-            .padding(5)
+            Text(product.priceDescription)
+                .strikethrough()
+                .foregroundColor(.red)
+                .lineLimit(1)
+                .opacity(product.isDiscounted ? 1 : 0)
             
-            Text("잔여 수량 : \(148)")
+            Text(product.bargainPriceDescription)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+                .padding(.bottom, 5)
+            
+            Text("잔여 수량 : \(product.stock)")
         }
         .padding()
         .overlay {

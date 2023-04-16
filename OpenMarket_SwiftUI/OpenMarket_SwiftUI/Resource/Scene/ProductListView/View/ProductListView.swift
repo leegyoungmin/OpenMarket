@@ -18,7 +18,11 @@ struct ProductListDisplayView: View {
     
     var body: some View {
         if selectedSection == .list {
-            ProductListView(viewModel: viewModel, isLoading: viewModel.canLoadNextPage, products: viewModel.products)
+            ProductListView(
+                viewModel: viewModel,
+                isLoading: viewModel.canLoadNextPage,
+                products: viewModel.products
+            )
         } else {
             ProductGridView(viewModel: viewModel, isLoading: viewModel.canLoadNextPage, products: viewModel.products)
         }
@@ -101,7 +105,7 @@ private extension ProductListDisplayView.ProductListView {
 
 private extension ProductListDisplayView.ProductGridView {
     enum Constants {
-        static let columns = Array(repeating: GridItem(.flexible()), count: 2)
+        static let columns = Array(repeating: GridItem(.flexible(minimum: .zero, maximum: UIScreen.main.bounds.width / 2 - 10)), count: 2)
     }
 }
 
