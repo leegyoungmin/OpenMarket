@@ -79,6 +79,10 @@ struct Product: Codable, Hashable {
         return !(discountedPrice == 0)
     }
     
+    var isSoldOut: Bool {
+        return stock == 0
+    }
+    
     enum CodingKeys: String, CodingKey {
         case id, vendorName, name, description, thumbnail, currency, price, stock
         case vendorId = "vendor_id"

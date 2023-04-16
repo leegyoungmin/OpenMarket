@@ -57,7 +57,8 @@ private extension ProductListCellView {
             
             Spacer()
             
-            Text(Constants.stockPlaceholder + product.stock.description)
+            Text(product.isSoldOut ? "품절" : "잔여 수량 : \(product.stock)")
+                .foregroundColor(product.isSoldOut ? .red : .black)
         }
     }
     
