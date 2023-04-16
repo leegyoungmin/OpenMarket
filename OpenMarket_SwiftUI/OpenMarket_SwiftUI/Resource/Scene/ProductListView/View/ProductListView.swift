@@ -24,7 +24,11 @@ struct ProductListDisplayView: View {
                 products: viewModel.products
             )
         } else {
-            ProductGridView(viewModel: viewModel, isLoading: viewModel.canLoadNextPage, products: viewModel.products)
+            ProductGridView(
+                viewModel: viewModel,
+                isLoading: viewModel.canLoadNextPage,
+                products: viewModel.products
+            )
         }
     }
 }
