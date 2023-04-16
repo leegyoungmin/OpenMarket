@@ -68,11 +68,11 @@ struct Product: Codable, Hashable {
     let issuedDate: String
 
     var priceDescription: String {
-        return currency.rawValue + " " + Int(price).description
+        return price.convertCurrencyValue(with: currency.rawValue)
     }
     
     var bargainPriceDescription: String {
-        return currency.rawValue + " " + Int(bargainPrice).description
+        return bargainPrice.convertCurrencyValue(with: currency.rawValue)
     }
     
     var isDiscounted: Bool {
