@@ -17,24 +17,52 @@ struct ProductListDisplayView: View {
     }
     
     var body: some View {
-        if selectedSection == .list {
-            ProductListView(
-                viewModel: viewModel,
-                isLoading: viewModel.canLoadNextPage,
-                products: viewModel.products
-            )
-        } else {
-            ProductGridView(
-                viewModel: viewModel,
-                isLoading: viewModel.canLoadNextPage,
-                products: viewModel.products
-            )
+        ZStack {
+            if selectedSection == .list {
+                ProductListView(
+                    viewModel: viewModel,
+                    isLoading: viewModel.canLoadNextPage,
+                    products: viewModel.products
+                )
+            } else {
+                ProductGridView(
+                    viewModel: viewModel,
+                    isLoading: viewModel.canLoadNextPage,
+                    products: viewModel.products
+                )
+            }
+            
+            addProductButton
         }
     }
 }
 
 // MARK: Child View Components
 private extension ProductListDisplayView {
+    var addProductButton: some View {
+        VStack {
+            Spacer()
+            
+            HStack {
+                Spacer()
+                
+                Button {
+                    print("Tapped")
+                } label: {
+                    Image(systemName: "plus")
+                        .foregroundColor(.white)
+                        .padding()
+                        .background {
+                            Circle()
+                                .fill(Color.accentColor)
+                        }
+                }
+                .buttonStyle(.borderless)
+            }
+        }
+        .padding()
+    }
+    
     struct ProductListView: View {
         var viewModel: ProductListViewModel
         let isLoading: Bool

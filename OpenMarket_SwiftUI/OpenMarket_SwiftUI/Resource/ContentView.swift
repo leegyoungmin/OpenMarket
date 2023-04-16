@@ -28,7 +28,7 @@ struct ContentView: View {
         NavigationView {
             ProductListDisplayView($selectedSection)
                 .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
+                    ToolbarItem(placement: .navigationBarTrailing) {
                         Button {
                             withAnimation {
                                 selectedSection.toggle()
@@ -39,7 +39,7 @@ struct ContentView: View {
                         
                     }
                 }
-                .navigationBarTitleDisplayMode(.inline)
+                .navigationTitle("판매 상품")
         }
     }
 }
