@@ -63,22 +63,31 @@ private extension ProductListDisplayView {
         var products: [Product]
         
         var body: some View {
-            ScrollView {
-                LazyVGrid(columns: Constants.columns) {
-                    ForEach(products, id: \.itemId) { product in
-                        ProductGridCellView(product: product)
-                            .onAppear {
-                                if products.last == product {
-                                    viewModel.fetchProducts()
+            List {
+                ForEach(products, id: \.itemId) { product in
+                    HStack {
+                        Spacer()
+                        
+                        ForEach(0..<2, id: \.self) { index in
+                            ProductGridCellView(product: product)
+                                .onAppear {
+                                    if products.last == product {
+                                        viewModel.fetchProducts()
+                                    }
                                 }
-                            }
-                    }
-                    
-                    if isLoading {
-                        ProductListDisplayView.loadingProgressView
+                        }
+                        
+                        Spacer()
                     }
                 }
+                .listRowSeparator(.hidden)
+                .listRowInsets(EdgeInsets(top: 5, leading: .zero, bottom: 5, trailing: .zero))
+                
+                if isLoading {
+                    ProductListDisplayView.loadingProgressView
+                }
             }
+            .listStyle(.plain)
         }
     }
 }
@@ -105,7 +114,7 @@ private extension ProductListDisplayView.ProductListView {
 
 private extension ProductListDisplayView.ProductGridView {
     enum Constants {
-        static let columns = Array(repeating: GridItem(.flexible(minimum: .zero, maximum: UIScreen.main.bounds.width / 2 - 10)), count: 2)
+        static let columns = Array(repeating: GridItem(.flexible(minimum: .zero, maximum: UIScreen.main.bounds.width / 2)), count: 2)
     }
 }
 

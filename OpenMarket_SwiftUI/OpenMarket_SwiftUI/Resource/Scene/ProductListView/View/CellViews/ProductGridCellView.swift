@@ -43,10 +43,6 @@ struct ProductGridCellView: View {
             Text("잔여 수량 : \(product.stock)")
         }
         .padding()
-        .overlay {
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(Color.black)
-        }
     }
 }
 
