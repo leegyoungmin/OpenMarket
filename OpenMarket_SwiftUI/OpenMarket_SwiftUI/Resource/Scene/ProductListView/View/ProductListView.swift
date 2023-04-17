@@ -46,8 +46,8 @@ private extension ProductListDisplayView {
             HStack {
                 Spacer()
                 
-                Button {
-                    print("Tapped")
+                NavigationLink {
+                    Text("Add Product Item View")
                 } label: {
                     Image(systemName: "plus")
                         .foregroundColor(.white)
@@ -57,7 +57,6 @@ private extension ProductListDisplayView {
                                 .fill(Color.accentColor)
                         }
                 }
-                .buttonStyle(.borderless)
             }
         }
         .padding()
@@ -153,7 +152,15 @@ private extension ProductListDisplayView.ProductGridView {
 // MARK: Previews
 struct ProductListView_Previews: PreviewProvider {
     static var previews: some View {
-        ProductListDisplayView(.constant(.grid))
-        ProductListDisplayView(.constant(.list))
+        
+        Group {
+            NavigationView {
+                ProductListDisplayView(.constant(.grid))
+            }
+            
+            NavigationView {
+                ProductListDisplayView(.constant(.list))
+            }
+        }
     }
 }
