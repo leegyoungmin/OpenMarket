@@ -31,31 +31,31 @@ struct AddNewProductView: View {
             }
             
             TextField("상품명", text: $name)
-                .padding(8)
-                .background(.ultraThinMaterial)
-                .cornerRadius(12)
             
             TextField("상품가격", text: $price)
-                .padding(8)
-                .background(.ultraThinMaterial)
-                .cornerRadius(12)
             
             TextField("할인 금액", text: $discountedPrice)
-                .padding(8)
-                .background(.ultraThinMaterial)
-                .cornerRadius(12)
             
             TextField("재고 수량", text: $stock)
-                .padding(8)
-                .background(.ultraThinMaterial)
-                .cornerRadius(12)
             
             TextEditor(text: $description)
                 .frame(height: 200)
         }
+        .textFieldStyle(ProductInformationFieldStyle())
         .padding(10)
         .navigationTitle("물품 등록")
         .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+private extension AddNewProductView {
+    struct ProductInformationFieldStyle: TextFieldStyle {
+        func _body(configuration: TextField<Self._Label>) -> some View {
+            configuration
+                .padding(15)
+                .background(.ultraThinMaterial)
+                .cornerRadius(12)
+        }
     }
 }
 
