@@ -47,7 +47,7 @@ private extension ProductListDisplayView {
                 Spacer()
                 
                 NavigationLink {
-                    Text("Add Product Item View")
+                    AddNewProductView()
                 } label: {
                     Image(systemName: "plus")
                         .foregroundColor(.white)
