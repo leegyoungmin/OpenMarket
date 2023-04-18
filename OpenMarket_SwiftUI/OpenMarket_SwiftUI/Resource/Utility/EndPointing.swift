@@ -8,12 +8,12 @@ import Alamofire
 import Foundation
 
 protocol EndPointing {
-  var baseURL: String { get }
-  var path: String { get }
-  var method: HTTPMethod { get }
-  var headers: HTTPHeaders { get }
-  var queries: Parameters { get }
-  var body: MultipartFormData? { get }
+    var baseURL: String { get }
+    var path: String { get }
+    var method: HTTPMethod { get }
+    var headers: HTTPHeaders { get }
+    var queries: Parameters { get }
+    var body: MultipartFormData? { get }
     
     func generateURL() throws -> URL
 }
