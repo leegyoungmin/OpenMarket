@@ -8,21 +8,24 @@ import Combine
 import UIKit
 
 final class AddNewProductViewModel: ObservableObject {
+  // MARK: Output
   @Published var name: String = ""
   @Published var price: String = ""
   @Published var selectedCurrency: Currency = .KRW
   @Published var discountedPrice: String = ""
   @Published var stock: String = ""
   @Published var description: String = ""
-  @Published var isPresentPhotoPicker: Bool = false
   @Published var images: [Data] = []
   
-  
+  // MARK: Routing
+  @Published private(set) var isPresentPhotoPicker: Bool = false
+  private(set) var successUpload = PassthroughSubject<Bool, Never>()
+
+  // MARK: Properties
   private var marketRepository: MarketProductRepository
-  var successUpload = PassthroughSubject<Bool, Never>()
-  
   private var cancellables = Set<AnyCancellable>()
   
+  // MARK: Initializer
   init(marketRepository: MarketProductRepository = MarketProductConcreteRepository()) {
     self.marketRepository = marketRepository
   }
@@ -37,19 +40,10 @@ final class AddNewProductViewModel: ObservableObject {
       stock: stock
     )
     guard let encodeData = product.encodingData() else { return }
+    
     marketRepository.uploadProduct(with: encodeData, images: images)
       .sink(receiveCompletion: handleCompletion, receiveValue: { _ in })
       .store(in: &cancellables)
-  }
-  
-  private func handleCompletion(to completion: Subscribers.Completion<Error>) {
-    switch completion {
-    case .failure:
-      return
-      
-    case .finished:
-      self.successUpload.send(true)
-    }
   }
   
   func updateImage(with data: Data) {
@@ -60,5 +54,17 @@ final class AddNewProductViewModel: ObservableObject {
   
   func deleteImage(to index: Int) {
     images.remove(at: index)
+  }
+}
+
+private extension AddNewProductViewModel {
+  func handleCompletion(to completion: Subscribers.Completion<Error>) {
+    switch completion {
+    case .failure:
+      return
+      
+    case .finished:
+      self.successUpload.send(true)
+    }
   }
 }
