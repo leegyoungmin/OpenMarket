@@ -8,67 +8,115 @@ import SwiftUI
 import PhotosUI
 
 struct AddNewProductView: View {
-    @State private var name: String = ""
-    @State private var price: String = ""
-    @State private var discountedPrice: String = ""
-    @State private var stock: String = ""
-    @State private var description: String = ""
-    @State private var isPresentPhotoPicker: Bool = false
-    @State private var images: [UIImage?] = Array(repeating: nil, count: 5)
+    @StateObject private var viewModel: AddNewProductViewModel
+    @State private var selectedImage: PhotosPickerItem? = nil
+    
+    init(viewModel: AddNewProductViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(0..<5, id: \.self) { index in
-                        Button {
-                            isPresentPhotoPicker.toggle()
-                        } label: {
-                            if let image = images[index] {
-                                Image(uiImage: image)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 130, height: 130)
-                                    .background(.thickMaterial)
-                            } else {
-                                Image(systemName: "plus")
-                                    .frame(width: 130, height: 130)
-                                    .background(.thickMaterial)
-                            }
+                    PhotosPicker(
+                        selection: $selectedImage,
+                        matching: .images
+                    ) {
+                        VStack {
+                            Image(systemName: "camera.circle")
+                                .font(.largeTitle)
+                            
+                            Text("\(viewModel.images.count) / 5")
+                                .font(.caption)
                         }
-                        .cornerRadius(12)
+                        .frame(width: 80, height: 80)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(.ultraThinMaterial, lineWidth: 2)
+                        }
+                        .padding(5)
+                    }
+                    
+                    ForEach(viewModel.images, id: \.self) { data in
+                        ProductRegisterImageView(data: data)
                     }
                 }
             }
             
-            TextField("상품명", text: $name)
-            
-            TextField("상품가격", text: $price)
-            
-            TextField("할인 금액", text: $discountedPrice)
-            
-            TextField("재고 수량", text: $stock)
-            
-            TextEditor(text: $description)
-                .frame(height: 200)
+            productInformationSection
         }
-        .textFieldStyle(ProductInformationFieldStyle())
         .padding(10)
         .navigationTitle("물품 등록")
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $isPresentPhotoPicker) {
-            let configuration = PHPickerConfiguration(photoLibrary: .shared())
-            
-            PhotoPicker(
-                isPresent: $isPresentPhotoPicker,
-                images: $images,
-                configuration: configuration
-            )
+        .onChange(of: selectedImage) { newImage in
+            Task {
+                if let data = try? await newImage?.loadTransferable(type: Data.self) {
+                    viewModel.updateImage(with: data)
+                }
+            }
         }
+        
     }
 }
 
 private extension AddNewProductView {
+    var productInformationSection: some View {
+        VStack {
+            TextField("상품명", text: $viewModel.name)
+            
+            TextField("상품가격", text: $viewModel.price)
+            
+            TextField("할인 금액", text: $viewModel.discountedPrice)
+            
+            TextField("재고 수량", text: $viewModel.stock)
+            
+            TextEditor(text: $viewModel.description)
+                .frame(height: 200)
+        }
+        .textFieldStyle(ProductInformationFieldStyle())
+    }
+    
+    struct ProductRegisterImageView: View {
+        let data: Data
+        
+        var cancelButton: some View {
+            VStack {
+                HStack {
+                    Spacer()
+                    
+                    Button {
+                        print("Tapped")
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.title2)
+                            .background(.white)
+                            .clipShape(Circle())
+                    }
+                    .buttonStyle(.plain)
+                }
+                
+                Spacer()
+            }
+            .offset(x: 10, y: -5)
+        }
+        
+        var body: some View {
+            if let image = UIImage(data: data) {
+                ZStack {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 80, height: 80, alignment: .center)
+                        .cornerRadius(12)
+                    
+                    cancelButton
+                }
+                .padding(5)
+            }
+        }
+    }
+    
     struct ProductInformationFieldStyle: TextFieldStyle {
         func _body(configuration: TextField<Self._Label>) -> some View {
             configuration
@@ -81,7 +129,9 @@ private extension AddNewProductView {
 
 
 struct AddNewProductView_Previews: PreviewProvider {
+    static let viewModel = AddNewProductViewModel()
+    
     static var previews: some View {
-        AddNewProductView()
+        AddNewProductView(viewModel: viewModel)
     }
 }

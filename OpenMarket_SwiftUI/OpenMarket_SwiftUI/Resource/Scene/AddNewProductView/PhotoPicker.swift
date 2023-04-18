@@ -8,9 +8,9 @@ import SwiftUI
 import PhotosUI
 
 struct PhotoPicker: UIViewControllerRepresentable {
-    @Binding var isPresent: Bool
-    @Binding var images: [UIImage?]
     let configuration: PHPickerConfiguration
+    @Binding var isPresent: Bool
+    let onComplete: (UIImage) -> ()
     
     func makeUIViewController(context: Context) -> PHPickerViewController {
         let controller = PHPickerViewController(configuration: configuration)
@@ -47,9 +47,7 @@ struct PhotoPicker: UIViewControllerRepresentable {
                 itemProvider.loadObject(ofClass: UIImage.self) { image, error in
                     if let image = image as? UIImage {
                         DispatchQueue.main.async {
-                            if let firstIndex = self.parent.images.firstIndex(where: { $0 == nil }) {
-                                self.parent.images[firstIndex] = image
-                            }
+                            self.parent.onComplete(image)
                         }
                     }
                 }
