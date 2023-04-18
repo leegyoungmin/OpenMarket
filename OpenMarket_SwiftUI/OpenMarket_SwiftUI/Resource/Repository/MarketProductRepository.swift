@@ -4,6 +4,7 @@
 //
 //  Copyright (c) 2023 Minii All rights reserved.
 
+import Alamofire
 import Combine
 import Foundation
 
@@ -21,50 +22,73 @@ final class MarketProductConcreteRepository: MarketProductRepository {
 extension MarketProductConcreteRepository {
     enum API {
         case loadProducts(page: Int, itemCount: Int = 10)
+        case uploadProduct(productData: Data, images: [Data])
     }
 }
 
 extension MarketProductConcreteRepository.API: EndPointing {
-    var baseURL: String {
-        return "https://openmarket.yagom-academy.kr"
-    }
-    
-    var path: String {
+    var method: HTTPMethod {
         switch self {
         case .loadProducts:
-            return "/api/products"
+            return .get
+        case .uploadProduct:
+            return .post
         }
     }
     
-    var method: String {
+    var headers: HTTPHeaders {
         switch self {
         case .loadProducts:
-            return "GET"
-        }
-    }
-    var headers: [String : String] {
-        switch self {
-        case .loadProducts:
+            return HTTPHeaders([
+                HTTPHeader(name: "Content-Type", value: "application/json")
+            ])
+        case .uploadProduct:
             return [
-                "Content-Type": "application/json"
+                HTTPHeader(name: "Content-Type", value: "application/json"),
+                HTTPHeader(name: "identifier", value: "d94a4ffb-6941-11ed-a917-a7e99e3bb89")
             ]
         }
     }
     
-    var queries: [String : String] {
+    var queries: Parameters {
         switch self {
         case .loadProducts(let page, let itemCount):
             return [
                 "page_no": page.description,
                 "items_per_page": itemCount.description
             ]
+        default:
+            return [:]
         }
     }
     
-    var body: Data? {
+    var baseURL: String {
+        return "https://openmarket.yagom-academy.kr"
+    }
+    
+    var path: String {
+        switch self {
+        case .loadProducts, .uploadProduct:
+            return "/api/products"
+        }
+    }
+    
+    
+    var body: MultipartFormData? {
         switch self {
         case .loadProducts:
             return nil
+            
+        case let .uploadProduct(product, images):
+            let formData = MultipartFormData()
+            
+            formData.append(product, withName: "params")
+            
+            for (index, image) in images.enumerated() {
+                formData.append(image, withName: "images_\(index).png")
+            }
+            
+            return formData
         }
     }
 }
