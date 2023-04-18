@@ -23,19 +23,7 @@ struct AddNewProductView: View {
                         selection: $selectedImage,
                         matching: .images
                     ) {
-                        VStack {
-                            Image(systemName: "camera.circle")
-                                .font(.largeTitle)
-                            
-                            Text("\(viewModel.images.count) / 5")
-                                .font(.caption)
-                        }
-                        .frame(width: 80, height: 80)
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(.ultraThinMaterial, lineWidth: 2)
-                        }
-                        .padding(5)
+                        cameraInputButtonView
                     }
                     
                     ForEach(viewModel.images, id: \.self) { data in
@@ -61,6 +49,23 @@ struct AddNewProductView: View {
 }
 
 private extension AddNewProductView {
+    
+    var cameraInputButtonView: some View {
+        VStack {
+            Image(systemName: "camera.circle")
+                .font(.largeTitle)
+            
+            Text("\(viewModel.images.count) / 5")
+                .font(.caption)
+        }
+        .frame(width: 80, height: 80)
+        .overlay {
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(.ultraThinMaterial, lineWidth: 2)
+        }
+        .padding(5)
+    }
+    
     var productInformationSection: some View {
         VStack {
             TextField("상품명", text: $viewModel.name)
