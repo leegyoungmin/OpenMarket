@@ -45,7 +45,7 @@ struct AddNewProductView: View {
         Button {
           viewModel.uploadProduct()
         } label: {
-          Text("업로드")
+          Text("등록")
         }
       }
     }
@@ -61,6 +61,17 @@ struct AddNewProductView: View {
         dismiss.callAsFunction()
       }
     }
+    .alert(
+      "등록 에러",
+      isPresented: Binding(
+        get: { viewModel.alertState != nil },
+        set: { _ in viewModel.alertState = nil }
+      ),
+      presenting: viewModel.alertState) { _ in
+        Button("확인", action: { })
+      } message: { alertState in
+        Text(alertState.description)
+      }
   }
 }
 

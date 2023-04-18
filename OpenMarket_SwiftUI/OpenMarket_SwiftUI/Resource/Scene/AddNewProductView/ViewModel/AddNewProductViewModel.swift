@@ -19,6 +19,7 @@ final class AddNewProductViewModel: ObservableObject {
   
   // MARK: Routing
   @Published private(set) var isPresentPhotoPicker: Bool = false
+  @Published var alertState: AlertState? = nil
   private(set) var successUpload = PassthroughSubject<Bool, Never>()
 
   // MARK: Properties
@@ -31,6 +32,8 @@ final class AddNewProductViewModel: ObservableObject {
   }
   
   func uploadProduct() {
+    if validation() == false { return }
+    
     let product = RequestProduct(
       name: name,
       description: description,
@@ -39,6 +42,7 @@ final class AddNewProductViewModel: ObservableObject {
       discountedPrice: discountedPrice,
       stock: stock
     )
+    
     guard let encodeData = product.encodingData() else { return }
     
     marketRepository.uploadProduct(with: encodeData, images: images)
@@ -57,6 +61,36 @@ final class AddNewProductViewModel: ObservableObject {
   }
 }
 
+// MARK: Alert State
+extension AddNewProductViewModel {
+  enum AlertState: CustomStringConvertible {
+    case emptyImage
+    case invalidName
+    case invalidPrice
+    case invalidStock
+    case shortDescription
+    
+    var description: String {
+      switch self {
+      case .emptyImage:
+        return "적어도 한개의 이미지를 업로드 해야 합니다."
+        
+      case .invalidName:
+        return "상대방에게 보여질 상품명을 입력해주세요."
+        
+      case .invalidPrice:
+        return "상품의 가격 정보가 잘못되었습니다."
+        
+      case .invalidStock:
+        return "상품은 적어도 한개 이상의 상품을 준비해야 합니다."
+        
+      case .shortDescription:
+        return "상대방이 더 자세한 상품의 정보를 얻을 수 있게 상품 설명을 적어주세요."
+      }
+    }
+  }
+}
+
 private extension AddNewProductViewModel {
   func handleCompletion(to completion: Subscribers.Completion<Error>) {
     switch completion {
@@ -66,5 +100,43 @@ private extension AddNewProductViewModel {
     case .finished:
       self.successUpload.send(true)
     }
+  }
+  
+  func validation() -> Bool {
+    if images.isEmpty {
+      alertState = .emptyImage
+      return false
+    }
+    
+    if name.isEmpty {
+      alertState = .invalidName
+      return false
+    }
+    
+    guard let price = Double(price) else {
+      alertState = .invalidPrice
+      return false
+    }
+    
+    if price <= 0 || price < Double(discountedPrice) ?? 0 {
+      alertState = .invalidPrice
+      return false
+    }
+    guard let stock = Int(stock) else {
+      alertState = .invalidStock
+      return false
+    }
+    
+    if stock <= 0 {
+      alertState = .invalidStock
+      return false
+    }
+    
+    if description.count < 10 {
+      alertState = .shortDescription
+      return false
+    }
+    
+    return true
   }
 }
