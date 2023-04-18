@@ -10,12 +10,19 @@ import Foundation
 
 protocol MarketProductRepository: WebRepository {
     func loadProducts(with page: Int) -> AnyPublisher<ProductsResponse, Error>
+    func uploadProduct(with product: Data, images: [Data]) -> AnyPublisher<DetailProduct, Error>
 }
 
 final class MarketProductConcreteRepository: MarketProductRepository {
     func loadProducts(with page: Int) -> AnyPublisher<ProductsResponse, Error> {
         let endPoint = API.loadProducts(page: page)
         return requestNetwork(endPoint: endPoint, type: ProductsResponse.self)
+    }
+    
+    func uploadProduct(with product: Data, images: [Data]) -> AnyPublisher<DetailProduct, Error> {
+        let endPoint = API.uploadProduct(productData: product, images: images)
+        
+        return uploadRequestNetwork(endPoint: endPoint, type: DetailProduct.self)
     }
 }
 
@@ -44,8 +51,8 @@ extension MarketProductConcreteRepository.API: EndPointing {
             ])
         case .uploadProduct:
             return [
-                HTTPHeader(name: "Content-Type", value: "application/json"),
-                HTTPHeader(name: "identifier", value: "d94a4ffb-6941-11ed-a917-a7e99e3bb89")
+                HTTPHeader(name: "Content-Type", value: "multipart/form-data"),
+                HTTPHeader(name: "identifier", value: "d94a4ffb-6941-11ed-a917-a7e99e3bb892")
             ]
         }
     }
@@ -85,7 +92,7 @@ extension MarketProductConcreteRepository.API: EndPointing {
             formData.append(product, withName: "params")
             
             for (index, image) in images.enumerated() {
-                formData.append(image, withName: "images_\(index).png")
+                formData.append(image, withName: "images", fileName: "image_\(index)", mimeType: "image/png")
             }
             
             return formData
