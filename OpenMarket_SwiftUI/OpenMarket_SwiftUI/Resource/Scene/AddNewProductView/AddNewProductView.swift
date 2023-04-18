@@ -34,7 +34,7 @@ struct AddNewProductView: View {
                 }
             }
             
-            productInformationSection
+            productInformationForm
         }
         .padding(10)
         .navigationTitle("물품 등록")
@@ -67,7 +67,7 @@ private extension AddNewProductView {
         .padding(5)
     }
     
-    var productInformationSection: some View {
+    var productInformationForm: some View {
         VStack(spacing: 20) {
             TextField("상품명", text: $viewModel.name)
             
