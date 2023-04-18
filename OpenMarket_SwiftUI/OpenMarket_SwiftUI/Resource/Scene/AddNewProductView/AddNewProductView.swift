@@ -39,6 +39,15 @@ struct AddNewProductView: View {
         .padding(10)
         .navigationTitle("물품 등록")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    viewModel.uploadProduct()
+                } label: {
+                    Text("업로드")
+                }
+            }
+        }
         .onChange(of: selectedImage) { newImage in
             Task {
                 if let data = try? await newImage?.loadTransferable(type: Data.self) {
@@ -46,7 +55,6 @@ struct AddNewProductView: View {
                 }
             }
         }
-        
     }
 }
 
