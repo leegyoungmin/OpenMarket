@@ -50,11 +50,8 @@ extension WebRepository {
         endPoint: EndPointing,
         type: T.Type
     ) -> AnyPublisher<T, Error> {
-        guard let url = try? endPoint.generateURL() else {
-            return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
-        }
-        
-        guard let body = endPoint.body else {
+        guard let url = try? endPoint.generateURL(),
+              let body = endPoint.body else {
             return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
         }
         
