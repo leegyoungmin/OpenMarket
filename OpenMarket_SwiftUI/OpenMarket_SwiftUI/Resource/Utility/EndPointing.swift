@@ -13,7 +13,7 @@ protocol EndPointing {
     var method: HTTPMethod { get }
     var headers: HTTPHeaders { get }
     var queries: Parameters { get }
-    var body: MultipartFormData? { get }
+    var body: MultipartFormData { get }
     
     func generateURL() throws -> URL
 }

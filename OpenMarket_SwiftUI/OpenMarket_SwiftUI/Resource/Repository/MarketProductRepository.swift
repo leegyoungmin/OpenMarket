@@ -22,7 +22,7 @@ final class MarketProductConcreteRepository: MarketProductRepository {
     func uploadProduct(with product: Data, images: [Data]) -> AnyPublisher<DetailProduct, Error> {
         let endPoint = API.uploadProduct(productData: product, images: images)
         
-        return uploadRequestNetwork(endPoint: endPoint, type: DetailProduct.self)
+        return requestNetwork(endPoint: endPoint, type: DetailProduct.self)
     }
 }
 
@@ -81,10 +81,10 @@ extension MarketProductConcreteRepository.API: EndPointing {
     }
     
     
-    var body: MultipartFormData? {
+    var body: MultipartFormData {
         switch self {
         case .loadProducts:
-            return nil
+            return MultipartFormData()
             
         case let .uploadProduct(product, images):
             let formData = MultipartFormData()
