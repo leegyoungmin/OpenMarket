@@ -19,20 +19,17 @@ struct ProductListDisplayView: View {
     var body: some View {
         ZStack {
             if selectedSection == .list {
-                ProductListView(
-                    viewModel: viewModel,
-                    isLoading: viewModel.canLoadNextPage,
-                    products: viewModel.products
-                )
+                ProductListView()
+                    .environmentObject(viewModel)
             } else {
-                ProductGridView(
-                    viewModel: viewModel,
-                    isLoading: viewModel.canLoadNextPage,
-                    products: viewModel.products
-                )
+                ProductGridView()
+                    .environmentObject(viewModel)
             }
             
             addProductButton
+        }
+        .onAppear {
+            viewModel.reloadProducts()
         }
     }
 }
@@ -47,7 +44,11 @@ private extension ProductListDisplayView {
                 Spacer()
                 
                 NavigationLink {
-                    AddNewProductView(viewModel: AddNewProductViewModel(marketRepository: viewModel.marketWebRepository))
+                    AddNewProductView(
+                        viewModel: AddNewProductViewModel(
+                            marketRepository: viewModel.marketWebRepository
+                        )
+                    )
                 } label: {
                     Image(systemName: "plus")
                         .foregroundColor(.white)
@@ -63,24 +64,21 @@ private extension ProductListDisplayView {
     }
     
     struct ProductListView: View {
-        var viewModel: ProductListViewModel
-        let isLoading: Bool
-        var products: [Product]
-        
+        @EnvironmentObject var viewModel: ProductListViewModel
         var body: some View {
             List {
-                ForEach(products, id: \.itemId) { product in
+                ForEach(viewModel.products, id: \.itemId) { product in
                     ProductListCellView(product: product)
                         .listRowInsets(Constants.rowEdge)
                         .onAppear {
-                            if product == self.products.last {
+                            if product == viewModel.products.last {
                                 viewModel.fetchProducts()
                             }
                         }
                 }
                 .listRowSeparator(.hidden)
                 
-                if isLoading {
+                if viewModel.canLoadNextPage {
                     ProgressView()
                 }
             }
@@ -89,20 +87,18 @@ private extension ProductListDisplayView {
     }
     
     struct ProductGridView: View {
-        var viewModel: ProductListViewModel
-        var isLoading: Bool
-        var products: [Product]
+        @EnvironmentObject var viewModel: ProductListViewModel
         
         var body: some View {
             List {
-                ForEach(products, id: \.itemId) { product in
+                ForEach(viewModel.products, id: \.itemId) { product in
                     HStack {
                         Spacer()
                         
                         ForEach(0..<2, id: \.self) { index in
                             ProductGridCellView(product: product)
                                 .onAppear {
-                                    if products.last == product {
+                                    if viewModel.products.last == product {
                                         viewModel.fetchProducts()
                                     }
                                 }
@@ -114,7 +110,7 @@ private extension ProductListDisplayView {
                 .listRowSeparator(.hidden)
                 .listRowInsets(EdgeInsets(top: 5, leading: .zero, bottom: 5, trailing: .zero))
                 
-                if isLoading {
+                if viewModel.canLoadNextPage {
                     ProductListDisplayView.loadingProgressView
                 }
             }

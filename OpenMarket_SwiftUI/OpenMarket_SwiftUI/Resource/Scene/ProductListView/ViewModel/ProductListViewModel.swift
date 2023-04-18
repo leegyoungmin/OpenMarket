@@ -26,7 +26,6 @@ final class ProductListViewModel: ObservableObject {
     // Initializer
     init(marketWebRepository: MarketProductRepository = MarketProductConcreteRepository()) {
         self.marketWebRepository = marketWebRepository
-        fetchProducts()
     }
     
     func fetchProducts() {
@@ -41,6 +40,17 @@ final class ProductListViewModel: ObservableObject {
                 receiveValue: onReceive
             )
             .store(in: &cancellables)
+    }
+    
+    func reloadProducts() {
+        products = []
+        
+        for page in 1...page {
+            marketWebRepository.loadProducts(with: page)
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: onReceiveCompletion, receiveValue: onReloadReceive)
+                .store(in: &cancellables)
+        }
     }
 }
 
@@ -58,6 +68,10 @@ private extension ProductListViewModel {
     
     func onReceive(with response: ProductsResponse) {
         self.canLoadNextPage = (response.items.count == 10)
+        self.products += response.items
+    }
+    
+    func onReloadReceive(with response: ProductsResponse) {
         self.products += response.items
     }
 }

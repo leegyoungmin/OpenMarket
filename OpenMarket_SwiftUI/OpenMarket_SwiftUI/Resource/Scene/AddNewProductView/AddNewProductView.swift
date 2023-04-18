@@ -8,6 +8,7 @@ import SwiftUI
 import PhotosUI
 
 struct AddNewProductView: View {
+    @Environment(\.dismiss) var dismiss
     @StateObject private var viewModel: AddNewProductViewModel
     @State private var selectedImage: PhotosPickerItem? = nil
     
@@ -53,6 +54,11 @@ struct AddNewProductView: View {
                 if let data = try? await newImage?.loadTransferable(type: Data.self) {
                     viewModel.updateImage(with: data)
                 }
+            }
+        }
+        .onReceive(viewModel.successUpload) { isSuccess in
+            if isSuccess {
+                dismiss.callAsFunction()
             }
         }
     }

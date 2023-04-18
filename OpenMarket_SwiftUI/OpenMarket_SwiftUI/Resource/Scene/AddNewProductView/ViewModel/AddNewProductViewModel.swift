@@ -16,9 +16,12 @@ final class AddNewProductViewModel: ObservableObject {
     @Published var description: String = ""
     @Published var isPresentPhotoPicker: Bool = false
     @Published var images: [Data] = []
-    private var cancellables = Set<AnyCancellable>()
+    
     
     private var marketRepository: MarketProductRepository
+    var successUpload = PassthroughSubject<Bool, Never>()
+    
+    private var cancellables = Set<AnyCancellable>()
     
     init(marketRepository: MarketProductRepository = MarketProductConcreteRepository()) {
         self.marketRepository = marketRepository
@@ -35,13 +38,18 @@ final class AddNewProductViewModel: ObservableObject {
         )
         guard let encodeData = product.encodingData() else { return }
         marketRepository.uploadProduct(with: encodeData, images: images)
-            .sink { completion in
-                print(completion)
-            } receiveValue: { _ in
-                print("success")
-            }
+            .sink(receiveCompletion: handleCompletion, receiveValue: { _ in })
             .store(in: &cancellables)
-
+    }
+    
+    private func handleCompletion(to completion: Subscribers.Completion<Error>) {
+        switch completion {
+        case .failure:
+            return
+            
+        case .finished:
+            self.successUpload.send(true)
+        }
     }
     
     func updateImage(with data: Data) {
