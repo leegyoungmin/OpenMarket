@@ -11,6 +11,7 @@ struct AddNewProductView: View {
   @Environment(\.dismiss) var dismiss
   @StateObject private var viewModel: AddNewProductViewModel
   @State private var selectedImage: PhotosPickerItem? = nil
+  @State private var isPresentToast: Bool = false
   
   init(viewModel: AddNewProductViewModel) {
     self._viewModel = StateObject(wrappedValue: viewModel)
@@ -43,6 +44,12 @@ struct AddNewProductView: View {
     .toolbar {
       ToolbarItem(placement: .navigationBarTrailing) {
         Button {
+          UIApplication.shared.sendAction(
+            #selector(UIResponder.resignFirstResponder),
+            to: nil,
+            from: nil,
+            for: nil
+          )
           viewModel.uploadProduct()
         } label: {
           Text("등록")
@@ -57,21 +64,27 @@ struct AddNewProductView: View {
       }
     }
     .onReceive(viewModel.successUpload) { isSuccess in
-      if isSuccess {
-        dismiss.callAsFunction()
-      }
+      isPresentToast = true
     }
+    .disabled(isPresentToast)
     .alert(
       "등록 에러",
       isPresented: Binding(
         get: { viewModel.alertState != nil },
         set: { _ in viewModel.alertState = nil }
       ),
-      presenting: viewModel.alertState) { _ in
-        Button("확인", action: { })
-      } message: { alertState in
-        Text(alertState.description)
-      }
+      presenting: viewModel.alertState
+    ) { _ in
+      Button("확인", action: { })
+    } message: { alertState in
+      Text(alertState.description)
+    }
+    .toast(
+      message: "정상적으로 업로드 되었습니다.",
+      isShowing: $isPresentToast
+    ) {
+      dismiss()
+    }
   }
 }
 

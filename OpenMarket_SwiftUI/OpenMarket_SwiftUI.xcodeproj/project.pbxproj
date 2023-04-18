@@ -24,6 +24,7 @@
 		18911BFB29EE670800110C3D /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 18911BFA29EE670800110C3D /* Alamofire */; };
 		1894080E29EE8AFE00762103 /* RequestProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1894080D29EE8AFE00762103 /* RequestProduct.swift */; };
 		1894081029EE8B5A00762103 /* DetailProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1894080F29EE8B5A00762103 /* DetailProduct.swift */; };
+		1894081429EEC96400762103 /* ToastAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1894081329EEC96400762103 /* ToastAlert.swift */; };
 		18A77ECA29EC460000A3A5A9 /* NumberFormatter + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A77EC929EC460000A3A5A9 /* NumberFormatter + Extension.swift */; };
 		18D99C1329E9223D009100DD /* ProductResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D99C1229E9223D009100DD /* ProductResponse.swift */; };
 /* End PBXBuildFile section */
@@ -46,6 +47,7 @@
 		1851193F29ED4A5E00AB1758 /* AddNewProductView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewProductView.swift; sourceTree = "<group>"; };
 		1894080D29EE8AFE00762103 /* RequestProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestProduct.swift; sourceTree = "<group>"; };
 		1894080F29EE8B5A00762103 /* DetailProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProduct.swift; sourceTree = "<group>"; };
+		1894081329EEC96400762103 /* ToastAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastAlert.swift; sourceTree = "<group>"; };
 		18A77EC929EC460000A3A5A9 /* NumberFormatter + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NumberFormatter + Extension.swift"; sourceTree = "<group>"; };
 		18D99C1229E9223D009100DD /* ProductResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -172,6 +174,7 @@
 		183C312829E5A3CF00DFEBC0 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				1894081229EEC94C00762103 /* ViewModifier */,
 				18A77EC829EC45F000A3A5A9 /* Extensions */,
 				183C312929E5A3D900DFEBC0 /* EndPointing.swift */,
 				183C312C29E5A99300DFEBC0 /* WebRepository.swift */,
@@ -195,6 +198,14 @@
 				1825DF0929E55293007BAE8D /* OpenMarket_SwiftUIApp.swift */,
 			);
 			path = Application;
+			sourceTree = "<group>";
+		};
+		1894081229EEC94C00762103 /* ViewModifier */ = {
+			isa = PBXGroup;
+			children = (
+				1894081329EEC96400762103 /* ToastAlert.swift */,
+			);
+			path = ViewModifier;
 			sourceTree = "<group>";
 		};
 		18A77EC829EC45F000A3A5A9 /* Extensions */ = {
@@ -305,6 +316,7 @@
 				1851194029ED4A5E00AB1758 /* AddNewProductView.swift in Sources */,
 				1894080E29EE8AFE00762103 /* RequestProduct.swift in Sources */,
 				1816DCCF29EE3492005FB59D /* PhotoPicker.swift in Sources */,
+				1894081429EEC96400762103 /* ToastAlert.swift in Sources */,
 				183C312729E5A39600DFEBC0 /* MarketProductRepository.swift in Sources */,
 				1825DF1F29E56BB5007BAE8D /* ProductGridCellView.swift in Sources */,
 			);
