@@ -8,11 +8,11 @@ import SwiftUI
 
 // MARK: Content View
 struct ProductListDisplayView: View {
-  @ObservedObject var viewModel: ProductListViewModel
+  @StateObject var viewModel: ProductListViewModel
   @Binding var selectedSection: ListSection
   
   init(_ selectedSection: Binding<ListSection>) {
-    self._viewModel = ObservedObject(initialValue: ProductListViewModel())
+    self._viewModel = StateObject(wrappedValue: ProductListViewModel())
     self._selectedSection = selectedSection
   }
   
@@ -90,25 +90,17 @@ private extension ProductListDisplayView {
     @EnvironmentObject var viewModel: ProductListViewModel
     
     var body: some View {
-      List {
-        ForEach(viewModel.products, id: \.itemId) { product in
-          HStack {
-            Spacer()
-            
-            ForEach(0..<2, id: \.self) { index in
-              ProductGridCellView(product: product)
-                .onAppear {
-                  if viewModel.products.last == product {
-                    viewModel.fetchProducts()
-                  }
+      ScrollView {
+        LazyVGrid(columns: [.init(.flexible()), .init(.flexible())]) {
+          ForEach(viewModel.products, id: \.itemId) { product in
+            ProductGridCellView(product: product)
+              .onAppear {
+                if viewModel.products.last == product {
+                  viewModel.fetchProducts()
                 }
-            }
-            
-            Spacer()
+              }
           }
         }
-        .listRowSeparator(.hidden)
-        .listRowInsets(EdgeInsets(top: 5, leading: .zero, bottom: 5, trailing: .zero))
         
         if viewModel.canLoadNextPage {
           ProductListDisplayView.loadingProgressView
