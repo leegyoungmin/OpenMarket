@@ -47,7 +47,7 @@ private extension ProductListDisplayView {
                 Spacer()
                 
                 NavigationLink {
-                    AddNewProductView(viewModel: AddNewProductViewModel())
+                    AddNewProductView(viewModel: AddNewProductViewModel(marketRepository: viewModel.marketWebRepository))
                 } label: {
                     Image(systemName: "plus")
                         .foregroundColor(.white)

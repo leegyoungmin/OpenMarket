@@ -9,7 +9,7 @@ import Combine
 
 final class ProductListViewModel: ObservableObject {
     // Properties
-    private let marketWebRepository: MarketProductRepository
+    let marketWebRepository: MarketProductRepository
     private var page: Int = 1
     
     private var cancellables = Set<AnyCancellable>()
