@@ -5,6 +5,7 @@
 //  Copyright (c) 2023 Minii All rights reserved.
 
 import SwiftUI
+import PhotosUI
 
 struct AddNewProductView: View {
     @State private var name: String = ""
@@ -12,18 +13,28 @@ struct AddNewProductView: View {
     @State private var discountedPrice: String = ""
     @State private var stock: String = ""
     @State private var description: String = ""
+    @State private var isPresentPhotoPicker: Bool = false
+    @State private var images: [UIImage?] = Array(repeating: nil, count: 5)
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(0..<5, id: \.self) { _ in
+                    ForEach(0..<5, id: \.self) { index in
                         Button {
-                            print("Tapped")
+                            isPresentPhotoPicker.toggle()
                         } label: {
-                            Image(systemName: "plus")
-                                .frame(width: 130, height: 130)
-                                .background(.thickMaterial)
+                            if let image = images[index] {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 130, height: 130)
+                                    .background(.thickMaterial)
+                            } else {
+                                Image(systemName: "plus")
+                                    .frame(width: 130, height: 130)
+                                    .background(.thickMaterial)
+                            }
                         }
                         .cornerRadius(12)
                     }
@@ -45,6 +56,15 @@ struct AddNewProductView: View {
         .padding(10)
         .navigationTitle("물품 등록")
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $isPresentPhotoPicker) {
+            let configuration = PHPickerConfiguration(photoLibrary: .shared())
+            
+            PhotoPicker(
+                isPresent: $isPresentPhotoPicker,
+                images: $images,
+                configuration: configuration
+            )
+        }
     }
 }
 
