@@ -98,6 +98,7 @@
 		1825DF1729E56A01007BAE8D /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				1825DF0B29E55293007BAE8D /* ContentView.swift */,
 				1851193E29ED4A4800AB1758 /* AddNewProductView */,
 				1825DF1A29E56AD4007BAE8D /* ProductListView */,
 			);
@@ -142,12 +143,11 @@
 		1825DF2429E57123007BAE8D /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				1894081129EEBBFC00762103 /* Application */,
 				18D99C1129E9223D009100DD /* Entity */,
 				183C312829E5A3CF00DFEBC0 /* Utility */,
 				183C312529E5A37400DFEBC0 /* Repository */,
 				1825DF1729E56A01007BAE8D /* Scene */,
-				1825DF0929E55293007BAE8D /* OpenMarket_SwiftUIApp.swift */,
-				1825DF0B29E55293007BAE8D /* ContentView.swift */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -187,6 +187,14 @@
 				1816DCCE29EE3492005FB59D /* PhotoPicker.swift */,
 			);
 			path = AddNewProductView;
+			sourceTree = "<group>";
+		};
+		1894081129EEBBFC00762103 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				1825DF0929E55293007BAE8D /* OpenMarket_SwiftUIApp.swift */,
+			);
+			path = Application;
 			sourceTree = "<group>";
 		};
 		18A77EC829EC45F000A3A5A9 /* Extensions */ = {
