@@ -9,7 +9,6 @@ import PhotosUI
 
 struct AddNewProductView: View {
     @StateObject private var viewModel: AddNewProductViewModel
-    @State private var selectedCurrency: Currency = .KRW
     @State private var selectedImage: PhotosPickerItem? = nil
     
     init(viewModel: AddNewProductViewModel) {
@@ -30,6 +29,7 @@ struct AddNewProductView: View {
                     ForEach(viewModel.images.indices, id: \.self) { index in
                         let data = viewModel.images[index]
                         ProductRegisterImageView(index: index, data: data)
+                            .environmentObject(viewModel)
                     }
                 }
             }
@@ -72,7 +72,7 @@ private extension AddNewProductView {
             TextField("상품명", text: $viewModel.name)
             
             HStack {
-                Picker("", selection: $selectedCurrency) {
+                Picker("", selection: $viewModel.selectedCurrency) {
                     ForEach(Currency.allCases, id: \.self) {
                         Text($0.rawValue)
                     }
@@ -97,6 +97,7 @@ private extension AddNewProductView {
     }
     
     struct ProductRegisterImageView: View {
+        @EnvironmentObject var viewModel: AddNewProductViewModel
         let index: Int
         let data: Data
         
@@ -106,7 +107,9 @@ private extension AddNewProductView {
                     Spacer()
                     
                     Button {
-                        print("Tapped")
+                        withAnimation {
+                            viewModel.deleteImage(to: index)
+                        }
                     } label: {
                         Image(systemName: "xmark.circle.fill")
                             .font(.title2)

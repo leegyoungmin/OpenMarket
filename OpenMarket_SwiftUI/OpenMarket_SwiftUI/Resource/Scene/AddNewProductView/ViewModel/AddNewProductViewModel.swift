@@ -10,6 +10,7 @@ import UIKit
 final class AddNewProductViewModel: ObservableObject {
     @Published var name: String = ""
     @Published var price: String = ""
+    @Published var selectedCurrency: Currency = .KRW
     @Published var discountedPrice: String = ""
     @Published var stock: String = ""
     @Published var description: String = ""
@@ -20,5 +21,9 @@ final class AddNewProductViewModel: ObservableObject {
         if images.count == 5 { return }
         
         images.append(data)
+    }
+    
+    func deleteImage(to index: Int) {
+        images.remove(at: index)
     }
 }
