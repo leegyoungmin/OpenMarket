@@ -9,6 +9,7 @@ import PhotosUI
 
 struct AddNewProductView: View {
     @StateObject private var viewModel: AddNewProductViewModel
+    @State private var selectedCurrency: Currency = .KRW
     @State private var selectedImage: PhotosPickerItem? = nil
     
     init(viewModel: AddNewProductViewModel) {
@@ -26,8 +27,9 @@ struct AddNewProductView: View {
                         cameraInputButtonView
                     }
                     
-                    ForEach(viewModel.images, id: \.self) { data in
-                        ProductRegisterImageView(data: data)
+                    ForEach(viewModel.images.indices, id: \.self) { index in
+                        let data = viewModel.images[index]
+                        ProductRegisterImageView(index: index, data: data)
                     }
                 }
             }
@@ -49,7 +51,6 @@ struct AddNewProductView: View {
 }
 
 private extension AddNewProductView {
-    
     var cameraInputButtonView: some View {
         VStack {
             Image(systemName: "camera.circle")
@@ -67,22 +68,36 @@ private extension AddNewProductView {
     }
     
     var productInformationSection: some View {
-        VStack {
+        VStack(spacing: 20) {
             TextField("상품명", text: $viewModel.name)
             
-            TextField("상품가격", text: $viewModel.price)
+            HStack {
+                Picker("", selection: $selectedCurrency) {
+                    ForEach(Currency.allCases, id: \.self) {
+                        Text($0.rawValue)
+                    }
+                }
+                .pickerStyle(.menu)
+                
+                TextField("상품가격", text: $viewModel.price)
+                    .keyboardType(.decimalPad)
+            }
             
             TextField("할인 금액", text: $viewModel.discountedPrice)
+                .keyboardType(.decimalPad)
             
             TextField("재고 수량", text: $viewModel.stock)
+                .keyboardType(.numberPad)
             
             TextEditor(text: $viewModel.description)
                 .frame(height: 200)
         }
         .textFieldStyle(ProductInformationFieldStyle())
+        .padding(5)
     }
     
     struct ProductRegisterImageView: View {
+        let index: Int
         let data: Data
         
         var cancelButton: some View {
@@ -124,10 +139,11 @@ private extension AddNewProductView {
     
     struct ProductInformationFieldStyle: TextFieldStyle {
         func _body(configuration: TextField<Self._Label>) -> some View {
-            configuration
-                .padding(15)
-                .background(.ultraThinMaterial)
-                .cornerRadius(12)
+            VStack {
+                configuration
+                
+                Divider()
+            }
         }
     }
 }
