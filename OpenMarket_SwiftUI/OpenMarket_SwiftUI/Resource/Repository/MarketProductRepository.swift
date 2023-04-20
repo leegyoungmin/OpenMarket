@@ -11,6 +11,7 @@ import Foundation
 protocol MarketProductRepository: WebRepository {
   func loadProducts(with page: Int, itemCount: Int) -> AnyPublisher<ProductsResponse, Error>
   func uploadProduct(with product: Data, images: [Data]) -> AnyPublisher<DetailProduct, Error>
+  func loadDetailProduct(to id: String) -> AnyPublisher<DetailProduct, Error>
 }
 
 final class MarketProductConcreteRepository: MarketProductRepository {
@@ -24,19 +25,26 @@ final class MarketProductConcreteRepository: MarketProductRepository {
     
     return requestNetwork(endPoint: endPoint, type: DetailProduct.self)
   }
+  
+  func loadDetailProduct(to id: String) -> AnyPublisher<DetailProduct, Error> {
+    let endPoint = API.loadDetailProduct(id: id)
+    
+    return requestNetwork(endPoint: endPoint, type: DetailProduct.self)
+  }
 }
 
 extension MarketProductConcreteRepository {
   enum API {
     case loadProducts(page: Int, itemCount: Int)
     case uploadProduct(productData: Data, images: [Data])
+    case loadDetailProduct(id: String)
   }
 }
 
 extension MarketProductConcreteRepository.API: EndPointing {
   var method: HTTPMethod {
     switch self {
-    case .loadProducts:
+    case .loadProducts, .loadDetailProduct:
       return .get
     case .uploadProduct:
       return .post
@@ -45,7 +53,7 @@ extension MarketProductConcreteRepository.API: EndPointing {
   
   var headers: HTTPHeaders {
     switch self {
-    case .loadProducts:
+    case .loadProducts, .loadDetailProduct:
       return HTTPHeaders([
         HTTPHeader(name: "Content-Type", value: "application/json")
       ])
@@ -77,13 +85,16 @@ extension MarketProductConcreteRepository.API: EndPointing {
     switch self {
     case .loadProducts, .uploadProduct:
       return "/api/products"
+      
+    case let .loadDetailProduct(id):
+      return "/api/products/\(id)"
     }
   }
   
   
   var body: MultipartFormData {
     switch self {
-    case .loadProducts:
+    case .loadProducts, .loadDetailProduct:
       return MultipartFormData()
       
     case let .uploadProduct(product, images):
