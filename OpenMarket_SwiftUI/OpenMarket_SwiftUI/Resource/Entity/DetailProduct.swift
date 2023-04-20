@@ -36,15 +36,32 @@ struct DetailProduct: Codable {
     case imagesInformation = "images"
     case vendor = "vendors"
   }
+  
+  init(product: Product) {
+    self.id = product.id
+    self.vendorId = product.vendorId
+    self.name = product.name
+    self.description = product.description
+    self.thumbnail = product.thumbnail
+    self.currency = product.currency
+    self.price = product.price
+    self.bargainPrice = product.bargainPrice
+    self.discountedPrice = product.discountedPrice
+    self.stock = product.stock
+    self.createdDate = product.createdDate
+    self.issuedDate = product.issuedDate
+    self.imagesInformation = []
+    self.vendor = Vendor(id: product.vendorId, name: "")
+  }
 }
 
-struct ImageInformation: Codable {
+struct ImageInformation: Codable, Hashable {
   let id: Int
   let url: String
   let thumbnailURL: String
   let issuedDate: String
   
-  enum Vendor: String, CodingKey {
+  enum CodingKeys: String, CodingKey {
     case id
     case url
     case thumbnailURL = "thumbnail_url"
