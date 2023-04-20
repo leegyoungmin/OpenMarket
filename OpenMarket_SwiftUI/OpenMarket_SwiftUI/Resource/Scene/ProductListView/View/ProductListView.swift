@@ -68,13 +68,23 @@ private extension ProductListDisplayView {
     var body: some View {
       List {
         ForEach(viewModel.products, id: \.itemId) { product in
-          ProductListCellView(product: product)
-            .listRowInsets(Constants.rowEdge)
-            .onAppear {
-              if product == viewModel.products.last {
-                viewModel.fetchProducts()
-              }
+          ZStack {
+            NavigationLink {
+              DetailProductView()
+            } label: {
+              EmptyView()
             }
+            .opacity(.zero)
+            
+            ProductListCellView(product: product)
+          }
+          .buttonStyle(.plain)
+          .listRowInsets(Constants.rowEdge)
+          .onAppear {
+            if product == viewModel.products.last {
+              viewModel.fetchProducts()
+            }
+          }
         }
         .listRowSeparator(.hidden)
         
@@ -93,12 +103,17 @@ private extension ProductListDisplayView {
       ScrollView {
         LazyVGrid(columns: [.init(.flexible()), .init(.flexible())]) {
           ForEach(viewModel.products, id: \.itemId) { product in
-            ProductGridCellView(product: product)
-              .onAppear {
-                if viewModel.products.last == product {
-                  viewModel.fetchProducts()
-                }
+            NavigationLink {
+              DetailProductView()
+            } label: {
+              ProductGridCellView(product: product)
+            }
+            .buttonStyle(.plain)
+            .onAppear {
+              if viewModel.products.last == product {
+                viewModel.fetchProducts()
               }
+            }
           }
         }
         

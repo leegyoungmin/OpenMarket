@@ -28,12 +28,14 @@ final class ProductListViewModel: ObservableObject {
     self.marketWebRepository = marketWebRepository
   }
   
-  func fetchProducts() {
+  func fetchProducts(isReload: Bool = false) {
     if canLoadNextPage == false {
       return
     }
+    let page = (isReload ? 1 : page)
+    let itemCount = (isReload ? (10 * page) : 10)
     
-    marketWebRepository.loadProducts(with: page)
+    marketWebRepository.loadProducts(with: page, itemCount: itemCount)
       .receive(on: DispatchQueue.main)
       .sink(
         receiveCompletion: onReceiveCompletion,
@@ -44,13 +46,7 @@ final class ProductListViewModel: ObservableObject {
   
   func reloadProducts() {
     products = []
-    
-    for page in 1...page {
-      marketWebRepository.loadProducts(with: page)
-        .receive(on: DispatchQueue.main)
-        .sink(receiveCompletion: onReceiveCompletion, receiveValue: onReloadReceive)
-        .store(in: &cancellables)
-    }
+    fetchProducts(isReload: true)
   }
 }
 

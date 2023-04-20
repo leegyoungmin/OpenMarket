@@ -27,6 +27,7 @@
 		1894081429EEC96400762103 /* ToastAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1894081329EEC96400762103 /* ToastAlert.swift */; };
 		18A77ECA29EC460000A3A5A9 /* NumberFormatter + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A77EC929EC460000A3A5A9 /* NumberFormatter + Extension.swift */; };
 		18D99C1329E9223D009100DD /* ProductResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D99C1229E9223D009100DD /* ProductResponse.swift */; };
+		18EA2EEA29F117B80019E137 /* DetailProductView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EA2EE929F117B80019E137 /* DetailProductView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		1894081329EEC96400762103 /* ToastAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastAlert.swift; sourceTree = "<group>"; };
 		18A77EC929EC460000A3A5A9 /* NumberFormatter + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NumberFormatter + Extension.swift"; sourceTree = "<group>"; };
 		18D99C1229E9223D009100DD /* ProductResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductResponse.swift; sourceTree = "<group>"; };
+		18EA2EE929F117B80019E137 /* DetailProductView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProductView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +102,7 @@
 		1825DF1729E56A01007BAE8D /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				18EA2EE829F117A90019E137 /* DetailProductView */,
 				1825DF0B29E55293007BAE8D /* ContentView.swift */,
 				1851193E29ED4A4800AB1758 /* AddNewProductView */,
 				1825DF1A29E56AD4007BAE8D /* ProductListView */,
@@ -226,6 +229,14 @@
 			path = Entity;
 			sourceTree = "<group>";
 		};
+		18EA2EE829F117A90019E137 /* DetailProductView */ = {
+			isa = PBXGroup;
+			children = (
+				18EA2EE929F117B80019E137 /* DetailProductView.swift */,
+			);
+			path = DetailProductView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -317,6 +328,7 @@
 				1894080E29EE8AFE00762103 /* RequestProduct.swift in Sources */,
 				1816DCCF29EE3492005FB59D /* PhotoPicker.swift in Sources */,
 				1894081429EEC96400762103 /* ToastAlert.swift in Sources */,
+				18EA2EEA29F117B80019E137 /* DetailProductView.swift in Sources */,
 				183C312729E5A39600DFEBC0 /* MarketProductRepository.swift in Sources */,
 				1825DF1F29E56BB5007BAE8D /* ProductGridCellView.swift in Sources */,
 			);
