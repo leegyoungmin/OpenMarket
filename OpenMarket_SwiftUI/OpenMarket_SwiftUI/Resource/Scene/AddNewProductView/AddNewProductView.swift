@@ -11,32 +11,39 @@ struct AddNewProductView: View {
   @Environment(\.dismiss) var dismiss
   @StateObject private var viewModel: AddNewProductViewModel
   @State private var selectedImage: PhotosPickerItem? = nil
-  @State private var isPresentToast: Bool = false
+  @State private var isPresentToast: Bool = true
   
   init(viewModel: AddNewProductViewModel) {
     self._viewModel = StateObject(wrappedValue: viewModel)
   }
   
   var body: some View {
-    ScrollView(.vertical, showsIndicators: false) {
-      ScrollView(.horizontal, showsIndicators: false) {
-        HStack {
-          PhotosPicker(
-            selection: $selectedImage,
-            matching: .images
-          ) {
-            cameraInputButtonView
-          }
-          
-          ForEach(viewModel.images.indices, id: \.self) { index in
-            let data = viewModel.images[index]
-            ProductRegisterImageView(index: index, data: data)
-              .environmentObject(viewModel)
+    ZStack {
+      ScrollView(.vertical, showsIndicators: false) {
+        ScrollView(.horizontal, showsIndicators: false) {
+          HStack {
+            PhotosPicker(
+              selection: $selectedImage,
+              matching: .images
+            ) {
+              cameraInputButtonView
+            }
+            
+            ForEach(viewModel.images.indices, id: \.self) { index in
+              let data = viewModel.images[index]
+              ProductRegisterImageView(index: index, data: data)
+                .environmentObject(viewModel)
+            }
           }
         }
+        
+        productInformationForm
       }
       
-      productInformationForm
+      if isPresentToast {
+        ProgressView()
+          .progressViewStyle(.circular)
+      }
     }
     .padding(10)
     .navigationTitle("물품 등록")

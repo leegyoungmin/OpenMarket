@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct ToastAlert: ViewModifier {
-  static let short: TimeInterval = 2
+  static let short: TimeInterval = 1
   static let long: TimeInterval = 3.5
   
   @Binding var isShowing: Bool
