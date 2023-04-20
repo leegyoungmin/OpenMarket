@@ -73,7 +73,7 @@ private extension ProductListDisplayView {
         ForEach(viewModel.products, id: \.itemId) { product in
           ZStack {
             NavigationLink {
-              DetailProductView()
+              DetailProductView(product: product)
             } label: {
               EmptyView()
             }
@@ -81,7 +81,10 @@ private extension ProductListDisplayView {
             
             ProductListCellView(product: product)
           }
-          .buttonStyle(.plain)
+          .alignmentGuide(
+            .listRowSeparatorLeading,
+            computeValue: { _ in return 0 }
+          )
           .listRowInsets(Constants.rowEdge)
           .onAppear {
             if product == viewModel.products.last {
@@ -89,7 +92,6 @@ private extension ProductListDisplayView {
             }
           }
         }
-        .listRowSeparator(.hidden)
         
         if viewModel.canLoadNextPage {
           ProgressView()
@@ -107,11 +109,10 @@ private extension ProductListDisplayView {
         LazyVGrid(columns: [.init(.flexible()), .init(.flexible())]) {
           ForEach(viewModel.products, id: \.itemId) { product in
             NavigationLink {
-              DetailProductView()
+              DetailProductView(product: product)
             } label: {
               ProductGridCellView(product: product)
             }
-            .buttonStyle(FlatNavigationLink())
             .onAppear {
               if viewModel.products.last == product {
                 viewModel.fetchProducts()

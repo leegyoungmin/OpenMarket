@@ -10,20 +10,16 @@ import SwiftUI
 struct ProductListCellView: View {
   let product: Product
   var body: some View {
-    VStack {
-      HStack {
-        thumbnailImage(with: product.thumbnail)
-        
-        VStack(spacing: Constants.cellContentSpacing) {
-          titleSection
-          
-          priceSection
-        }
-      }
+    HStack {
+      thumbnailImage(with: product.thumbnail)
       
-      Divider()
+      VStack(spacing: Constants.cellContentSpacing) {
+        titleSection
+        
+        priceSection
+      }
     }
-    .padding(5)
+    .padding()
   }
 }
 
