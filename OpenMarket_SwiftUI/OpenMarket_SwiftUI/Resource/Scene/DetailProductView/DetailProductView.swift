@@ -7,17 +7,22 @@
 import SwiftUI
 
 struct DetailProductView: View {
-  let product: Product
-  let list = ["a", "b", "c", "d", "e"]
+  @StateObject var viewModel: DetailProductViewModel
   var body: some View {
     ScrollView(showsIndicators: false) {
       VStack(alignment: .leading, spacing: 10) {
         TabView {
-          ForEach(list, id: \.self) { _ in
-            Image(systemName: "person.circle")
-              .resizable()
-              .scaledToFit()
-              .frame(width: 300, height: 300, alignment: .center)
+          ForEach(viewModel.detailProduct.imagesInformation, id: \.id) { item in
+            AsyncImage(url: URL(string: item.url)) { image in
+              image
+                .resizable()
+                .scaledToFit()
+                .frame(width: 300, height: 300)
+            } placeholder: {
+              ProgressView()
+                .progressViewStyle(.circular)
+                .frame(width: 300, height: 300)
+            }
           }
         }
         .frame(height: 300)
@@ -25,12 +30,12 @@ struct DetailProductView: View {
         .indexViewStyle(.page(backgroundDisplayMode: .always))
         
         HStack(alignment: .bottom) {
-          Text(product.name)
+          Text(viewModel.detailProduct.name)
             .font(.system(size: 25, weight: .bold, design: .default))
           
           Spacer()
           
-          Text("남은 수량 : \(product.stock)")
+          Text("남은 수량 : \(viewModel.detailProduct.stock.description)")
             .foregroundColor(.secondary)
         }
         .padding(10)
@@ -39,17 +44,17 @@ struct DetailProductView: View {
           Spacer()
           
           VStack(alignment: .leading) {
-            Text(product.priceDescription)
+            Text(viewModel.detailProduct.price.description)
               .foregroundColor(.red)
               .strikethrough()
-              .opacity(product.isDiscounted ? 1.0 : .zero)
+              .opacity(viewModel.detailProduct.bargainPrice.isZero ? 1.0 : .zero)
             
-            Text(product.bargainPriceDescription)
+            Text(viewModel.detailProduct.bargainPrice.description)
           }
         }
         .padding(10)
         
-        Text(product.description)
+        Text(viewModel.detailProduct.description)
           .multilineTextAlignment(.leading)
           .padding(10)
       }
@@ -60,8 +65,8 @@ struct DetailProductView: View {
 }
 
 struct DetailProductView_Previews: PreviewProvider {
-  static let mockData = Product.mockData
+  static let viewModel = DetailProductViewModel(product: Product.mockData, marketRepository: MarketProductConcreteRepository())
   static var previews: some View {
-    DetailProductView(product: mockData)
+    DetailProductView(viewModel: viewModel)
   }
 }

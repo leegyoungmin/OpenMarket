@@ -73,7 +73,12 @@ private extension ProductListDisplayView {
         ForEach(viewModel.products, id: \.itemId) { product in
           ZStack {
             NavigationLink {
-              DetailProductView(product: product)
+              DetailProductView(
+                viewModel: DetailProductViewModel(
+                  product: product,
+                  marketRepository: viewModel.marketWebRepository
+                )
+              )
             } label: {
               EmptyView()
             }
@@ -109,7 +114,12 @@ private extension ProductListDisplayView {
         LazyVGrid(columns: [.init(.flexible()), .init(.flexible())]) {
           ForEach(viewModel.products, id: \.itemId) { product in
             NavigationLink {
-              DetailProductView(product: product)
+              DetailProductView(
+                viewModel: DetailProductViewModel(
+                  product: product,
+                  marketRepository: viewModel.marketWebRepository
+                )
+              )
             } label: {
               ProductGridCellView(product: product)
             }

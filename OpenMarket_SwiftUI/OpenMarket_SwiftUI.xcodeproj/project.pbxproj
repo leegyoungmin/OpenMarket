@@ -28,6 +28,7 @@
 		18A77ECA29EC460000A3A5A9 /* NumberFormatter + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A77EC929EC460000A3A5A9 /* NumberFormatter + Extension.swift */; };
 		18D99C1329E9223D009100DD /* ProductResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D99C1229E9223D009100DD /* ProductResponse.swift */; };
 		18EA2EEA29F117B80019E137 /* DetailProductView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EA2EE929F117B80019E137 /* DetailProductView.swift */; };
+		18EA2EEF29F12D8D0019E137 /* DetailProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EA2EEE29F12D8D0019E137 /* DetailProductViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		18A77EC929EC460000A3A5A9 /* NumberFormatter + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NumberFormatter + Extension.swift"; sourceTree = "<group>"; };
 		18D99C1229E9223D009100DD /* ProductResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductResponse.swift; sourceTree = "<group>"; };
 		18EA2EE929F117B80019E137 /* DetailProductView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProductView.swift; sourceTree = "<group>"; };
+		18EA2EEE29F12D8D0019E137 /* DetailProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProductViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -232,9 +234,18 @@
 		18EA2EE829F117A90019E137 /* DetailProductView */ = {
 			isa = PBXGroup;
 			children = (
+				18EA2EED29F12D7F0019E137 /* ViewModel */,
 				18EA2EE929F117B80019E137 /* DetailProductView.swift */,
 			);
 			path = DetailProductView;
+			sourceTree = "<group>";
+		};
+		18EA2EED29F12D7F0019E137 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				18EA2EEE29F12D8D0019E137 /* DetailProductViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -322,6 +333,7 @@
 				1825DF0C29E55293007BAE8D /* ContentView.swift in Sources */,
 				1825DF0A29E55293007BAE8D /* OpenMarket_SwiftUIApp.swift in Sources */,
 				18A77ECA29EC460000A3A5A9 /* NumberFormatter + Extension.swift in Sources */,
+				18EA2EEF29F12D8D0019E137 /* DetailProductViewModel.swift in Sources */,
 				183C312D29E5A99300DFEBC0 /* WebRepository.swift in Sources */,
 				1816DCD229EE39D0005FB59D /* AddNewProductViewModel.swift in Sources */,
 				1851194029ED4A5E00AB1758 /* AddNewProductView.swift in Sources */,
