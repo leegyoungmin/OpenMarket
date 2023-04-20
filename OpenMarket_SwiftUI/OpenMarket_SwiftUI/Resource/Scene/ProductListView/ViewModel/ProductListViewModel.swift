@@ -14,18 +14,14 @@ final class ProductListViewModel: ObservableObject {
   
   private var cancellables = Set<AnyCancellable>()
   
-  var canLoadNextPage: Bool = true {
-    willSet {
-      if newValue {
-        page += 1
-      }
-    }
-  }
+  var canLoadNextPage: Bool = true
   @Published var products: [Product] = []
   
   // Initializer
   init(marketWebRepository: MarketProductRepository = MarketProductConcreteRepository()) {
     self.marketWebRepository = marketWebRepository
+    
+    fetchProducts()
   }
   
   func fetchProducts(isReload: Bool = false) {
@@ -63,11 +59,10 @@ private extension ProductListViewModel {
   }
   
   func onReceive(with response: ProductsResponse) {
+    if response.hasNext {
+      page += 1
+    }
     self.canLoadNextPage = (response.items.count == 10)
-    self.products += response.items
-  }
-  
-  func onReloadReceive(with response: ProductsResponse) {
     self.products += response.items
   }
 }

@@ -9,6 +9,7 @@ import SwiftUI
 // MARK: Content View
 struct ProductListDisplayView: View {
   @StateObject var viewModel: ProductListViewModel
+  @State private var reloadData: Bool = true
   @Binding var selectedSection: ListSection
   
   init(_ selectedSection: Binding<ListSection>) {
@@ -29,7 +30,8 @@ struct ProductListDisplayView: View {
       addProductButton
     }
     .onAppear {
-      viewModel.reloadProducts()
+      if reloadData { viewModel.reloadProducts() }
+      reloadData = false
     }
   }
 }
@@ -45,6 +47,7 @@ private extension ProductListDisplayView {
         
         NavigationLink {
           AddNewProductView(
+            isSuccessUpload: $reloadData,
             viewModel: AddNewProductViewModel(
               marketRepository: viewModel.marketWebRepository
             )
@@ -108,7 +111,7 @@ private extension ProductListDisplayView {
             } label: {
               ProductGridCellView(product: product)
             }
-            .buttonStyle(.plain)
+            .buttonStyle(FlatNavigationLink())
             .onAppear {
               if viewModel.products.last == product {
                 viewModel.fetchProducts()
