@@ -42,6 +42,7 @@ struct DetailProductView: View {
             Text(product.priceDescription)
               .foregroundColor(.red)
               .strikethrough()
+              .opacity(product.isDiscounted ? 1.0 : .zero)
             
             Text(product.bargainPriceDescription)
           }
@@ -52,6 +53,8 @@ struct DetailProductView: View {
           .multilineTextAlignment(.leading)
           .padding(10)
       }
+      .navigationBarTitleDisplayMode(.inline)
+      .navigationTitle("상세 정보")
     }
   }
 }
