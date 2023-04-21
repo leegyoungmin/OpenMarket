@@ -9,11 +9,7 @@ import Combine
 
 final class DetailProductViewModel: ObservableObject {
   private let product: Product
-  @Published var detailProduct: DetailProduct {
-    didSet {
-      print(detailProduct)
-    }
-  }
+  @Published var detailProduct: DetailProduct
   
   private let marketRepository: MarketProductRepository
   private var cancellables = Set<AnyCancellable>()
@@ -29,12 +25,8 @@ final class DetailProductViewModel: ObservableObject {
   func fetchDetailProduct(to id: String) {
     marketRepository.loadDetailProduct(to: id)
       .receive(on: DispatchQueue.main)
-      .sink { completion in
-        print(completion)
-      } receiveValue: { detailProduct in
-        print(detailProduct)
-        self.detailProduct = detailProduct
-      }
+      .assertNoFailure()
+      .assign(to: \.detailProduct, on: self)
       .store(in: &cancellables)
   }
 }

@@ -8,26 +8,12 @@ import SwiftUI
 
 struct DetailProductView: View {
   @StateObject var viewModel: DetailProductViewModel
+  @State private var imageScale = 1.0
+  @State private var offset: Int = 0
   var body: some View {
     ScrollView(showsIndicators: false) {
       VStack(alignment: .leading, spacing: 10) {
-        TabView {
-          ForEach(viewModel.detailProduct.imagesInformation, id: \.id) { item in
-            AsyncImage(url: URL(string: item.url)) { image in
-              image
-                .resizable()
-                .scaledToFit()
-                .frame(width: 300, height: 300)
-            } placeholder: {
-              ProgressView()
-                .progressViewStyle(.circular)
-                .frame(width: 300, height: 300)
-            }
-          }
-        }
-        .frame(height: 300)
-        .tabViewStyle(.page)
-        .indexViewStyle(.page(backgroundDisplayMode: .always))
+        PagingBannerView(items: viewModel.detailProduct.imagesInformation)
         
         HStack(alignment: .bottom) {
           Text(viewModel.detailProduct.name)
@@ -59,7 +45,56 @@ struct DetailProductView: View {
           .padding(10)
       }
       .navigationBarTitleDisplayMode(.inline)
-      .navigationTitle("상세 정보")
+      .navigationTitle("상품 상세")
+    }
+  }
+}
+
+private extension DetailProductView {
+  struct PagingBannerView: View {
+    private let items: [ImageInformation]
+    @State var selectedItem: Int = 0
+    
+    init(items: [ImageInformation]) {
+      self.items = items
+    }
+    
+    var body: some View {
+      ZStack {
+        TabView(selection: $selectedItem) {
+          ForEach(0..<items.count, id: \.self) { index in
+            let url = items[index].url
+            
+            AsyncImage(url: URL(string: url)) { image in
+              image
+                .resizable()
+                .scaledToFit()
+                .frame(width: UIScreen.main.bounds.width, height: 300)
+            } placeholder: {
+              ProgressView()
+                .progressViewStyle(.circular)
+                .frame(width: UIScreen.main.bounds.width)
+            }
+            .tag(index)
+          }
+        }
+        .tabViewStyle(.page(indexDisplayMode: .never))
+        .frame(width: UIScreen.main.bounds.width, height: 300)
+        
+        VStack {
+          Spacer()
+          
+          HStack {
+            ForEach(0..<items.count, id: \.self) { index in
+              Circle()
+                .fill(index == selectedItem ? .blue : .black)
+                .frame(width: 5)
+            }
+          }
+        }
+        .padding()
+        .opacity(items.count == 1 ? 0 : 1)
+      }
     }
   }
 }
@@ -67,6 +102,8 @@ struct DetailProductView: View {
 struct DetailProductView_Previews: PreviewProvider {
   static let viewModel = DetailProductViewModel(product: Product.mockData, marketRepository: MarketProductConcreteRepository())
   static var previews: some View {
-    DetailProductView(viewModel: viewModel)
+    NavigationView {
+      DetailProductView(viewModel: viewModel)
+    }
   }
 }
