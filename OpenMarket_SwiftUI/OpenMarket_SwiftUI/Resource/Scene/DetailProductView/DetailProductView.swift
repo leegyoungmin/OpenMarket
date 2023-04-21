@@ -8,8 +8,7 @@ import SwiftUI
 
 struct DetailProductView: View {
   @StateObject var viewModel: DetailProductViewModel
-  @State private var imageScale = 1.0
-  @State private var offset: Int = 0
+  
   var body: some View {
     ScrollView(showsIndicators: false) {
       VStack(alignment: .leading, spacing: 10) {
@@ -46,6 +45,22 @@ struct DetailProductView: View {
       }
       .navigationBarTitleDisplayMode(.inline)
       .navigationTitle("상품 상세")
+      .toolbar {
+        ToolbarItem(placement: .primaryAction) {
+          Menu {
+            Button(action: viewModel.modifyItem) {
+              Label("수정", systemImage: "pencil.circle.fill")
+            }
+            
+            Button(role: .destructive, action: viewModel.removeItem) {
+              Label("삭제", systemImage: "trash.circle.fill")
+            }
+          } label: {
+            Label("더보기", systemImage: "ellipsis")
+              .rotationEffect(.degrees(90))
+          }
+        }
+      }
     }
   }
 }

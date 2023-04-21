@@ -29,4 +29,13 @@ final class DetailProductViewModel: ObservableObject {
       .assign(to: \.detailProduct, on: self)
       .store(in: &cancellables)
   }
+  
+  // TODO: - 수정/삭제 메서드 구현
+  func modifyItem() {
+    print("modify Item")
+  }
+  
+  func removeItem() {
+    print("Remove item")
+  }
 }
