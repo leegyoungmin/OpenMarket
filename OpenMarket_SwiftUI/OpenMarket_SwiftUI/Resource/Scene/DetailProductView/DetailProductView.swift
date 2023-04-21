@@ -30,12 +30,12 @@ struct DetailProductView: View {
           Spacer()
           
           VStack(alignment: .leading) {
-            Text(viewModel.detailProduct.price.description)
+            Text(viewModel.detailProduct.price.convertCurrencyValue(with: viewModel.detailProduct.currency.rawValue))
               .foregroundColor(.red)
               .strikethrough()
               .opacity(viewModel.detailProduct.bargainPrice.isZero ? 1.0 : .zero)
             
-            Text(viewModel.detailProduct.bargainPrice.description)
+            Text(viewModel.detailProduct.bargainPrice.convertCurrencyValue(with: viewModel.detailProduct.currency.rawValue))
           }
         }
         .padding(10)
@@ -86,9 +86,9 @@ private extension DetailProductView {
           
           HStack {
             ForEach(0..<items.count, id: \.self) { index in
-              Circle()
+              Rectangle()
                 .fill(index == selectedItem ? .blue : .black)
-                .frame(width: 5)
+                .frame(width: 15, height: 2)
             }
           }
         }
