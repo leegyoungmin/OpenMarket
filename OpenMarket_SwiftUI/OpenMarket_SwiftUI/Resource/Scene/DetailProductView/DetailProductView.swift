@@ -7,6 +7,7 @@
 import SwiftUI
 
 struct DetailProductView: View {
+  @Environment(\.dismiss) var dismiss
   @StateObject var viewModel: DetailProductViewModel
   
   var body: some View {
@@ -59,6 +60,11 @@ struct DetailProductView: View {
             Label("더보기", systemImage: "ellipsis")
               .rotationEffect(.degrees(90))
           }
+        }
+      }
+      .onReceive(viewModel.$shouldDismiss) { shouldDismiss in
+        if shouldDismiss {
+          dismiss.callAsFunction()
         }
       }
     }

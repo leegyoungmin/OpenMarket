@@ -10,6 +10,7 @@ import Combine
 final class DetailProductViewModel: ObservableObject {
   private let product: Product
   @Published var detailProduct: DetailProduct
+  @Published var shouldDismiss = false
   
   private let marketRepository: MarketProductRepository
   private var cancellables = Set<AnyCancellable>()
@@ -41,17 +42,20 @@ final class DetailProductViewModel: ObservableObject {
       with: "mgf4rzxzpe4gkpf5"
     )
     .receive(on: DispatchQueue.main)
-    .sink { completion in
-      switch completion {
-      case .failure(let error):
-        print(error)
-        
-      default:
-        break
-      }
-    } receiveValue: { url in
-      print(url)
+    .sink(receiveCompletion: onRecieveCompletion) { detailProduct in
+      self.shouldDismiss = true
     }
     .store(in: &cancellables)
+  }
+}
+
+private extension DetailProductViewModel {
+  func onRecieveCompletion(with completion: Subscribers.Completion<Error>) {
+    switch completion {
+    case .failure(let error):
+      debugPrint(error)
+    case .finished:
+      return
+    }
   }
 }
