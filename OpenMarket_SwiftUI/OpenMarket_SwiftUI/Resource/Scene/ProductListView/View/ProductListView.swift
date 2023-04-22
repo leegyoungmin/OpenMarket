@@ -30,7 +30,10 @@ struct ProductListDisplayView: View {
       addProductButton
     }
     .onAppear {
-      if reloadData { viewModel.reloadProducts() }
+      if reloadData {
+        viewModel.reloadProducts()
+      }
+      
       reloadData = false
     }
   }
@@ -79,6 +82,11 @@ private extension ProductListDisplayView {
                   marketRepository: viewModel.marketWebRepository
                 )
               )
+              .onDisappear {
+                withAnimation {
+                  viewModel.reloadProducts()
+                }
+              }
             } label: {
               EmptyView()
             }
@@ -120,6 +128,9 @@ private extension ProductListDisplayView {
                   marketRepository: viewModel.marketWebRepository
                 )
               )
+              .onDisappear {
+                viewModel.reloadProducts()
+              }
             } label: {
               ProductGridCellView(product: product)
             }
