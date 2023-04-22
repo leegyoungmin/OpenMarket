@@ -9,10 +9,12 @@ import Combine
 import Foundation
 
 protocol WebRepository: AnyObject {
-  func requestNetwork<T: Decodable>(
+  func requestNetworkWithCodable<T: Decodable>(
     endPoint: EndPointing,
     type: T.Type
   ) -> AnyPublisher<T, Error>
+  
+  func requestNetworkWithString(endPoint: EndPointing) -> AnyPublisher<String, Error>
 }
 
 enum APIError: Error {
@@ -21,7 +23,7 @@ enum APIError: Error {
 }
 
 extension WebRepository {
-  func requestNetwork<T: Decodable>(
+  func requestNetworkWithCodable<T: Decodable>(
     endPoint: EndPointing,
     type: T.Type
   ) -> AnyPublisher<T, Error> {
@@ -31,13 +33,23 @@ extension WebRepository {
     
     switch endPoint.method {
     case .post:
-      let request = AF.upload(
-        multipartFormData: endPoint.body,
-        to: url,
-        method: endPoint.method,
-        headers: endPoint.headers
-      )
-      return execute(with: request, type: type)
+      guard let data = endPoint.body else {
+        return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
+      }
+      
+      if let data = data as? MultipartFormData {
+        let request = AF.upload(
+          multipartFormData: data,
+          to: url,
+          method: endPoint.method,
+          headers: endPoint.headers
+        )
+        
+        return executeToCodable(with: request)
+      }
+      
+      return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
+
     default:
       let request = AF.request(
         url,
@@ -46,16 +58,35 @@ extension WebRepository {
         headers: endPoint.headers
       )
       
-      return execute(with: request, type: type)
+      return executeToCodable(with: request)
     }
+  }
+  
+  func requestNetworkWithString(endPoint: EndPointing) -> AnyPublisher<String, Error> {
+    guard let url = try? endPoint.generateURL(),
+          let body = endPoint.body as? Data else {
+      return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
+    }
+    
+    let request = AF.upload(body, to: url, method: endPoint.method, headers: endPoint.headers)
+    
+    return executeToString(with: request)
   }
 }
 
 private extension WebRepository {
-  func execute<T: Decodable>(with request: DataRequest, type: T.Type) -> AnyPublisher<T, Error> {
+  func executeToCodable<T: Decodable>(with request: DataRequest) -> AnyPublisher<T, Error> {
     request
       .validate(statusCode: 200...300)
-      .publishDecodable(type: type)
+      .publishDecodable(type: T.self)
+      .tryCompactMap(\.value)
+      .eraseToAnyPublisher()
+  }
+  
+  func executeToString(with request: DataRequest) -> AnyPublisher<String, Error> {
+    request
+      .validate(statusCode: 200...300)
+      .publishString()
       .tryCompactMap(\.value)
       .eraseToAnyPublisher()
   }
