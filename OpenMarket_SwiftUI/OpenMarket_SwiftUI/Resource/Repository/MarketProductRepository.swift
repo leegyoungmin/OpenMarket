@@ -12,7 +12,7 @@ protocol MarketProductRepository: WebRepository {
   func loadProducts(with page: Int, itemCount: Int) -> AnyPublisher<ProductsResponse, Error>
   func uploadProduct(with product: Data, images: [Data]) -> AnyPublisher<DetailProduct, Error>
   func loadDetailProduct(to id: String) -> AnyPublisher<DetailProduct, Error>
-  func removeProduct(to id: String, with password: String) -> AnyPublisher<String, Error>
+  func removeProduct(to id: String, with password: String) -> AnyPublisher<DetailProduct, Error>
 }
 
 final class MarketProductConcreteRepository: MarketProductRepository {
@@ -33,10 +33,16 @@ final class MarketProductConcreteRepository: MarketProductRepository {
     return requestNetworkWithCodable(endPoint: endPoint, type: DetailProduct.self)
   }
   
-  func removeProduct(to id: String, with password: String) -> AnyPublisher<String, Error> {
+  func removeProduct(to id: String, with password: String) -> AnyPublisher<DetailProduct, Error> {
     let endPoint = API.requestRemoveURL(id: id, password: password)
     
     return requestNetworkWithString(endPoint: endPoint)
+      .flatMap { path -> AnyPublisher<DetailProduct, Error> in
+        let api = API.removeItem(path: path)
+        
+        return self.requestNetworkWithCodable(endPoint: api, type: DetailProduct.self)
+      }
+      .eraseToAnyPublisher()
   }
 }
 
@@ -46,6 +52,7 @@ extension MarketProductConcreteRepository {
     case uploadProduct(productData: Data, images: [Data])
     case loadDetailProduct(id: String)
     case requestRemoveURL(id: String, password: String)
+    case removeItem(path: String)
   }
   
   enum BodyType {
@@ -59,8 +66,12 @@ extension MarketProductConcreteRepository.API: EndPointing {
     switch self {
     case .loadProducts, .loadDetailProduct:
       return .get
+      
     case .uploadProduct, .requestRemoveURL:
       return .post
+      
+    case .removeItem:
+      return .delete
     }
   }
   
@@ -76,7 +87,7 @@ extension MarketProductConcreteRepository.API: EndPointing {
         HTTPHeader(name: "identifier", value: "d94a4ffb-6941-11ed-a917-a7e99e3bb892")
       ]
       
-    case .requestRemoveURL:
+    case .requestRemoveURL, .removeItem:
       return [
         HTTPHeader(name: "Content-Type", value: "application/json"),
         HTTPHeader(name: "identifier", value: "d94a4ffb-6941-11ed-a917-a7e99e3bb892")
@@ -110,12 +121,15 @@ extension MarketProductConcreteRepository.API: EndPointing {
       
     case let .requestRemoveURL(id, _):
       return "/api/products/\(id)/archived"
+      
+    case let .removeItem(path):
+      return path
     }
   }
   
   var body: Any? {
     switch self {
-    case .loadProducts, .loadDetailProduct:
+    case .loadProducts, .loadDetailProduct, .removeItem:
       return nil
       
     case let .uploadProduct(product, images):
