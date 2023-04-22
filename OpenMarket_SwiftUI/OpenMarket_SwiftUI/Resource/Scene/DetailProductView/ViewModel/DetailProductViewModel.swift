@@ -36,6 +36,22 @@ final class DetailProductViewModel: ObservableObject {
   }
   
   func removeItem() {
-    print("Remove item")
+    marketRepository.removeProduct(
+      to: detailProduct.id.description,
+      with: "mgf4rzxzpe4gkpf5"
+    )
+    .receive(on: DispatchQueue.main)
+    .sink { completion in
+      switch completion {
+      case .failure(let error):
+        print(error)
+        
+      default:
+        break
+      }
+    } receiveValue: { url in
+      print(url)
+    }
+    .store(in: &cancellables)
   }
 }
