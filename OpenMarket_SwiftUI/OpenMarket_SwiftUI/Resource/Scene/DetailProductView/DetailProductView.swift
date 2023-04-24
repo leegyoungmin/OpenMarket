@@ -11,6 +11,7 @@ struct DetailProductView: View {
   @StateObject var viewModel: DetailProductViewModel
   
   @State private var isPresentTextFieldAlert: Bool = false
+  @State private var isPresentModifyView: Bool = false
   
   var body: some View {
     ScrollView(showsIndicators: false) {
@@ -51,7 +52,9 @@ struct DetailProductView: View {
       .toolbar {
         ToolbarItem(placement: .primaryAction) {
           Menu {
-            Button(action: viewModel.modifyItem) {
+            Button {
+              isPresentModifyView.toggle()
+            } label: {
               Label("수정", systemImage: "pencil.circle.fill")
             }
             
@@ -84,6 +87,17 @@ struct DetailProductView: View {
           dismiss.callAsFunction()
         }
       }
+    }
+    .background {
+      NavigationLink(isActive: $isPresentModifyView) {
+        AddNewProductView(
+          isSuccessUpload: $viewModel.shouldDismiss,
+          viewModel: AddNewProductViewModel(with: viewModel.detailProduct)
+        )
+      } label: {
+        EmptyView()
+      }
+
     }
   }
 }
