@@ -13,6 +13,7 @@ protocol MarketProductRepository: WebRepository {
   func uploadProduct(with product: Data, images: [Data]) -> AnyPublisher<DetailProduct, Error>
   func loadDetailProduct(to id: String) -> AnyPublisher<DetailProduct, Error>
   func removeProduct(to id: String, with password: String) -> AnyPublisher<DetailProduct, Error>
+  func modifyProduct(to id: String, modifyRequest: ModifyDetailProductRequest) -> AnyPublisher<DetailProduct, Error>
 }
 
 final class MarketProductConcreteRepository: MarketProductRepository {
@@ -44,6 +45,16 @@ final class MarketProductConcreteRepository: MarketProductRepository {
       }
       .eraseToAnyPublisher()
   }
+  
+  func modifyProduct(
+    to id: String,
+    modifyRequest: ModifyDetailProductRequest
+  ) -> AnyPublisher<DetailProduct, Error> {
+    let api = API.modifyItem(itemId: id, changedProduct: modifyRequest)
+    
+    return requestNetworkWithCodable(endPoint: api, type: DetailProduct.self)
+      .eraseToAnyPublisher()
+  }
 }
 
 extension MarketProductConcreteRepository {
@@ -53,6 +64,7 @@ extension MarketProductConcreteRepository {
     case loadDetailProduct(id: String)
     case requestRemoveURL(id: String, password: String)
     case removeItem(path: String)
+    case modifyItem(itemId: String, changedProduct: ModifyDetailProductRequest)
   }
   
   enum BodyType {
@@ -72,6 +84,9 @@ extension MarketProductConcreteRepository.API: EndPointing {
       
     case .removeItem:
       return .delete
+      
+    case .modifyItem:
+      return .patch
     }
   }
   
@@ -87,7 +102,7 @@ extension MarketProductConcreteRepository.API: EndPointing {
         HTTPHeader(name: "identifier", value: "d94a4ffb-6941-11ed-a917-a7e99e3bb892")
       ]
       
-    case .requestRemoveURL, .removeItem:
+    case .requestRemoveURL, .removeItem, .modifyItem:
       return [
         HTTPHeader(name: "Content-Type", value: "application/json"),
         HTTPHeader(name: "identifier", value: "d94a4ffb-6941-11ed-a917-a7e99e3bb892")
@@ -116,7 +131,7 @@ extension MarketProductConcreteRepository.API: EndPointing {
     case .loadProducts, .uploadProduct:
       return "/api/products"
       
-    case let .loadDetailProduct(id):
+    case .loadDetailProduct(let id):
       return "/api/products/\(id)"
       
     case let .requestRemoveURL(id, _):
@@ -124,6 +139,9 @@ extension MarketProductConcreteRepository.API: EndPointing {
       
     case let .removeItem(path):
       return path
+      
+    case let .modifyItem(itemId, _):
+      return "api/products/\(itemId)"
     }
   }
   
@@ -145,6 +163,13 @@ extension MarketProductConcreteRepository.API: EndPointing {
       
     case let .requestRemoveURL(_, password):
       guard let encodedData = try? JSONEncoder().encode(["secret": password]) else {
+        return nil
+      }
+      
+      return encodedData
+      
+    case let .modifyItem(_, product):
+      guard let encodedData = try? JSONEncoder().encode(product) else {
         return nil
       }
       
