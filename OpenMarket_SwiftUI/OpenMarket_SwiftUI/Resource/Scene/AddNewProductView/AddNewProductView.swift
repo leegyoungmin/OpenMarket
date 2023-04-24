@@ -24,11 +24,13 @@ struct AddNewProductView: View {
       ScrollView(.vertical, showsIndicators: false) {
         ScrollView(.horizontal, showsIndicators: false) {
           HStack {
-            PhotosPicker(
-              selection: $selectedImage,
-              matching: .images
-            ) {
-              cameraInputButtonView
+            if viewModel.viewStyle == .create {
+              PhotosPicker(
+                selection: $selectedImage,
+                matching: .images
+              ) {
+                cameraInputButtonView
+              }
             }
             
             ForEach(viewModel.images.indices, id: \.self) { index in
@@ -177,11 +179,13 @@ private extension AddNewProductView {
         ZStack {
           Image(uiImage: image)
             .resizable()
-            .scaledToFill()
+            .scaledToFit()
             .frame(width: 80, height: 80, alignment: .center)
             .cornerRadius(12)
           
           cancelButton
+            .disabled(viewModel.viewStyle == .modify)
+            .opacity(viewModel.viewStyle == .modify ? 0 : 1)
         }
         .padding(5)
       }

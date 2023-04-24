@@ -20,6 +20,7 @@ final class AddNewProductViewModel: ObservableObject {
   // MARK: Routing
   @Published private(set) var isPresentPhotoPicker: Bool = false
   @Published var alertState: AlertState? = nil
+  @Published var viewStyle: ViewStyle = .create
   private(set) var successUpload = PassthroughSubject<Bool, Never>()
 
   // MARK: Properties
@@ -29,6 +30,34 @@ final class AddNewProductViewModel: ObservableObject {
   // MARK: Initializer
   init(marketRepository: MarketProductRepository = MarketProductConcreteRepository()) {
     self.marketRepository = marketRepository
+  }
+  
+  convenience init(with detailProduct: DetailProduct) {
+    self.init()
+    self.viewStyle = .modify
+    
+    self.name = detailProduct.name
+    self.selectedCurrency = detailProduct.currency
+    self.price = detailProduct.price.convertCurrencyValue(
+      with: detailProduct.currency.rawValue
+    )
+    self.discountedPrice = detailProduct.discountedPrice.convertCurrencyValue(
+      with: detailProduct.currency.rawValue
+    )
+    self.stock = detailProduct.stock.description
+    self.description = detailProduct.description
+    
+    detailProduct.imagesInformation.forEach { information in
+      guard let url = URL(string: information.thumbnailURL) else { return }
+      URLSession.shared.dataTaskPublisher(for: url)
+        .map(\.data)
+        .receive(on: DispatchQueue.main)
+        .assertNoFailure()
+        .sink { data in
+          self.images.append(data)
+        }
+        .store(in: &cancellables)
+    }
   }
   
   func uploadProduct() {
@@ -63,6 +92,11 @@ final class AddNewProductViewModel: ObservableObject {
 
 // MARK: Alert State
 extension AddNewProductViewModel {
+  enum ViewStyle {
+    case create
+    case modify
+  }
+  
   enum AlertState: CustomStringConvertible {
     case emptyImage
     case invalidName
