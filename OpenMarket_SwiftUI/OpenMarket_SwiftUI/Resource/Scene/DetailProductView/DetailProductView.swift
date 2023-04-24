@@ -10,6 +10,8 @@ struct DetailProductView: View {
   @Environment(\.dismiss) var dismiss
   @StateObject var viewModel: DetailProductViewModel
   
+  @State private var isPresentTextFieldAlert: Bool = false
+  
   var body: some View {
     ScrollView(showsIndicators: false) {
       VStack(alignment: .leading, spacing: 10) {
@@ -53,7 +55,9 @@ struct DetailProductView: View {
               Label("수정", systemImage: "pencil.circle.fill")
             }
             
-            Button(role: .destructive, action: viewModel.removeItem) {
+            Button(role: .destructive) {
+              isPresentTextFieldAlert.toggle()
+            } label: {
               Label("삭제", systemImage: "trash.circle.fill")
             }
           } label: {
@@ -61,6 +65,19 @@ struct DetailProductView: View {
               .rotationEffect(.degrees(90))
           }
         }
+      }
+      .alert("삭제 알림", isPresented: $isPresentTextFieldAlert) {
+        TextField("비밀번호", text: $viewModel.secretCode)
+        
+        Button("확인", role: .destructive) {
+          if viewModel.secretCode.isEmpty { return }
+          viewModel.removeItem()
+        }
+        
+        Button("취소", role: .cancel, action: { })
+        
+      } message: {
+        Text("정말 삭제 하시겠습니까? 삭제 후에는 되돌릴 수 없습니다.")
       }
       .onReceive(viewModel.$shouldDismiss) { shouldDismiss in
         if shouldDismiss {

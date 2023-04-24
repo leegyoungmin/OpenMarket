@@ -11,6 +11,7 @@ final class DetailProductViewModel: ObservableObject {
   private let product: Product
   @Published var detailProduct: DetailProduct
   @Published var shouldDismiss = false
+  @Published var secretCode: String = ""
   
   private let marketRepository: MarketProductRepository
   private var cancellables = Set<AnyCancellable>()
@@ -39,7 +40,7 @@ final class DetailProductViewModel: ObservableObject {
   func removeItem() {
     marketRepository.removeProduct(
       to: detailProduct.id.description,
-      with: "mgf4rzxzpe4gkpf5"
+      with: secretCode
     )
     .receive(on: DispatchQueue.main)
     .sink(receiveCompletion: onRecieveCompletion) { detailProduct in
