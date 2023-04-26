@@ -20,8 +20,6 @@ final class ProductListViewModel: ObservableObject {
   // Initializer
   init(marketWebRepository: MarketProductRepository = MarketProductConcreteRepository()) {
     self.marketWebRepository = marketWebRepository
-    
-    fetchProducts()
   }
   
   func fetchProducts(isReload: Bool = false) {
@@ -43,6 +41,14 @@ final class ProductListViewModel: ObservableObject {
   func reloadProducts() {
     products = []
     fetchProducts(isReload: true)
+  }
+}
+
+extension ProductListViewModel {
+  func fetchNextPage(with lastItem: Product) {
+    if lastItem.id == products.last?.id {
+      fetchProducts()
+    }
   }
 }
 
