@@ -49,6 +49,18 @@ extension WebRepository {
       }
       
       return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
+      
+    case .patch:
+      guard let data = endPoint.body else {
+        return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
+      }
+      
+      if let data = data as? Data {
+        let request = AF.upload(data, to: url, method: endPoint.method, headers: endPoint.headers)
+        return executeToCodable(with: request)
+      }
+      
+      return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
 
     default:
       let request = AF.request(
@@ -79,7 +91,10 @@ private extension WebRepository {
     request
       .validate(statusCode: 200...300)
       .publishDecodable(type: T.self)
-      .tryCompactMap(\.value)
+      .tryCompactMap {
+        print($0.response)
+        return $0.value
+      }
       .eraseToAnyPublisher()
   }
   

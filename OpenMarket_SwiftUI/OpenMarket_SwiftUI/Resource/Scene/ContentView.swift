@@ -7,39 +7,90 @@
 
 import SwiftUI
 
-enum ListSection: String, CaseIterable {
-  case list = "LIST"
-  case grid = "GRID"
-  
-  mutating func toggle() {
-    switch self {
-    case .list:
-      self = .grid
-    case .grid:
-      self = .list
+struct ContentView: View {
+  @State private var selectedScene: SceneType = .home
+
+  var body: some View {
+    NavigationView {
+      CustomTabBarView(tabs: SceneType.allCases, selection: $selectedScene) {
+        switch selectedScene {
+        case .home:
+          HomeScene()
+          
+        case .list:
+          ProductListView(viewModel: ProductListViewModel())
+        default:
+          VStack {
+            Spacer()
+            Text("Example")
+            Spacer()
+          }
+        }
+      }
     }
   }
 }
 
-struct ContentView: View {
-  @State var selectedSection: ListSection = .list
+enum SceneType: Hashable, CaseIterable {
+  case home
+  case list
+  case favorite
+  
+  var iconName: String {
+    switch self {
+    case .home:
+      return "house.fill"
+    case .list:
+      return "list.bullet"
+    case .favorite:
+      return "heart"
+    }
+  }
+  
+  var title: String {
+    switch self {
+    case .home:
+      return "홈"
+    case .list:
+      return "상품 목록"
+    case .favorite:
+      return "찜목록"
+    }
+  }
+}
+
+struct CustomTabBarView<Scene: View>: View {
+  let tabs: [SceneType]
+  @Binding var selection: SceneType
+  @ViewBuilder var content: () -> Scene
   
   var body: some View {
-    NavigationView {
-      ProductListDisplayView($selectedSection)
-        .toolbar {
-          ToolbarItem(placement: .navigationBarTrailing) {
-            Button {
-              withAnimation {
-                selectedSection.toggle()
-              }
-            } label: {
-              Image(systemName: selectedSection == .list ? "square.grid.2x2" : "list.bullet")
-            }
+    VStack(spacing: .zero) {
+      
+      content()
+      
+      HStack {
+        ForEach(tabs, id: \.self) { tab in
+          VStack(spacing: 10) {
+            Image(systemName: tab.iconName)
+              .font(.subheadline)
             
+            Text(tab.title)
+              .font(.system(size: 10, weight: .semibold, design: .rounded))
           }
+          .onTapGesture {
+            withAnimation {
+              selection = tab
+            }
+          }
+          .foregroundColor(tab == selection ? .red : .blue)
+          .padding(.vertical, 8)
+          .frame(maxWidth: .infinity)
+          .cornerRadius(10)
         }
-        .navigationTitle("판매 상품")
+      }
+      .background(.white)
+      .shadow(radius: 2)
     }
   }
 }
