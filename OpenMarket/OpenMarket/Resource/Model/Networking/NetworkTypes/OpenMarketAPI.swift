@@ -76,7 +76,7 @@ enum OpenMarketAPI: APIType {
                 value.append($0.createBody(boundary: boundary))
             }
             value.append(endBoundaryData)
-            
+            print(String(data: value, encoding: .utf8)!)
             return value
         default:
             return Data()

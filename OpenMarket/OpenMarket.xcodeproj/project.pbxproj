@@ -296,8 +296,8 @@
 		C70FB0F925BEF61C00C9924E /* OpenMarket */ = {
 			isa = PBXGroup;
 			children = (
-				18E853BB2925EEDA00EDCE2A /* Source */,
 				18E853BD2925EF2500EDCE2A /* Resource */,
+				18E853BB2925EEDA00EDCE2A /* Source */,
 			);
 			path = OpenMarket;
 			sourceTree = "<group>";
