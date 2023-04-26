@@ -16,6 +16,7 @@ final class AddNewProductViewModel: ObservableObject {
   @Published var stock: String = ""
   @Published var description: String = ""
   @Published var images: [Data] = []
+  @Published var detailProduct: DetailProduct?
   
   // MARK: Routing
   @Published private(set) var isPresentPhotoPicker: Bool = false
@@ -38,22 +39,20 @@ final class AddNewProductViewModel: ObservableObject {
     
     self.name = detailProduct.name
     self.selectedCurrency = detailProduct.currency
-    self.price = detailProduct.price.convertCurrencyValue(
-      with: detailProduct.currency.rawValue
-    )
-    self.discountedPrice = detailProduct.discountedPrice.convertCurrencyValue(
-      with: detailProduct.currency.rawValue
-    )
+    self.price = detailProduct.price.description
+    if detailProduct.discountedPrice != 0 {
+      self.discountedPrice = detailProduct.discountedPrice.description
+    }
     self.stock = detailProduct.stock.description
     self.description = detailProduct.description
+    self.detailProduct = detailProduct
     
     detailProduct.imagesInformation.forEach { information in
       guard let url = URL(string: information.thumbnailURL) else { return }
       URLSession.shared.dataTaskPublisher(for: url)
-        .map(\.data)
         .receive(on: DispatchQueue.main)
-        .assertNoFailure()
-        .sink { data in
+        .map(\.data)
+        .sink(receiveCompletion: { _ in return }) { data in
           self.images.append(data)
         }
         .store(in: &cancellables)
@@ -75,6 +74,25 @@ final class AddNewProductViewModel: ObservableObject {
     guard let encodeData = product.encodingData() else { return }
     
     marketRepository.uploadProduct(with: encodeData, images: images)
+      .sink(receiveCompletion: handleCompletion, receiveValue: { _ in })
+      .store(in: &cancellables)
+  }
+  
+  func modifyProduct() {
+    if validation() == false { return }
+    
+    let productRequest = ModifyDetailProductRequest(
+      name: self.name,
+      description: self.description,
+      thumbnailId: self.detailProduct?.imagesInformation.first?.id ?? 0,
+      price: Double(self.price) ?? 0.0,
+      currency: self.selectedCurrency,
+      discountedPrice: Double(self.discountedPrice) ?? 0.0,
+      stock: Int(self.stock) ?? 0,
+      secret: "mgf4rzxzpe4gkpf5"
+    )
+    
+    marketRepository.modifyProduct(to: self.detailProduct?.id.description ?? "", modifyRequest: productRequest)
       .sink(receiveCompletion: handleCompletion, receiveValue: { _ in })
       .store(in: &cancellables)
   }

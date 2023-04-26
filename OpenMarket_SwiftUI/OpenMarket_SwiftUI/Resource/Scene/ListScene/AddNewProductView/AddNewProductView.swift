@@ -50,7 +50,7 @@ struct AddNewProductView: View {
       }
     }
     .padding(10)
-    .navigationTitle("물품 등록")
+    .navigationTitle(viewModel.viewStyle == .create ? "물품 등록" : "물품 수정")
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
       ToolbarItem(placement: .navigationBarTrailing) {
@@ -61,9 +61,15 @@ struct AddNewProductView: View {
             from: nil,
             for: nil
           )
-          viewModel.uploadProduct()
+          
+          if viewModel.viewStyle == .create {
+            viewModel.uploadProduct()
+          } else if viewModel.viewStyle == .modify {
+            viewModel.modifyProduct()
+          }
+          
         } label: {
-          Text("등록")
+          Text(viewModel.viewStyle == .create ? "등록" : "수정")
         }
       }
     }
