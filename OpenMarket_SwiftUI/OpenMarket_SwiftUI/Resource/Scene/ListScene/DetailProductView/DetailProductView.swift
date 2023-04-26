@@ -94,10 +94,12 @@ struct DetailProductView: View {
           isSuccessUpload: $viewModel.shouldDismiss,
           viewModel: AddNewProductViewModel(with: viewModel.detailProduct)
         )
+        .onDisappear {
+          viewModel.shouldDismiss.toggle()
+        }
       } label: {
         EmptyView()
       }
-
     }
   }
 }

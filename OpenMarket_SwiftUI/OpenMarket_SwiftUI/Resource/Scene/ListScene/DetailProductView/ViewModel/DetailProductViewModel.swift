@@ -21,7 +21,7 @@ final class DetailProductViewModel: ObservableObject {
     self.detailProduct = DetailProduct(product: product)
     self.marketRepository = marketRepository
     
-    fetchDetailProduct(to: product.id.description)
+    fetchDetailProduct(to: product.itemId.description)
   }
   
   func fetchDetailProduct(to id: String) {
