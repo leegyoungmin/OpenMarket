@@ -38,7 +38,7 @@ struct DetailProduct: Codable {
   }
   
   init(product: Product) {
-    self.id = product.id
+    self.id = product.itemId
     self.vendorId = product.vendorId
     self.name = product.name
     self.description = product.description

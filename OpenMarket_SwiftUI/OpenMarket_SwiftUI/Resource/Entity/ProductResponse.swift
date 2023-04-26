@@ -51,9 +51,9 @@ enum Currency: String, Codable, CaseIterable {
   }
 }
 
-struct Product: Codable, Hashable {
-  var itemId = UUID()
-  let id: Int
+struct Product: Codable, Identifiable, Equatable {
+  var id = UUID()
+  let itemId: Int
   let vendorId: Int
   let vendorName: String
   let name: String
@@ -84,7 +84,8 @@ struct Product: Codable, Hashable {
   }
   
   enum CodingKeys: String, CodingKey {
-    case id, vendorName, name, description, thumbnail, currency, price, stock
+    case vendorName, name, description, thumbnail, currency, price, stock
+    case itemId = "id"
     case vendorId = "vendor_id"
     case bargainPrice = "bargain_price"
     case discountedPrice = "discounted_price"
@@ -92,5 +93,5 @@ struct Product: Codable, Hashable {
     case issuedDate = "issued_at"
   }
   
-  static let mockData: Product = Product(id: 2153, vendorId: 1, vendorName: "미니", name: "Mac Book Pro", description: "맥북 프로 판매합니다.", thumbnail: "", currency: .KRW, price: 10000, bargainPrice: 5000, discountedPrice: 5000, stock: 10, createdDate: "", issuedDate: "")
+  static let mockData: Product = Product(itemId: 2153, vendorId: 1, vendorName: "미니", name: "Mac Book Pro", description: "맥북 프로 판매합니다.", thumbnail: "https://s3.ap-northeast-2.amazonaws.com/media.yagom-academy.kr/training-resources/45/20230418/7629d63eddd111ed8594fdc1277e07a1_thumb", currency: .KRW, price: 10000, bargainPrice: 5000, discountedPrice: 5000, stock: 10, createdDate: "", issuedDate: "")
 }
