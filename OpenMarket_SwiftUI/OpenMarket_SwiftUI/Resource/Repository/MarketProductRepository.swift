@@ -141,7 +141,7 @@ extension MarketProductConcreteRepository.API: EndPointing {
       return path
       
     case let .modifyItem(itemId, _):
-      return "api/products/\(itemId)"
+      return "/api/products/\(itemId)"
     }
   }
   
