@@ -2,23 +2,23 @@
 # 오픈마켓
 
 ## 목차
-1. [소개](#1소개)
-2. [팀원](#2팀원)
-3. [타임라인](#3타임라인)
-4. [다이어그램](#4다이어그램)
-5. [실행 화면](#5실행화면)
-6. [트러블 슈팅](#6트러블-슈팅)
-7. [핵심 경험](#7프로젝트-수행-중-핵심-경험)
-8. [추가적으로 공부해야 하는 것](#8추가적으로-공부해야-하는-것)
-9. [참고 링크](#8참고-링크)
+1. [소개](#소개)
+2. [팀원](#팀원)
+3. [타임라인](#타임라인)
+4. [다이어그램](#다이어그램)
+5. [실행 화면](#실행화면)
+6. [트러블 슈팅](#트러블-슈팅)
+7. [추가적으로 공부해야 하는 것](#추가적으로-공부해야-하는-것)
+8. [참고 링크](#참고-링크)
 
-## 1.소개
+## 소개
+- 실제 서버를 활용하는 중고장터 앱
 - OpenMarket API를 받아와서 뷰를 만드는 Project
 - 등록된 상품, 상품 등록 기능 구현
 
 <br>
 
-## 2.팀원
+## 팀원
 | Minii | Baem |
 | :---: | :---: |
 | <img src=https://i.imgur.com/itNH4NF.png width="155" height="150">| <img src=https://i.imgur.com/jrW5RQj.png width="155" height="150" > |
@@ -26,8 +26,10 @@
 
 <br>
 
-## 3.타임라인
-**[STEP-1]**
+## 타임라인
+
+<details>
+    <summary> [STEP-1] </summary>
 - 221114
 ![](https://i.imgur.com/zhtbEMH.png)
     - 네트워크 타입 구현
@@ -48,28 +50,38 @@
 
     ![](https://i.imgur.com/C0j2WOn.png)
     - Test Double 작성
+</details>
 
-**[STEP-2]**
-- 221121 - REFACTORING
+<details>
+    <summary> [STEP-2] </summary>
+    
+- 221121
+![](https://i.imgur.com/GbaovNU.png)
+    - REFACTORING
     - 리펙토링
-    ![](https://i.imgur.com/GbaovNU.png)
+    
 - 221122
     - 개인 학습
+    
 - 221123
-    ![](https://i.imgur.com/3EHdEqN.png)
+![](https://i.imgur.com/3EHdEqN.png)
     - ListView, GridView 구현
     
+    
 - 221124
-    ![](https://i.imgur.com/eahJC7b.png)
+![](https://i.imgur.com/eahJC7b.png)
     - stock 품절 처리 및 Grid Item Cell Autolayout 설정
     
 - 221125 : STEP2 - PR
     ![](https://i.imgur.com/r5WJ9mN.png)
     - 다음화면 및 readme 작성
+</details>
+
+<details>
+    <summary> [STEP-3] </summary>
     
-**[STEP-3]**
 - 221128 : PR Refactoring
-    ![](https://i.imgur.com/Q2ocslY.png)
+![](https://i.imgur.com/Q2ocslY.png)
     - STEP2 Refctoring
     
 - 221130 & 221201 
@@ -96,39 +108,13 @@
     ![](https://i.imgur.com/gr9a8km.png)
     - 데이터 전송 후 데이터 reFetching 메서드 구현 및 뷰 업데이트
     - PR 발송
+</details>
 
 <br>
 
-## 4.다이어그램
+## 다이어그램
 - 파일 구조
 ```bash
-├── OpenMarket
-│   ├── NetworkUnitTest
-│   │   └── NetworkUnitTest.swift
-│   └── OpenMarket
-│       ├── Resource
-│       ├── Controller
-│       │   └── ViewController.swift
-│       ├── Extensions
-│       │   └── Networking
-│       │       └── Dictionary+.swift
-│       ├── Model
-│       │   └── Networking
-│       │       ├── APIType.swift
-│       │       ├── DTO
-│       │       │   ├── Currency.swift
-│       │       │   ├── Product.swift
-│       │       │   └── ProductListResponse.swift
-│       │       ├── NetworkError.swift
-│       │       ├── NetworkManager.swift
-│       │       ├── NetworkTypes
-│       │       │   └── OpenMarketAPI.swift
-│       │       └── TestDouble
-│       │           ├── StubURLSession.swift
-│       │           └── URLSessionProtocol.swift
-│       └── View
-│           └── Main.storyboard
-└── README.md
 ├── Controller
 │   ├── ProductsViewController.swift
 │   └── RegisterProductViewController.swift
@@ -166,7 +152,6 @@
 │       └── NetworkTypes
 │           └── OpenMarketAPI.swift
 └── View
-    ├── Base.lproj
     ├── ProductCollectionView
     │   ├── Cells
     │   │   ├── ProductGridItemCell.swift
@@ -179,7 +164,7 @@
 - 네트워크 관련 UML
 ![](https://i.imgur.com/X7hKyNV.png)
 
-## 5.실행화면
+## 실행화면
 #### STEP1
 
 ![testCoverage](https://i.imgur.com/2UZW8hG.png)
@@ -188,49 +173,44 @@
 
 #### STEP2
 
+| 상품 목록 화면 | 상품 등록 화면 |
+| :--------: | :--------: |
+| <img src = "https://i.imgur.com/qNQKsrC.gif" width = "200"/> | <img src = "https://i.imgur.com/6qHPBMs.gif" width = "200"/>  |
 
-| 상품 목록 화면 | 상품 등록 화면 | 상품 상세 화면 |
-| :--------: | :--------: | :--------: |
-| <img src = "https://i.imgur.com/bGnwwdP.gif" height = "600"> | <img src="https://i.imgur.com/5FF7gBB.gif" height = "600"> | 추가 예정     |
-
-## 6.트러블 슈팅
+## 트러블 슈팅
 ### JSON 파일과 서버의 응답 JSON의 형식이 다른 것
 - 요구사항 내에서 JSON 파일을 통해서 구현한 타입을 검증하려고 하였습니다. 하지만, 응답 데이터의 형식이 달라서 고민하게 되었습니다.
 - JSON 파일에 대한 테스트를 진행하지만, 실질적으로 필요한 데이터는 응답에 대한 테스트라고 생각하였습니다.
 - 또한, 다양한 로컬 데이터를 진행하는 것보다 Mock을 활용한 네트워킹이 주된 테스트의 의미라고 생각하여서 응답 데이터에 맞춰서 로컬 데이터를 변경하였습니다.
     
 ### POP를 활용한 URL 구성
-
 ```swift
 class NetworkManager {
     let baseURL: String = "https://openmarket.yagom-academy.kr"
     
     func requestHealthChecker() {
         // URL 생성
-        guard let url = URL(string: baseURL + "/healthChecker") else {
-            return
-        }
+        guard let url = URL(string: baseURL + "/healthChecker") else { return }
         ...
     }
     
     func requestProductListSearching() {
         //URL 생성
-        guard let url = URL(string: baseURL + "/api/products?page_no=1&items_per_page=100" ) else {
-            return
-        }
+        guard let url = URL(string: baseURL + "/api/products?page_no=1&items_per_page=100" ) else { return }
         ...
     }
     
     func requestDetailProductListSearching(_ id: Int) {
         //URL 생성
-        guard let url = URL(string: baseURL + "/api/products" + "/\(id)") else {
-            return
-        }
+        guard let url = URL(string: baseURL + "/api/products" + "/\(id)") else { return }
         ...
     }
 }
 
 ```
+- 처음 네트워크를 구성할 때에는 각가의 API Request별로 URL으 구성하고, 이를 통해서 네트워킹을 수행하였습니다.
+- 하지만, 다음과 같이 코드를 작성하게 되면, 추후 유지보수르 하기 위해서 하나의 수정이 많은 부분의 수정을 야기할 수 있다고 생각하였습니다.
+
 ```swift
 protocol APIType {
     var baseURL: String { get }
@@ -253,11 +233,12 @@ struct NetworkManager<T: Decodable> {
     }
 }
 ```
-- 처음 네트워크를 구성할 때에는 각가의 API의 URL에 따라서 구현했습니다. 하지만, 각각의 Query와 Path가 유동적으로 변경되어야 한다고 생각하였습니다.
-- 위와 같은 문제를 해결하기 위해서 Alamofire`와 `Moya` 라이브러리들이 활용한 방법을 참고하여서 구현하게 되었습니다.
-- `Moya` 라이브러리에서 활용한 방법인 각각의 API들을 한개의 프로토콜로 채택하여서 확장성을 고려하는 부분을 참고하여서 구현했으며, `Alamofire`에서 활용한 쿼리에 세부사항을 참고하여서 구현하였습니다.
-- 이에 대해서 네트워크를 구성할 수 있는 프로토콜을 통해서 공통화를 할 수 있도록 하였고, 이를 통해서 요청을 보낼 수 있는 URL 타입을 구성할 수 있도록 하였습니다.
-- 하지만, 위와 같은 방식을 활용하여 각각의 타입별로 객체를 생성하도록 하여야 하는 문제점이 있습니다. 이를 해결하기 위해서 더 공부하고, 수정할 수 있도록 하여야 할 것 같습니다.
+- 위와 같은 문제를 해결하기 위해서 `Alamofire`와 `Moya` 라이브러리들이 활용한 방법을 참고하여서 구현하게 되었습니다.
+- `Alamofire`에서 활용한 쿼리에 세부사항을 참고하여서 구현하였습니다.
+- `Moya` 라이브러리에서 활용한 방법인 각각의 API들을 한개의 프로토콜로 채택하여서 확장성을 고려하는 부분을 참고하여서 구현했습니다.
+- 요청을 구성하느 프로토콜으 정의함으로써 다양한 메서드를 좀 더 일반화하여서 사용할 수 있었습니다.
+
+- 추가 사항 : 다음과 같이 단순히 프로토콜을 통해서 구현하였을 경우에 요청의 수에 따라서 많은 타입이 생겨나게 되기 때문에 이를 해결할 수 있는 방안으 공부해야 할 것 같습니다.
 <br>
 
 ### 데이터가 설정된 후, CollectionView가 변경되지 않는 문제 
@@ -266,6 +247,7 @@ struct NetworkManager<T: Decodable> {
     - 뷰를 업데이트 하기 위해서 `dispatchQueue.main.async` 내부에서 데이터를 설정할 수 있도록 하였습니다.
     - 하지만, 클로저 내부에서 데이터를 설정하고, 뷰에 대한 업데이트를 하는 것이 적절한 역할이 아니라고 생각하였습니다.
     - 그래서, 프로퍼티 옵저버를 활용하여서 `CollectionView`를 업데이트 할 수 있도록 하였습니다.
+    
 - 변경전
     ```swift
         func fetchData() {
@@ -298,6 +280,7 @@ struct NetworkManager<T: Decodable> {
             }
         }
     ```
+    
 ### 이미지를 로드하는 과정에서 작업 직접 실행하여, 로딩이 늦는 문제
 - 이미지를 로드 하는 과정을 `cellForItemAt` 메서드 내부에서 이미지를 로드하도록 구현하였습니다.
 - 하지만, 이로 인해서 다음과 같은 문제가 발생하였습니다.
@@ -306,46 +289,22 @@ struct NetworkManager<T: Decodable> {
 - 다음과 같은 문제를 해결하기 위해서 `cellForItemAt` 메서드에서는 이미지 로드 Task를 설정할 수 있도록 하고, 이를 Cell이 수행할 수 있도록 하였습니다.
 - 또한, `prepareForReuse` 메서드 내부에서 작업을 취소할 수 있도록 하였습니다.
 
-### 사진 한개의 용량과 전체 이미지의 사이즈
-```swift
-func downSampling(scale: Double) -> UIImage {
-    guard let data = self.jpegData(compressionQuality: 0.5), 
-          let imageSource = CGImageSourceCreateWithData(data as CFData, nil) else {
-        return self
-    }
-        
-    let maxPixel = min(self.size.width, self.size.height) * scale
-    let downSampleOptions = [
-        kCGImageSourceCreateThumbnailFromImageAlways: true,
-        kCGImageSourceShouldCacheImmediately: true,
-        kCGImageSourceCreateThumbnailWithTransform: true,
-        kCGImageSourceThumbnailMaxPixelSize: maxPixel
-    ] as CFDictionary
-        
-    guard let downSampledImage = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, downSampleOptions) else {
-            return self
-    }
-        
-    let newImage = UIImage(cgImage: downSampledImage)
-        
-    return newImage
-}
-```
-- API 문서의 이미지의 용량에 대한 요구 사항이 있었습니다. 이에 대해서 전체 30kb가 아닌 한개의 이미지가 30kb가 되는 것으로 생각하였습니다. 하지만, 실질적인 API 통신의 요구 사항은 여러 장의 이미지의 용량의 합이 30kb가 되는 것이였습니다.
-- 이에 대해서 수정하는 과정에서 어떤 방식으로 이미지의 용량을 제한 해야 하는 것인지 고민하게 되었습니다.
-- 합에 대한 조건을 통해서 이미지의 사이즈를 줄일 것인지, 한개의 이미지의 용량을 제한 할 것인지에 대해서 고민하였습니다.
-- 이에 대한 결론으로 이미지를 모두 받아 둔 후, 데이터를 압축시키는 것은 사용자에게 좋은 UX를 제공하지 못한다고 판단하여서 한개의 이미지의 사이즈를 30kb / 전체 이미지의 개수로 계산하여서 제한하였습니다.
-- 위의 코드를 통해서 이미지의 최대 픽셀의 사이즈를 조절함으로써 데이터의 양을 줄이도록 했습니다.
-
-## 8.추가적으로 공부해야 하는 것
+## 추가적으로 공부해야 하는 것
 ### 비대한 ViewController
-![Massive ViewController](https://developer.apple.com/library/archive/documentation/General/Conceptual/DevPedia-CocoaCore/Art/model_view_controller_2x.png)
+<img src = "https://developer.apple.com/library/archive/documentation/General/Conceptual/DevPedia-CocoaCore/Art/model_view_controller_2x.png" height = "300"/>
 <br>
-- MVC 아키텍처 패턴을 활용하서 구성하였습니다. 이 과정에서 `Delegate`와 `DataSource`를 `Controller`로 지정되는 구문이 많아서 메서드를 가지고 있음으로써 `Controller`가 비대해졌다고 생각이 듭니다.
-- 또한, `ViewController`가 `View`에 대한 요소들을 가지고 있고, 이에 대한 `Constraint`를 구성하는 것이 적절한지에 대해서 고민하게 되었습니다.
+- MVC 아키텍처 패턴을 활용하서 구성하였습니다.
+- `Delegate`와 `DataSource`를 `Controller`로 지정되는 구문이 많아서 메서드를 가지고 있음으로써 `Controller`가 비대해졌다고 생각이 듭니다.
+- `ViewController`가 `View`에 대한 요소들을 가지고 있고, 이에 대한 `Constraint`를 구성하는 것이 적절한지에 대해서 고민하게 되었습니다.
 - 이에 대해서 추가적으로 MVC의 단점을 보안할 수 있는 점에 대해서 공부하려고 합니다.
 
-## 9.참고 링크
+### Combine을 활용한 Reactive한 프로그래밍
+> 1. MVC 아키텍쳐를 사용하면서 불편하다고 느껴진 부분은 상태가 변경되었을 경우에 데이터의 변경을 코더가 직접 핸들링해야 한다는 것이였습니다.
+> 2. View와 Controller의 굉장히 밀접하기 때문에 빠르게 한개의 파일 내 코드량이 증가한다는 것입니다.
+
+- 다음과 같으 이유들로 Combine Framework를 통해서 반응형의 앱을 작성하느 방법에 대해서 공부하려고 합니다.
+
+## 참고 링크
 - Apple Developer 
     - [Generic](https://docs.swift.org/swift-book/LanguageGuide/Generics.html)
     - [Choosing Between Structures and Classes](https://developer.apple.com/documentation/swift/choosing-between-structures-and-classes)
