@@ -9,7 +9,7 @@ import SwiftUI
 struct CategoryView: View {
   var body: some View {
     ScrollView(.horizontal, showsIndicators: false) {
-      LazyHGrid(rows: [GridItem(.fixed(180))]) {
+      LazyHGrid(rows: [GridItem(.fixed(100))]) {
         ForEach(Category.allCases, id: \.self) { category in
           CategoryCell(category: category)
         }
@@ -26,14 +26,13 @@ private extension CategoryView {
       HStack(alignment: .bottom, spacing: .zero) {
         VStack {
           Text(category.description)
-            .font(.system(size: 36, weight: .semibold))
+            .font(.system(size: 24, weight: .semibold))
             .lineLimit(1)
-            .minimumScaleFactor(0.2)
             .foregroundColor(.white)
           
           Spacer()
         }
-        .padding([.top, .leading], 30)
+        .padding()
         
         Spacer()
         
@@ -42,10 +41,11 @@ private extension CategoryView {
           .scaledToFit()
           .imageScale(.large)
           .padding(.horizontal, 5)
+          .frame(width: 80)
       }
-      .frame(width: 300, height: 200)
+      .frame(width: 200, height: 100)
       .background {
-        RoundedRectangle(cornerRadius: 16)
+        RoundedRectangle(cornerRadius: 16, style: .continuous)
           .fill(Color.accentColor)
       }
     }
