@@ -14,6 +14,8 @@ protocol MarketProductRepository: WebRepository {
   func loadDetailProduct(to id: String) -> AnyPublisher<DetailProduct, Error>
   func removeProduct(to id: String, with password: String) -> AnyPublisher<DetailProduct, Error>
   func modifyProduct(to id: String, modifyRequest: ModifyDetailProductRequest) -> AnyPublisher<DetailProduct, Error>
+  
+  func searchProducts(with term: String) -> AnyPublisher<ProductsResponse, Error>
 }
 
 final class MarketProductConcreteRepository: MarketProductRepository {
@@ -55,6 +57,12 @@ final class MarketProductConcreteRepository: MarketProductRepository {
     return requestNetworkWithCodable(endPoint: api, type: DetailProduct.self)
       .eraseToAnyPublisher()
   }
+  
+  func searchProducts(with term: String) -> AnyPublisher<ProductsResponse, Error> {
+    let api = API.searchProducts(query: term)
+    
+    return requestNetworkWithCodable(endPoint: api, type: ProductsResponse.self).eraseToAnyPublisher()
+  }
 }
 
 extension MarketProductConcreteRepository {
@@ -65,6 +73,7 @@ extension MarketProductConcreteRepository {
     case requestRemoveURL(id: String, password: String)
     case removeItem(path: String)
     case modifyItem(itemId: String, changedProduct: ModifyDetailProductRequest)
+    case searchProducts(query: String)
   }
   
   enum BodyType {
@@ -76,7 +85,7 @@ extension MarketProductConcreteRepository {
 extension MarketProductConcreteRepository.API: EndPointing {
   var method: HTTPMethod {
     switch self {
-    case .loadProducts, .loadDetailProduct:
+    case .loadProducts, .loadDetailProduct, .searchProducts:
       return .get
       
     case .uploadProduct, .requestRemoveURL:
@@ -92,7 +101,7 @@ extension MarketProductConcreteRepository.API: EndPointing {
   
   var headers: HTTPHeaders {
     switch self {
-    case .loadProducts, .loadDetailProduct:
+    case .loadProducts, .loadDetailProduct, .searchProducts:
       return [
         HTTPHeader(name: "Content-Type", value: "application/json")
       ]
@@ -117,6 +126,13 @@ extension MarketProductConcreteRepository.API: EndPointing {
         "page_no": page.description,
         "items_per_page": itemCount.description
       ]
+      
+    case .searchProducts(let query):
+      return [
+        "page_no": 1,
+        "items_per_page": 100,
+        "search_value": query
+      ]
     default:
       return [:]
     }
@@ -128,7 +144,7 @@ extension MarketProductConcreteRepository.API: EndPointing {
   
   var path: String {
     switch self {
-    case .loadProducts, .uploadProduct:
+    case .loadProducts, .uploadProduct, .searchProducts:
       return "/api/products"
       
     case .loadDetailProduct(let id):
@@ -147,7 +163,7 @@ extension MarketProductConcreteRepository.API: EndPointing {
   
   var body: Any? {
     switch self {
-    case .loadProducts, .loadDetailProduct, .removeItem:
+    case .loadProducts, .loadDetailProduct, .removeItem, .searchProducts:
       return nil
       
     case let .uploadProduct(product, images):
