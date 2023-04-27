@@ -37,6 +37,7 @@
 		18EA2EEF29F12D8D0019E137 /* DetailProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EA2EEE29F12D8D0019E137 /* DetailProductViewModel.swift */; };
 		18EB3F8529FA58F90084DE8F /* RecommendListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EB3F8429FA58F90084DE8F /* RecommendListView.swift */; };
 		18EB3F8829FA59220084DE8F /* RecommendListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EB3F8729FA59220084DE8F /* RecommendListViewModel.swift */; };
+		18EB3F8A29FA6EA40084DE8F /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EB3F8929FA6EA40084DE8F /* Category.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +71,7 @@
 		18EA2EEE29F12D8D0019E137 /* DetailProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProductViewModel.swift; sourceTree = "<group>"; };
 		18EB3F8429FA58F90084DE8F /* RecommendListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecommendListView.swift; sourceTree = "<group>"; };
 		18EB3F8729FA59220084DE8F /* RecommendListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendListViewModel.swift; sourceTree = "<group>"; };
+		18EB3F8929FA6EA40084DE8F /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -274,6 +276,7 @@
 				1894080F29EE8B5A00762103 /* DetailProduct.swift */,
 				1814B98729F6AD7F00C042F0 /* ModifyDetailProductRequest.swift */,
 				18B11B5029F794900046B146 /* SearchTextField.swift */,
+				18EB3F8929FA6EA40084DE8F /* Category.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -415,6 +418,7 @@
 				18EB3F8529FA58F90084DE8F /* RecommendListView.swift in Sources */,
 				18EA2EEA29F117B80019E137 /* DetailProductView.swift in Sources */,
 				183C312729E5A39600DFEBC0 /* MarketProductRepository.swift in Sources */,
+				18EB3F8A29FA6EA40084DE8F /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
