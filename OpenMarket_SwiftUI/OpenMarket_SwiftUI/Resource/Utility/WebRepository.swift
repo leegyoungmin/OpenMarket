@@ -91,10 +91,7 @@ private extension WebRepository {
     request
       .validate(statusCode: 200...300)
       .publishDecodable(type: T.self)
-      .tryCompactMap {
-        print($0.response)
-        return $0.value
-      }
+      .tryCompactMap(\.value)
       .eraseToAnyPublisher()
   }
   
