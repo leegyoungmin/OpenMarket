@@ -6,7 +6,7 @@
 
 import Combine
 
-final class RecommendListViewModel: ObservableObject {
+final class HomeSceneViewModel: ObservableObject {
   private let marketRepository: MarketProductRepository
   private var cancellables = Set<AnyCancellable>()
   
@@ -33,6 +33,9 @@ final class RecommendListViewModel: ObservableObject {
         }
         .store(in: &cancellables)
     }
+  }
+  
+  func searchList(with query: String) {
     
   }
 }

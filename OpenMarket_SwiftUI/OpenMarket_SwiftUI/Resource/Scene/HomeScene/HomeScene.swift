@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct HomeScene: View {
-  @StateObject private var viewModel = RecommendListViewModel(
+  @StateObject private var viewModel = HomeSceneViewModel(
     marketRepository: MarketProductConcreteRepository()
   )
   

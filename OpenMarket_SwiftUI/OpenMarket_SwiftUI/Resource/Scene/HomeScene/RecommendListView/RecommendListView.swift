@@ -7,9 +7,9 @@
 import SwiftUI
 
 struct RecommendListView: View {
-  @StateObject private var viewModel: RecommendListViewModel
+  @StateObject private var viewModel: HomeSceneViewModel
   
-  init(viewModel: RecommendListViewModel) {
+  init(viewModel: HomeSceneViewModel) {
     self._viewModel = StateObject(wrappedValue: viewModel)
   }
   
@@ -78,7 +78,7 @@ private extension RecommendListView {
 }
 
 struct RecommendListView_Previews: PreviewProvider {
-  static let viewModel = RecommendListViewModel(marketRepository: MarketProductConcreteRepository())
+  static let viewModel = HomeSceneViewModel(marketRepository: MarketProductConcreteRepository())
   static var previews: some View {
     RecommendListView(viewModel: viewModel)
   }
