@@ -5,6 +5,7 @@
 //  Copyright (c) 2023 Minii All rights reserved.
 
 import Combine
+import Foundation
 
 final class HomeSceneViewModel: ObservableObject {
   private let marketRepository: MarketProductRepository
@@ -33,9 +34,5 @@ final class HomeSceneViewModel: ObservableObject {
         }
         .store(in: &cancellables)
     }
-  }
-  
-  func searchList(with query: String) {
-    
   }
 }

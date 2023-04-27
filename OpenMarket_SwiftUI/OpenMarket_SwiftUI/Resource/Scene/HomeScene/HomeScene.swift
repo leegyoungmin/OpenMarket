@@ -11,20 +11,24 @@ struct HomeScene: View {
     marketRepository: MarketProductConcreteRepository()
   )
   
-  @State private var searchText: String = ""
-  
   var body: some View {
     ScrollView {
       VStack(spacing: 16) {
         NavigationTitleView(title: "홈")
         
-        SearchTextField(
-          searchText: $searchText,
-          placeHolder: "검색어를 입력해보세요."
-        )
-        .padding(.horizontal, 16)
+        TitleSection(title: "최신 상품") {
+          EmptyView()
+        }
+        
+        NewFeatureView()
+          .padding(.horizontal, -16)
+        
+        TitleSection(title: "종류별로 보기") {
+          EmptyView()
+        }
         
         CategoryView()
+          .padding(.horizontal, -16)
         
         TitleSection(title: "추천 상품") {
           Button("모두 보기") {
@@ -32,10 +36,10 @@ struct HomeScene: View {
           }
           .tint(.secondary)
         }
-        .padding(.horizontal, 16)
         
         RecommendListView(viewModel: viewModel)
       }
+      .padding(.horizontal, 16)
     }
     .background(Color(uiColor: .secondarySystemBackground))
     .navigationBarHidden(true)
