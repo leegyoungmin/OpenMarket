@@ -14,12 +14,11 @@ struct RecommendListView: View {
   }
   
   var body: some View {
-    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 16), count: 2), alignment: .center) {
+    LazyVGrid(columns: Constants.columns, spacing: 16) {
       ForEach(viewModel.recommends) { product in
         RecommendGridCell(product)
       }
     }
-    .padding(.horizontal, 16)
     .padding(.bottom, 16)
     .refreshable {
       viewModel.fetchRecommendProducts()
@@ -73,6 +72,7 @@ private extension RecommendListView {
 
 private extension RecommendListView {
   enum Constants {
+    static let columns = Array(repeating: GridItem(.flexible(), spacing: 16), count: 2)
     static let cellLength: CGFloat = 180
   }
 }
@@ -80,6 +80,8 @@ private extension RecommendListView {
 struct RecommendListView_Previews: PreviewProvider {
   static let viewModel = HomeSceneViewModel(marketRepository: MarketProductConcreteRepository())
   static var previews: some View {
-    RecommendListView(viewModel: viewModel)
+    ScrollView {
+      RecommendListView(viewModel: viewModel)
+    }
   }
 }
