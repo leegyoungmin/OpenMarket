@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1814B98829F6AD7F00C042F0 /* ModifyDetailProductRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1814B98729F6AD7F00C042F0 /* ModifyDetailProductRequest.swift */; };
-		1816DCCF29EE3492005FB59D /* PhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1816DCCE29EE3492005FB59D /* PhotoPicker.swift */; };
 		1816DCD229EE39D0005FB59D /* AddNewProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1816DCD129EE39D0005FB59D /* AddNewProductViewModel.swift */; };
 		1825DF0A29E55293007BAE8D /* OpenMarket_SwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825DF0929E55293007BAE8D /* OpenMarket_SwiftUIApp.swift */; };
 		1825DF0C29E55293007BAE8D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825DF0B29E55293007BAE8D /* ContentView.swift */; };
@@ -46,7 +45,6 @@
 
 /* Begin PBXFileReference section */
 		1814B98729F6AD7F00C042F0 /* ModifyDetailProductRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyDetailProductRequest.swift; sourceTree = "<group>"; };
-		1816DCCE29EE3492005FB59D /* PhotoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPicker.swift; sourceTree = "<group>"; };
 		1816DCD129EE39D0005FB59D /* AddNewProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewProductViewModel.swift; sourceTree = "<group>"; };
 		1825DF0629E55293007BAE8D /* OpenMarket_SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenMarket_SwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1825DF0929E55293007BAE8D /* OpenMarket_SwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenMarket_SwiftUIApp.swift; sourceTree = "<group>"; };
@@ -217,7 +215,6 @@
 			children = (
 				1816DCD029EE39C6005FB59D /* ViewModel */,
 				1851193F29ED4A5E00AB1758 /* AddNewProductView.swift */,
-				1816DCCE29EE3492005FB59D /* PhotoPicker.swift */,
 			);
 			path = AddNewProductView;
 			sourceTree = "<group>";
@@ -445,7 +442,6 @@
 				18EB3F8829FA59220084DE8F /* HomeSceneViewModel.swift in Sources */,
 				1851194029ED4A5E00AB1758 /* AddNewProductView.swift in Sources */,
 				1894080E29EE8AFE00762103 /* RequestProduct.swift in Sources */,
-				1816DCCF29EE3492005FB59D /* PhotoPicker.swift in Sources */,
 				1894081429EEC96400762103 /* ToastAlert.swift in Sources */,
 				18EB3F8529FA58F90084DE8F /* RecommendListView.swift in Sources */,
 				18EA2EEA29F117B80019E137 /* DetailProductView.swift in Sources */,
