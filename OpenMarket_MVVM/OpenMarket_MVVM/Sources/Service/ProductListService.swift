@@ -9,23 +9,30 @@ import Combine
 
 protocol ProductListServicing {
     var productsListRepository: ProductListLoadable { get }
-    func loadProducts(pageNumber: Int, count: Int) -> AnyPublisher<[Product], Error>
+    func loadProducts(count: Int) -> AnyPublisher<[Product], Error>
     func loadProduct(id: Int) -> AnyPublisher<DetailProduct, Error>
     func saveProduct(params: Data, images: [Data], identifier: Data) -> AnyPublisher<Bool, Never>
     func deleteProduct(with id: String, password: String) -> AnyPublisher<Bool, Never>
 }
 
 final class ProductListService: ProductListServicing {
+  private var pageNumber: Int = 1
     private(set) var productsListRepository: ProductListLoadable
     
     init(productsListRepository: ProductListLoadable = ProductListRepository()) {
         self.productsListRepository = productsListRepository
     }
     
-    func loadProducts(pageNumber: Int, count: Int) -> AnyPublisher<[Product], Error> {
+    func loadProducts(count: Int) -> AnyPublisher<[Product], Error> {
         return productsListRepository
             .fetchData(pageNumber: pageNumber, count: count, type: ProductsResponse.self)
-            .map(\.items)
+            .map { response in
+              if response.hasNext {
+                self.pageNumber += 1
+              }
+              
+              return response.items
+            }
             .eraseToAnyPublisher()
     }
     
