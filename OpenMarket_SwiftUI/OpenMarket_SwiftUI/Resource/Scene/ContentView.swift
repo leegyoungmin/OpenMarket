@@ -17,6 +17,9 @@ struct ContentView: View {
         case .home:
           HomeScene()
           
+        case .search:
+          SearchView()
+          
         case .list:
           ProductListView(viewModel: ProductListViewModel())
         default:
@@ -33,6 +36,7 @@ struct ContentView: View {
 
 enum SceneType: Hashable, CaseIterable {
   case home
+  case search
   case list
   case favorite
   
@@ -40,6 +44,8 @@ enum SceneType: Hashable, CaseIterable {
     switch self {
     case .home:
       return "house.fill"
+    case .search:
+      return "magnifyingglass"
     case .list:
       return "list.bullet"
     case .favorite:
@@ -51,6 +57,8 @@ enum SceneType: Hashable, CaseIterable {
     switch self {
     case .home:
       return "홈"
+    case .search:
+      return "검색"
     case .list:
       return "상품 목록"
     case .favorite:
@@ -66,31 +74,35 @@ struct CustomTabBarView<Scene: View>: View {
   
   var body: some View {
     VStack(spacing: .zero) {
-      
       content()
-      
-      HStack {
-        ForEach(tabs, id: \.self) { tab in
-          VStack(spacing: 10) {
-            Image(systemName: tab.iconName)
-              .font(.subheadline)
+        ZStack {
+          Rectangle()
+            .fill(.white)
+            .shadow(radius: 2)
+            .edgesIgnoringSafeArea(.bottom)
+          
+          HStack {
+            Spacer()
             
-            Text(tab.title)
-              .font(.system(size: 10, weight: .semibold, design: .rounded))
-          }
-          .onTapGesture {
-            withAnimation {
-              selection = tab
+            ForEach(tabs, id: \.self) { tab in
+              VStack(spacing: 10) {
+                Image(systemName: tab.iconName)
+                
+                Text(tab.title)
+                  .font(.system(size: 10, weight: .semibold, design: .rounded))
+              }
+              .foregroundColor(tab == selection ? .accentColor : .gray)
+              .onTapGesture {
+                withAnimation {
+                  selection = tab
+                }
+              }
+              
+              Spacer()
             }
           }
-          .foregroundColor(tab == selection ? .red : .blue)
-          .padding(.vertical, 8)
-          .frame(maxWidth: .infinity)
-          .cornerRadius(10)
         }
-      }
-      .background(.white)
-      .shadow(radius: 2)
+        .frame(maxHeight: 50)
     }
   }
 }
