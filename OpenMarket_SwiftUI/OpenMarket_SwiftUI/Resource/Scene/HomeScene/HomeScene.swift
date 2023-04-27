@@ -7,6 +7,10 @@
 import SwiftUI
 
 struct HomeScene: View {
+  @StateObject private var viewModel = RecommendListViewModel(
+    marketRepository: MarketProductConcreteRepository()
+  )
+  
   @State private var searchText: String = ""
   
   var body: some View {
@@ -30,10 +34,19 @@ struct HomeScene: View {
         }
         .padding(.horizontal, 16)
         
-        RecommendListView()
+        RecommendListView(viewModel: viewModel)
       }
     }
     .background(Color(uiColor: .secondarySystemBackground))
     .navigationBarHidden(true)
+    .refreshable {
+      viewModel.fetchRecommendProducts()
+    }
+  }
+}
+
+struct HomeScene_Previews: PreviewProvider {
+  static var previews: some View {
+    HomeScene()
   }
 }
