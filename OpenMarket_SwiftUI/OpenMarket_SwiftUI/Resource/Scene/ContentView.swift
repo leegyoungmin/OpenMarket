@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
   @State private var addNewProduct: Bool = false
-  @State private var selectedScene: SceneType = .setting
+  @State private var selectedScene: SceneType = .home
   
   var body: some View {
     NavigationStack {
