@@ -52,7 +52,6 @@ private extension ProductListCellView {
         .font(.system(size: 16, weight: .semibold, design: .default))
         .lineLimit(2)
         .multilineTextAlignment(.leading)
-        .minimumScaleFactor(0.5)
       
       if product.isDiscounted {
         Text(product.priceDescription)
@@ -63,11 +62,7 @@ private extension ProductListCellView {
       
       Text(product.bargainPriceDescription)
         .font(.system(size: 14))
-        .foregroundColor(.black.opacity(0.8))
-      
-      Text(product.isSoldOut ? "품절" : "잔여 수량 : \(product.stock)")
-        .font(.caption)
-        .foregroundColor(product.isSoldOut ? .red : .black)
+        .foregroundColor(.accentColor)
     }
   }
 }
