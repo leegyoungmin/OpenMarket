@@ -9,13 +9,11 @@ import PhotosUI
 
 struct AddNewProductView: View {
   @Environment(\.dismiss) var dismiss
-  @Binding var isSuccessUpload: Bool
   @StateObject private var viewModel: AddNewProductViewModel
   @State private var selectedImage: PhotosPickerItem? = nil
   @State private var isPresentToast: Bool = false
   
-  init(isSuccessUpload: Binding<Bool>, viewModel: AddNewProductViewModel) {
-    self._isSuccessUpload = isSuccessUpload
+  init(viewModel: AddNewProductViewModel) {
     self._viewModel = StateObject(wrappedValue: viewModel)
   }
   
@@ -81,7 +79,6 @@ struct AddNewProductView: View {
       }
     }
     .onReceive(viewModel.successUpload) { isSuccess in
-      isSuccessUpload = true
       isPresentToast = true
     }
     .disabled(isPresentToast)
@@ -214,6 +211,6 @@ struct AddNewProductView_Previews: PreviewProvider {
   static let viewModel = AddNewProductViewModel()
   
   static var previews: some View {
-    AddNewProductView(isSuccessUpload: .constant(true), viewModel: viewModel)
+    AddNewProductView(viewModel: viewModel)
   }
 }

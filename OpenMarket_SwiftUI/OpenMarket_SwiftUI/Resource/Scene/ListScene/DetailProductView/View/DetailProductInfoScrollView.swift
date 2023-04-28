@@ -34,7 +34,6 @@ struct DetailProductInfoScrollView: View {
             Menu {
               NavigationLink {
                 AddNewProductView(
-                  isSuccessUpload: $viewModel.shouldDismiss,
                   viewModel: AddNewProductViewModel(with: viewModel.detailProduct)
                 )
                 .onDisappear {
