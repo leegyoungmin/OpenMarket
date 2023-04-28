@@ -13,13 +13,13 @@ struct ProductListCellView: View {
     HStack {
       thumbnailImage(with: product.thumbnail)
       
-      VStack(spacing: Constants.cellContentSpacing) {
-        titleSection
-        
-        priceSection
-      }
+      titleSection
+      
+      Spacer()
     }
-    .padding()
+    .padding(12)
+    .background(.white)
+    .cornerRadius(16)
   }
 }
 
@@ -47,37 +47,35 @@ private extension ProductListCellView {
   }
   
   var titleSection: some View {
-    HStack {
+    VStack(alignment: .leading, spacing: 6) {
       Text(product.name)
-        .font(.title3)
+        .font(.system(size: 16, weight: .semibold, design: .default))
+        .lineLimit(2)
+        .multilineTextAlignment(.leading)
+        .minimumScaleFactor(0.5)
       
-      Spacer()
-      
-      Text(product.isSoldOut ? "품절" : "잔여 수량 : \(product.stock)")
-        .foregroundColor(product.isSoldOut ? .red : .black)
-    }
-  }
-  
-  var priceSection: some View {
-    HStack {
       if product.isDiscounted {
         Text(product.priceDescription)
-          .strikethrough(color: .red)
-          .foregroundColor(.red)
+          .font(.system(size: 14))
+          .strikethrough()
+          .foregroundColor(.black.opacity(0.2))
       }
       
       Text(product.bargainPriceDescription)
+        .font(.system(size: 14))
+        .foregroundColor(.black.opacity(0.8))
       
-      Spacer()
+      Text(product.isSoldOut ? "품절" : "잔여 수량 : \(product.stock)")
+        .font(.caption)
+        .foregroundColor(product.isSoldOut ? .red : .black)
     }
   }
 }
-
 // MARK: Name Space
 private extension ProductListCellView {
   enum Constants {
     static let cellContentSpacing: CGFloat = 10
-    static let imageHeight: CGFloat = 80
+    static let imageHeight: CGFloat = 100
     static let stockPlaceholder: String = "잔여 수량 : "
   }
 }
@@ -86,7 +84,10 @@ private extension ProductListCellView {
 struct ProductListCellView_Previews: PreviewProvider {
   static let mockProduct = Product.mockData
   static var previews: some View {
-    ProductListCellView(product: mockProduct)
-      .previewLayout(.fixed(width: UIScreen.main.bounds.width, height: 100))
+    NavigationStack {
+      ProductListView(viewModel: ProductListViewModel())
+    }
+    //    ProductListCellView(product: mockProduct)
+    //      .previewLayout(.fixed(width: UIScreen.main.bounds.width, height: 100))
   }
 }

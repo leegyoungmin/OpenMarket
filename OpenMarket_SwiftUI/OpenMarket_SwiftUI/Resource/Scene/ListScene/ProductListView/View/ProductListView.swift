@@ -17,15 +17,7 @@ struct ProductListView: View {
       
       listSection
     }
-    .navigateFloatingButton(color: .blue) {
-      AddNewProductView(
-        isSuccessUpload: $reloadData,
-        viewModel: AddNewProductViewModel()
-      )
-    } image: {
-      Image(systemName: "plus")
-        .foregroundColor(.white)
-    }
+    .background(Color(uiColor: .secondarySystemFill))
     .onAppear {
       if reloadData {
         viewModel.fetchProducts()
@@ -37,33 +29,35 @@ struct ProductListView: View {
 // MARK: Child View Components
 private extension ProductListView {
   var listSection: some View {
-    List {
-      ForEach(viewModel.products, id: \.id) { product in
-        DetailProductCell(with: product)
-          .onAppear {
-            viewModel.fetchNextPage(with: product)
-          }
+    ScrollView {
+      LazyVStack {
+        ForEach(viewModel.products, id: \.id) { product in
+          DetailProductCell(with: product)
+            .cornerRadius(16)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 6)
+            .onAppear {
+              viewModel.fetchNextPage(with: product)
+            }
+            .shadow(color: .black.opacity(0.2), radius: 2)
+        }
       }
     }
     .listStyle(.plain)
   }
   
   @ViewBuilder func DetailProductCell(with product: Product) -> some View {
-    ZStack {
-      NavigationLink {
-        DetailProductView(
-          viewModel: DetailProductViewModel(
-            product: product,
-            marketRepository: viewModel.marketWebRepository
-          )
+    NavigationLink {
+      DetailProductView(
+        viewModel: DetailProductViewModel(
+          product: product,
+          marketRepository: viewModel.marketWebRepository
         )
-      } label: {
-        EmptyView()
-      }
-      .opacity(.zero)
-      
+      )
+    } label: {
       ProductListCellView(product: product)
     }
+    .tint(.black)
   }
 }
 
