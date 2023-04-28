@@ -26,40 +26,34 @@ struct SearchView: View {
           scheduler: RunLoop.main
         )
       ) {
-        if $0.isEmpty == false {
-          viewModel.search(with: $0)
-        } else {
-          viewModel.searchedProducts = []
-        }
+        viewModel.search(with: $0)
       }
       
       if viewModel.searchedProducts.isEmpty {
-        Spacer()
-        
-        Image(systemName: "tray.2")
-          .resizable()
-          .frame(width: 50, height: 50)
-        
-        Text("검색된 상품이 없습니다.")
-          .font(.caption)
-        
-        Spacer()
+        emptyResultView
       } else {
-        ForEach(viewModel.searchedProducts, id: \.id) { product in
-          HStack {
-            Text(product.name)
-
-            Spacer()
-          }
-          .padding(16)
-          .background(Color.secondary)
-          .cornerRadius(16)
-        }
-        
-        Spacer()
+        SearchResultListView(products: $viewModel.searchedProducts)
       }
     }
     .padding(.horizontal, 16)
+    .background(Color(uiColor: .secondarySystemFill))
+  }
+}
+
+private extension SearchView {
+  var emptyResultView: some View {
+    Group {
+      Spacer()
+      
+      Image(systemName: "tray.2")
+        .resizable()
+        .frame(width: 50, height: 50)
+      
+      Text("검색된 상품이 없습니다.")
+        .font(.caption)
+      
+      Spacer()
+    }
     .foregroundColor(.accentColor)
   }
 }
