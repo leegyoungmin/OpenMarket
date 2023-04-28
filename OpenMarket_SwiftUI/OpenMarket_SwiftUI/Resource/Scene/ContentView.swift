@@ -75,35 +75,36 @@ struct CustomTabBarView<Scene: View>: View {
   var body: some View {
     VStack(spacing: .zero) {
       content()
-        ZStack {
-          Rectangle()
-            .fill(.white)
-            .shadow(radius: 2)
-            .edgesIgnoringSafeArea(.bottom)
+      ZStack {
+        Rectangle()
+          .fill(.white)
+          .shadow(radius: 2)
+          .edgesIgnoringSafeArea(.bottom)
+        
+        HStack {
+          Spacer()
           
-          HStack {
-            Spacer()
-            
-            ForEach(tabs, id: \.self) { tab in
-              VStack(spacing: 10) {
-                Image(systemName: tab.iconName)
-                
-                Text(tab.title)
-                  .font(.system(size: 10, weight: .semibold, design: .rounded))
-              }
-              .foregroundColor(tab == selection ? .accentColor : .gray)
-              .onTapGesture {
-                withAnimation {
-                  selection = tab
-                }
-              }
+          ForEach(tabs, id: \.self) { tab in
+            VStack(spacing: 10) {
+              Image(systemName: tab.iconName)
               
-              Spacer()
+              Text(tab.title)
+                .font(.system(size: 10, weight: .semibold, design: .rounded))
             }
+            .foregroundColor(tab == selection ? .accentColor : .gray)
+            .onTapGesture {
+              withAnimation {
+                selection = tab
+              }
+            }
+            
+            Spacer()
           }
         }
-        .frame(maxHeight: 50)
+      }
+      .frame(maxHeight: 50)
     }
+    .ignoresSafeArea(.keyboard, edges: .bottom)
   }
 }
 
