@@ -8,11 +8,16 @@
 import SwiftUI
 
 struct ContentView: View {
+  @State private var addNewProduct: Bool = false
   @State private var selectedScene: SceneType = .home
-
+  
   var body: some View {
     NavigationStack {
-      CustomTabBarView(tabs: SceneType.allCases, selection: $selectedScene) {
+      CustomTabBarView(
+        tabs: SceneType.allCases,
+        selection: $selectedScene,
+        addNewProduct: $addNewProduct
+      ) {
         switch selectedScene {
         case .home:
           HomeScene()
@@ -31,6 +36,9 @@ struct ContentView: View {
         }
       }
       .scrollIndicators(.hidden)
+      .fullScreenCover(isPresented: $addNewProduct) {
+        AddNewProductView(viewModel: AddNewProductViewModel())
+      }
     }
   }
 }
@@ -38,6 +46,7 @@ struct ContentView: View {
 enum SceneType: Hashable, CaseIterable {
   case home
   case search
+  case add
   case list
   case favorite
   
@@ -47,6 +56,8 @@ enum SceneType: Hashable, CaseIterable {
       return "house.fill"
     case .search:
       return "magnifyingglass"
+    case .add:
+      return "plus.app.fill"
     case .list:
       return "list.bullet"
     case .favorite:
@@ -60,6 +71,8 @@ enum SceneType: Hashable, CaseIterable {
       return "홈"
     case .search:
       return "검색"
+    case .add:
+      return ""
     case .list:
       return "상품 목록"
     case .favorite:
@@ -71,35 +84,46 @@ enum SceneType: Hashable, CaseIterable {
 struct CustomTabBarView<Scene: View>: View {
   let tabs: [SceneType]
   @Binding var selection: SceneType
+  @Binding var addNewProduct: Bool
   @ViewBuilder var content: () -> Scene
   
   var body: some View {
     VStack(spacing: .zero) {
       content()
-      ZStack {
+      
+      ZStack(alignment: .bottom) {
         Rectangle()
           .fill(.white)
           .shadow(radius: 2)
           .edgesIgnoringSafeArea(.bottom)
         
-        HStack {
-          Spacer()
-          
-          ForEach(tabs, id: \.self) { tab in
-            VStack(spacing: 10) {
-              Image(systemName: tab.iconName)
+        HStack(alignment: .bottom) {
+          ForEach(tabs, id: \.iconName) { tab in
+            HStack {
+              Spacer()
               
-              Text(tab.title)
-                .font(.system(size: 10, weight: .semibold, design: .rounded))
+              VStack(alignment: .center, spacing: 5) {
+                Image(systemName: tab.iconName)
+                  .font(tab == .add ? .largeTitle : .subheadline)
+                
+                if tab != .add {
+                  Text(tab.title)
+                    .font(.caption)
+                }
+              }
+              .foregroundColor(tab == .add ? .accentColor : tab == selection ? .accentColor : .secondary)
+              
+              Spacer()
             }
-            .foregroundColor(tab == selection ? .accentColor : .gray)
             .onTapGesture {
               withAnimation {
-                selection = tab
+                if tab == .add {
+                  addNewProduct.toggle()
+                } else {
+                  selection = tab
+                }
               }
             }
-            
-            Spacer()
           }
         }
       }
