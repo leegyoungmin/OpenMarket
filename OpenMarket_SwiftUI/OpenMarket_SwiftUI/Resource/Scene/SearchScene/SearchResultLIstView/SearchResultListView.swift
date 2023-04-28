@@ -19,7 +19,6 @@ struct SearchResultListView: View {
         }
       }
     }
-    .scrollIndicators(.hidden)
     .scrollDismissesKeyboard(.immediately)
     .listStyle(.inset)
     .cornerRadius(16)
@@ -34,6 +33,7 @@ private extension SearchResultListView {
         imagePhase
           .resizable()
           .frame(width: 50, height: 50)
+          .cornerRadius(12)
       } placeholder: {
         RoundedRectangle(cornerRadius: 12)
           .fill(.gray.opacity(0.2))

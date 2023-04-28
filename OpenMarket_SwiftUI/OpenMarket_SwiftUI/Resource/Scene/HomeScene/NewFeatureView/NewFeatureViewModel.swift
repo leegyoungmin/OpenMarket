@@ -19,7 +19,7 @@ final class NewFeatureViewModel: ObservableObject {
   }
   
   func fetchRecent() {
-    marketRepository.loadProducts(with: 1, itemCount: 20)
+    marketRepository.loadProducts(with: 1, itemCount: 10)
       .receive(on: DispatchQueue.main)
       .map(\.items)
       .replaceError(with: [])
