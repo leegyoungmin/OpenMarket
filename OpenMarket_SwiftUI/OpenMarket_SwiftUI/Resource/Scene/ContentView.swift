@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
   @State private var addNewProduct: Bool = false
-  @State private var selectedScene: SceneType = .home
+  @State private var selectedScene: SceneType = .setting
   
   var body: some View {
     NavigationStack {
@@ -25,14 +25,14 @@ struct ContentView: View {
         case .search:
           SearchView()
           
+        case .add:
+          EmptyView()
+          
         case .list:
           ProductListView(viewModel: ProductListViewModel())
-        default:
-          VStack {
-            Spacer()
-            Text("Example")
-            Spacer()
-          }
+          
+        case .setting:
+          SettingScene()
         }
       }
       .scrollIndicators(.hidden)
@@ -48,7 +48,7 @@ enum SceneType: Hashable, CaseIterable {
   case search
   case add
   case list
-  case favorite
+  case setting
   
   var iconName: String {
     switch self {
@@ -60,8 +60,8 @@ enum SceneType: Hashable, CaseIterable {
       return "plus.app.fill"
     case .list:
       return "list.bullet"
-    case .favorite:
-      return "heart"
+    case .setting:
+      return "gear"
     }
   }
   
@@ -75,8 +75,8 @@ enum SceneType: Hashable, CaseIterable {
       return ""
     case .list:
       return "상품 목록"
-    case .favorite:
-      return "찜목록"
+    case .setting:
+      return "설정"
     }
   }
 }
