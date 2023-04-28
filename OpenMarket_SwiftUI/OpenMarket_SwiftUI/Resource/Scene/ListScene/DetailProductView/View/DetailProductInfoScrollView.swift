@@ -33,8 +33,10 @@ struct DetailProductInfoScrollView: View {
           ToolbarItem(placement: .primaryAction) {
             Menu {
               NavigationLink {
-                AddNewProductView(
-                  viewModel: AddNewProductViewModel(with: viewModel.detailProduct)
+                UploadProductView(
+                  viewModel: AddNewProductViewModel(
+                    with: viewModel.detailProduct
+                  )
                 )
                 .onDisappear {
                   viewModel.shouldDismiss.toggle()
