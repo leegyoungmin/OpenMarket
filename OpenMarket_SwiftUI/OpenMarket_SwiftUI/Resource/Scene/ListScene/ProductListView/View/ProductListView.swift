@@ -12,22 +12,25 @@ struct ProductListView: View {
   @State private var reloadData: Bool = true
   
   var body: some View {
-    listSection
-      .navigateFloatingButton(color: .blue) {
-        AddNewProductView(
-          isSuccessUpload: $reloadData,
-          viewModel: AddNewProductViewModel()
-        )
-      } image: {
-        Image(systemName: "plus")
-          .foregroundColor(.white)
+    VStack {
+      NavigationTitleView(title: "상품 목록")
+      
+      listSection
+    }
+    .navigateFloatingButton(color: .blue) {
+      AddNewProductView(
+        isSuccessUpload: $reloadData,
+        viewModel: AddNewProductViewModel()
+      )
+    } image: {
+      Image(systemName: "plus")
+        .foregroundColor(.white)
+    }
+    .onAppear {
+      if reloadData {
+        viewModel.fetchProducts()
       }
-      .navigationTitle("상품 목록")
-      .onAppear {
-        if reloadData {
-          viewModel.fetchProducts()
-        }
-      }
+    }
   }
 }
 
