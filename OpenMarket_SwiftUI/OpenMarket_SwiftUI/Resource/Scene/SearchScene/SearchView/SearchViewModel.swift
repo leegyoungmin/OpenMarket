@@ -19,6 +19,8 @@ final class SearchViewModel: ObservableObject {
   }
   
   func search(with query: String) {
+    guard query.isEmpty == false else { return }
+    
     marketRepository.searchProducts(with: query)
       .receive(on: DispatchQueue.main)
       .map(\.items)
