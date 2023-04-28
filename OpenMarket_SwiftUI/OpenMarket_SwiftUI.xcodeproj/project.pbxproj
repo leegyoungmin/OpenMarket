@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1814B98829F6AD7F00C042F0 /* ModifyDetailProductRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1814B98729F6AD7F00C042F0 /* ModifyDetailProductRequest.swift */; };
 		1816DCD229EE39D0005FB59D /* AddNewProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1816DCD129EE39D0005FB59D /* AddNewProductViewModel.swift */; };
+		181F699629FB940300D1BB4B /* DetailProductInfoScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181F699529FB940300D1BB4B /* DetailProductInfoScrollView.swift */; };
+		181F699829FB947700D1BB4B /* PagingBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181F699729FB947700D1BB4B /* PagingBannerView.swift */; };
 		1825DF0A29E55293007BAE8D /* OpenMarket_SwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825DF0929E55293007BAE8D /* OpenMarket_SwiftUIApp.swift */; };
 		1825DF0C29E55293007BAE8D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1825DF0B29E55293007BAE8D /* ContentView.swift */; };
 		1825DF0E29E55293007BAE8D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1825DF0D29E55293007BAE8D /* Assets.xcassets */; };
@@ -47,6 +49,8 @@
 /* Begin PBXFileReference section */
 		1814B98729F6AD7F00C042F0 /* ModifyDetailProductRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyDetailProductRequest.swift; sourceTree = "<group>"; };
 		1816DCD129EE39D0005FB59D /* AddNewProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewProductViewModel.swift; sourceTree = "<group>"; };
+		181F699529FB940300D1BB4B /* DetailProductInfoScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProductInfoScrollView.swift; sourceTree = "<group>"; };
+		181F699729FB947700D1BB4B /* PagingBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagingBannerView.swift; sourceTree = "<group>"; };
 		1825DF0629E55293007BAE8D /* OpenMarket_SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenMarket_SwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1825DF0929E55293007BAE8D /* OpenMarket_SwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenMarket_SwiftUIApp.swift; sourceTree = "<group>"; };
 		1825DF0B29E55293007BAE8D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -100,6 +104,16 @@
 				1816DCD129EE39D0005FB59D /* AddNewProductViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		181F699429FB93CA00D1BB4B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				18EA2EE929F117B80019E137 /* DetailProductView.swift */,
+				181F699529FB940300D1BB4B /* DetailProductInfoScrollView.swift */,
+				181F699729FB947700D1BB4B /* PagingBannerView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		1825DEFD29E55293007BAE8D = {
@@ -294,8 +308,8 @@
 		18EA2EE829F117A90019E137 /* DetailProductView */ = {
 			isa = PBXGroup;
 			children = (
+				181F699429FB93CA00D1BB4B /* View */,
 				18EA2EED29F12D7F0019E137 /* ViewModel */,
-				18EA2EE929F117B80019E137 /* DetailProductView.swift */,
 			);
 			path = DetailProductView;
 			sourceTree = "<group>";
@@ -428,6 +442,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1814B98829F6AD7F00C042F0 /* ModifyDetailProductRequest.swift in Sources */,
+				181F699629FB940300D1BB4B /* DetailProductInfoScrollView.swift in Sources */,
 				1825DF1D29E56AEE007BAE8D /* ProductListCellView.swift in Sources */,
 				18D99C1329E9223D009100DD /* ProductResponse.swift in Sources */,
 				18EB3F8D29FA9F9F0084DE8F /* SearchView.swift in Sources */,
@@ -448,6 +463,7 @@
 				18B11B5629F795720046B146 /* CategoryView.swift in Sources */,
 				18B11B6229F809930046B146 /* HomeScene.swift in Sources */,
 				183C312D29E5A99300DFEBC0 /* WebRepository.swift in Sources */,
+				181F699829FB947700D1BB4B /* PagingBannerView.swift in Sources */,
 				1816DCD229EE39D0005FB59D /* AddNewProductViewModel.swift in Sources */,
 				18EB3F9529FAAFBB0084DE8F /* NewFeatureViewModel.swift in Sources */,
 				18EB3F8829FA59220084DE8F /* HomeSceneViewModel.swift in Sources */,
