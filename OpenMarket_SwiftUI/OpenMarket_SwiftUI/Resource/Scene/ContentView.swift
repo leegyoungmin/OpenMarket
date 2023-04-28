@@ -37,7 +37,7 @@ struct ContentView: View {
       }
       .scrollIndicators(.hidden)
       .fullScreenCover(isPresented: $addNewProduct) {
-        AddNewProductView(viewModel: AddNewProductViewModel())
+        UploadProductView(viewModel: AddNewProductViewModel())
       }
     }
   }
