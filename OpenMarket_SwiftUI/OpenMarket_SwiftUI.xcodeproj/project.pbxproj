@@ -41,6 +41,7 @@
 		18EB3F8F29FAA1510084DE8F /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EB3F8E29FAA1510084DE8F /* SearchViewModel.swift */; };
 		18EB3F9329FAAB0E0084DE8F /* NewFeatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EB3F9229FAAB0E0084DE8F /* NewFeatureView.swift */; };
 		18EB3F9529FAAFBB0084DE8F /* NewFeatureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EB3F9429FAAFBB0084DE8F /* NewFeatureViewModel.swift */; };
+		18EB3F9829FACCFF0084DE8F /* SearchResultListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EB3F9729FACCFF0084DE8F /* SearchResultListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +79,7 @@
 		18EB3F8E29FAA1510084DE8F /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		18EB3F9229FAAB0E0084DE8F /* NewFeatureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFeatureView.swift; sourceTree = "<group>"; };
 		18EB3F9429FAAFBB0084DE8F /* NewFeatureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFeatureViewModel.swift; sourceTree = "<group>"; };
+		18EB3F9729FACCFF0084DE8F /* SearchResultListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -240,6 +242,7 @@
 		1894081229EEC94C00762103 /* ViewModifier */ = {
 			isa = PBXGroup;
 			children = (
+				18B11B5029F794900046B146 /* SearchTextField.swift */,
 				1894081329EEC96400762103 /* ToastAlert.swift */,
 				18B11B4D29F7763F0046B146 /* FloatingActionButton.swift */,
 				18B11B5229F7950A0046B146 /* NavigationTitleView.swift */,
@@ -283,7 +286,6 @@
 				1894080D29EE8AFE00762103 /* RequestProduct.swift */,
 				1894080F29EE8B5A00762103 /* DetailProduct.swift */,
 				1814B98729F6AD7F00C042F0 /* ModifyDetailProductRequest.swift */,
-				18B11B5029F794900046B146 /* SearchTextField.swift */,
 				18EB3F8929FA6EA40084DE8F /* Category.swift */,
 			);
 			path = Entity;
@@ -326,6 +328,7 @@
 		18EB3F9029FAA7BB0084DE8F /* SearchScene */ = {
 			isa = PBXGroup;
 			children = (
+				18EB3F9629FACCEE0084DE8F /* SearchResultLIstView */,
 				18EB3F8B29FA9F970084DE8F /* SearchView */,
 			);
 			path = SearchScene;
@@ -338,6 +341,14 @@
 				18EB3F9429FAAFBB0084DE8F /* NewFeatureViewModel.swift */,
 			);
 			path = NewFeatureView;
+			sourceTree = "<group>";
+		};
+		18EB3F9629FACCEE0084DE8F /* SearchResultLIstView */ = {
+			isa = PBXGroup;
+			children = (
+				18EB3F9729FACCFF0084DE8F /* SearchResultListView.swift */,
+			);
+			path = SearchResultLIstView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -445,6 +456,7 @@
 				1894081429EEC96400762103 /* ToastAlert.swift in Sources */,
 				18EB3F8529FA58F90084DE8F /* RecommendListView.swift in Sources */,
 				18EA2EEA29F117B80019E137 /* DetailProductView.swift in Sources */,
+				18EB3F9829FACCFF0084DE8F /* SearchResultListView.swift in Sources */,
 				183C312729E5A39600DFEBC0 /* MarketProductRepository.swift in Sources */,
 				18EB3F8A29FA6EA40084DE8F /* Category.swift in Sources */,
 			);
