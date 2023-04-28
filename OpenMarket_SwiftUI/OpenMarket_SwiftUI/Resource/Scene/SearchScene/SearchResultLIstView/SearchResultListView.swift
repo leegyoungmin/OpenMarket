@@ -12,14 +12,14 @@ struct SearchResultListView: View {
   var body: some View {
     List {
       ForEach(products, id: \.id) { product in
-        VStack {
+        NavigationLink {
+          DetailProductView(viewModel: DetailProductViewModel(product: product, marketRepository: MarketProductConcreteRepository()))
+        } label: {
           searchResultCellView(to: product)
-          
-          Divider()
         }
-        .listRowSeparator(.hidden)
       }
     }
+    .scrollDismissesKeyboard(.immediately)
     .listStyle(.inset)
     .cornerRadius(16)
     .padding(.bottom)
@@ -58,6 +58,8 @@ private extension SearchResultListView {
 
 struct SearchResultList_Previews: PreviewProvider {
   static var previews: some View {
-    SearchView()
+    NavigationView {
+      SearchView()
+    }
   }
 }
