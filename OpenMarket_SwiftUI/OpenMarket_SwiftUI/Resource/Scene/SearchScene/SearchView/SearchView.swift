@@ -8,6 +8,7 @@ import SwiftUI
 
 struct SearchView: View {
   @StateObject private var viewModel: SearchViewModel
+  @State private var isPresent: Bool = false
   
   init() {
     let repository = MarketProductConcreteRepository()
@@ -16,9 +17,12 @@ struct SearchView: View {
   }
   var body: some View {
     VStack {
+      NavigationTitleView(title: "검색")
+      
       SearchTextField(
-        searchText: $viewModel.searchQuery,
-        placeHolder: "상품명, 판매자를 검색해보세요."
+        placeHolder: "상품명, 판매자명을 검색해보세요.",
+        isPresentCancel: $isPresent,
+        searchText: $viewModel.searchQuery
       )
       .onReceive(
         viewModel.$searchQuery.debounce(
