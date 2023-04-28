@@ -20,7 +20,12 @@ final class AddNewProductViewModel: ObservableObject {
   
   // MARK: Routing
   @Published private(set) var isPresentPhotoPicker: Bool = false
-  @Published var alertState: AlertState? = nil
+  @Published var alertState: AlertState? = nil {
+    didSet {
+      isPresentErrorAlert = (alertState != nil)
+    }
+  }
+  @Published var isPresentErrorAlert = false
   @Published var viewStyle: ViewStyle = .create
   private(set) var successUpload = PassthroughSubject<Bool, Never>()
 
@@ -79,7 +84,9 @@ final class AddNewProductViewModel: ObservableObject {
   }
   
   func modifyProduct() {
-    if validation() == false { return }
+    let result = validation()
+    
+    if result == false { return }
     
     let productRequest = ModifyDetailProductRequest(
       name: self.name,
@@ -115,7 +122,7 @@ extension AddNewProductViewModel {
     case modify
   }
   
-  enum AlertState: CustomStringConvertible {
+  enum AlertState: CustomStringConvertible, LocalizedError {
     case emptyImage
     case invalidName
     case invalidPrice
@@ -139,6 +146,10 @@ extension AddNewProductViewModel {
       case .shortDescription:
         return "상대방이 더 자세한 상품의 정보를 얻을 수 있게 상품 설명을 적어주세요."
       }
+    }
+    
+    var errorDescription: String? {
+      return "업로드 오류"
     }
   }
 }
