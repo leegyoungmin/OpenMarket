@@ -52,12 +52,18 @@ struct DetailProductView: View {
       .toolbar {
         ToolbarItem(placement: .primaryAction) {
           Menu {
-            Button {
-              isPresentModifyView.toggle()
+            NavigationLink {
+              AddNewProductView(
+                isSuccessUpload: $viewModel.shouldDismiss,
+                viewModel: AddNewProductViewModel(with: viewModel.detailProduct)
+              )
+              .onDisappear {
+                viewModel.shouldDismiss.toggle()
+              }
             } label: {
               Label("수정", systemImage: "pencil.circle.fill")
             }
-            
+
             Button(role: .destructive) {
               isPresentTextFieldAlert.toggle()
             } label: {
@@ -86,19 +92,6 @@ struct DetailProductView: View {
         if shouldDismiss {
           dismiss.callAsFunction()
         }
-      }
-    }
-    .background {
-      NavigationLink(isActive: $isPresentModifyView) {
-        AddNewProductView(
-          isSuccessUpload: $viewModel.shouldDismiss,
-          viewModel: AddNewProductViewModel(with: viewModel.detailProduct)
-        )
-        .onDisappear {
-          viewModel.shouldDismiss.toggle()
-        }
-      } label: {
-        EmptyView()
       }
     }
   }

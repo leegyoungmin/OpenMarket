@@ -19,6 +19,7 @@ struct SearchResultListView: View {
         }
       }
     }
+    .scrollIndicators(.hidden)
     .scrollDismissesKeyboard(.immediately)
     .listStyle(.inset)
     .cornerRadius(16)
