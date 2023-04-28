@@ -11,7 +11,7 @@ struct ContentView: View {
   @State private var selectedScene: SceneType = .home
 
   var body: some View {
-    NavigationView {
+    NavigationStack {
       CustomTabBarView(tabs: SceneType.allCases, selection: $selectedScene) {
         switch selectedScene {
         case .home:
