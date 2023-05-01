@@ -7,22 +7,15 @@
 import SwiftUI
 
 struct RecommendListView: View {
-  @StateObject private var viewModel: HomeSceneViewModel
-  
-  init(viewModel: HomeSceneViewModel) {
-    self._viewModel = StateObject(wrappedValue: viewModel)
-  }
+  @Binding private(set) var recommends: [Product]
   
   var body: some View {
     LazyVGrid(columns: Constants.columns, spacing: 16) {
-      ForEach(viewModel.recommends) { product in
+      ForEach(recommends) { product in
         RecommendGridCell(product)
       }
     }
     .padding(.bottom, 16)
-    .refreshable {
-      viewModel.fetchRecommendProducts()
-    }
   }
 }
 
@@ -74,14 +67,5 @@ private extension RecommendListView {
   enum Constants {
     static let columns = Array(repeating: GridItem(.flexible(), spacing: 16), count: 2)
     static let cellLength: CGFloat = 180
-  }
-}
-
-struct RecommendListView_Previews: PreviewProvider {
-  static let viewModel = HomeSceneViewModel(marketRepository: MarketProductConcreteRepository())
-  static var previews: some View {
-    ScrollView {
-      RecommendListView(viewModel: viewModel)
-    }
   }
 }

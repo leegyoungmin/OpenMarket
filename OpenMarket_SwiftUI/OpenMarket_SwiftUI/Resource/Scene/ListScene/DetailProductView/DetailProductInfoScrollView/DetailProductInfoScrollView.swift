@@ -34,7 +34,7 @@ struct DetailProductInfoScrollView: View {
             Menu {
               NavigationLink {
                 UploadProductView(
-                  viewModel: AddNewProductViewModel(
+                  viewModel: UploadProductViewModel(
                     with: viewModel.detailProduct
                   )
                 )

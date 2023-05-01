@@ -11,7 +11,7 @@ import SwiftUI
 struct OpenMarket_SwiftUIApp: App {
   var body: some Scene {
     WindowGroup {
-      ContentView()
+      TabContentView()
     }
   }
 }

@@ -7,11 +7,11 @@
 import SwiftUI
 
 struct NewFeatureView: View {
-  @StateObject var viewModel = NewFeatureViewModel(marketRepository: MarketProductConcreteRepository())
+  @Binding private(set) var newFeatures: [Product]
   var body: some View {
     ScrollView(.horizontal, showsIndicators: false) {
       HStack {
-        ForEach(viewModel.recentProducts, id: \.id) { product in
+        ForEach(newFeatures, id: \.id) { product in
           newFeatureCell(with: product)
         }
       }
@@ -47,11 +47,5 @@ extension NewFeatureView {
         .foregroundColor(.accentColor)
     }
     .frame(maxWidth: 90)
-  }
-}
-
-struct NewFeatureView_Previews: PreviewProvider {
-  static var previews: some View {
-    NewFeatureView()
   }
 }

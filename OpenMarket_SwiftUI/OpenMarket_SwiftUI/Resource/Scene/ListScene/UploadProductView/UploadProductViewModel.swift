@@ -7,7 +7,7 @@
 import Combine
 import UIKit
 
-final class AddNewProductViewModel: ObservableObject {
+final class UploadProductViewModel: ObservableObject {
   // MARK: Output
   @Published var name: String = ""
   @Published var price: String = ""
@@ -116,7 +116,7 @@ final class AddNewProductViewModel: ObservableObject {
 }
 
 // MARK: Alert State
-extension AddNewProductViewModel {
+extension UploadProductViewModel {
   enum ViewStyle {
     case create
     case modify
@@ -154,7 +154,7 @@ extension AddNewProductViewModel {
   }
 }
 
-private extension AddNewProductViewModel {
+private extension UploadProductViewModel {
   func handleCompletion(to completion: Subscribers.Completion<Error>) {
     switch completion {
     case .failure:

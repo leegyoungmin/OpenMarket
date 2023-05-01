@@ -11,12 +11,21 @@ final class HomeSceneViewModel: ObservableObject {
   private let marketRepository: MarketProductRepository
   private var cancellables = Set<AnyCancellable>()
   
+  @Published var newFeatures = [Product]()
   @Published var recommends = [Product]()
   
   init(marketRepository: MarketProductRepository) {
     self.marketRepository = marketRepository
     
+    fetchNewFeatures()
     fetchRecommendProducts()
+  }
+  
+  func fetchNewFeatures() {
+    marketRepository.loadProducts(with: 1, itemCount: 10)
+      .map(\.items)
+      .replaceError(with: [])
+      .assign(to: &_newFeatures.projectedValue)
   }
   
   func fetchRecommendProducts() {

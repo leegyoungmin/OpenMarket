@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct TabContentView: View {
   @State private var addNewProduct: Bool = false
   @State private var selectedScene: SceneType = .home
   
@@ -37,7 +37,7 @@ struct ContentView: View {
       }
       .scrollIndicators(.hidden)
       .fullScreenCover(isPresented: $addNewProduct) {
-        UploadProductView(viewModel: AddNewProductViewModel())
+        UploadProductView(viewModel: UploadProductViewModel())
       }
     }
   }
@@ -135,6 +135,6 @@ struct CustomTabBarView<Scene: View>: View {
 
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
-    ContentView()
+    TabContentView()
   }
 }

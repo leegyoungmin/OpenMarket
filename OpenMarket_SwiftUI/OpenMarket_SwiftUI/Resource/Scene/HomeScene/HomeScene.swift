@@ -20,7 +20,7 @@ struct HomeScene: View {
           EmptyView()
         }
         
-        NewFeatureView()
+        NewFeatureView(newFeatures: $viewModel.newFeatures)
           .padding(.horizontal, -16)
         
         TitleSection(title: "종류별로 보기") {
@@ -37,13 +37,14 @@ struct HomeScene: View {
           .tint(.secondary)
         }
         
-        RecommendListView(viewModel: viewModel)
+        RecommendListView(recommends: $viewModel.recommends)
       }
       .padding(.horizontal, 16)
     }
     .background(Color(uiColor: .secondarySystemBackground))
     .navigationBarHidden(true)
     .refreshable {
+      viewModel.fetchNewFeatures()
       viewModel.fetchRecommendProducts()
     }
   }

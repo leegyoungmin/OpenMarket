@@ -9,11 +9,11 @@ import PhotosUI
 
 struct UploadProductView: View {
   @Environment(\.dismiss) var dismiss
-  @StateObject private var viewModel: AddNewProductViewModel
+  @StateObject private var viewModel: UploadProductViewModel
   
   @State private var isPresentToast: Bool = false
   
-  init(viewModel: AddNewProductViewModel) {
+  init(viewModel: UploadProductViewModel) {
     self._viewModel = StateObject(wrappedValue: viewModel)
   }
   
@@ -127,12 +127,5 @@ private extension UploadProductView {
         Divider()
       }
     }
-  }
-}
-
-struct UploadView_Previews: PreviewProvider {
-  static var previews: some View {
-    UploadProductView(viewModel: AddNewProductViewModel())
-      .environmentObject(AddNewProductViewModel())
   }
 }

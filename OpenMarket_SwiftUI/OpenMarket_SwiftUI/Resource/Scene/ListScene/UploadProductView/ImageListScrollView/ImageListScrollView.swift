@@ -8,7 +8,7 @@ import SwiftUI
 import PhotosUI
 
 struct ImageListScrollView: View {
-  @EnvironmentObject var viewModel: AddNewProductViewModel
+  @EnvironmentObject var viewModel: UploadProductViewModel
   @State private var selectedImage: PhotosPickerItem? = nil
   
   var body: some View {
@@ -57,7 +57,7 @@ private extension ImageListScrollView {
   }
   
   struct ProductRegisterImageView: View {
-    @EnvironmentObject var viewModel: AddNewProductViewModel
+    @EnvironmentObject var viewModel: UploadProductViewModel
     let index: Int
     let data: Data
     
