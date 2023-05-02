@@ -28,7 +28,7 @@ final class UploadProductViewModel: ObservableObject {
   @Published var isPresentErrorAlert = false
   @Published var viewStyle: ViewStyle = .create
   private(set) var successUpload = PassthroughSubject<Bool, Never>()
-
+  
   // MARK: Properties
   private var marketRepository: MarketProductRepository
   private var cancellables = Set<AnyCancellable>()
@@ -79,7 +79,8 @@ final class UploadProductViewModel: ObservableObject {
     guard let encodeData = product.encodingData() else { return }
     
     marketRepository.uploadProduct(with: encodeData, images: images)
-      .sink(receiveCompletion: handleCompletion, receiveValue: { _ in })
+      .receive(on: DispatchQueue.main)
+      .sink(receiveCompletion: handleCompletion, receiveValue: { print($0) })
       .store(in: &cancellables)
   }
   
@@ -99,9 +100,13 @@ final class UploadProductViewModel: ObservableObject {
       secret: "mgf4rzxzpe4gkpf5"
     )
     
-    marketRepository.modifyProduct(to: self.detailProduct?.id.description ?? "", modifyRequest: productRequest)
-      .sink(receiveCompletion: handleCompletion, receiveValue: { _ in })
-      .store(in: &cancellables)
+    marketRepository.modifyProduct(
+      to: self.detailProduct?.id.description ?? "",
+      modifyRequest: productRequest
+    )
+    .receive(on: DispatchQueue.main)
+    .sink(receiveCompletion: handleCompletion, receiveValue: { print($0) })
+    .store(in: &cancellables)
   }
   
   func updateImage(with data: Data) {
@@ -128,6 +133,7 @@ extension UploadProductViewModel {
     case invalidPrice
     case invalidStock
     case shortDescription
+    case unknown
     
     var description: String {
       switch self {
@@ -145,6 +151,8 @@ extension UploadProductViewModel {
         
       case .shortDescription:
         return "상대방이 더 자세한 상품의 정보를 얻을 수 있게 상품 설명을 적어주세요."
+      case .unknown:
+        return "알 수 없는 오류가 발생하였습니다. 잠시 후 다시 시도해주세요."
       }
     }
     
@@ -157,8 +165,10 @@ extension UploadProductViewModel {
 private extension UploadProductViewModel {
   func handleCompletion(to completion: Subscribers.Completion<Error>) {
     switch completion {
-    case .failure:
-      return
+    case .failure(let error):
+      print(error)
+      self.alertState = .unknown
+      self.successUpload.send(false)
       
     case .finished:
       self.successUpload.send(true)

@@ -19,16 +19,19 @@ struct SearchView: View {
     VStack {
       NavigationTitleView(title: "검색")
       
+      Text("검색 횟수 : \(viewModel.searchCount.description)")
+      
       SearchTextField(
         placeHolder: "상품명, 판매자명을 검색해보세요.",
         isPresentCancel: $isPresent,
         searchText: $viewModel.searchQuery
       )
       .onReceive(
-        viewModel.$searchQuery.debounce(
-          for: 0.5,
-          scheduler: RunLoop.main
-        )
+        viewModel.$searchQuery
+          .debounce(
+            for: 0.5,
+            scheduler: RunLoop.main
+          )
       ) {
         viewModel.search(with: $0)
       }

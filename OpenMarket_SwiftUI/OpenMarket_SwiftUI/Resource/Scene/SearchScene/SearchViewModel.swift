@@ -10,6 +10,7 @@ import Foundation
 final class SearchViewModel: ObservableObject {
   @Published var searchQuery: String = ""
   @Published var searchedProducts: [Product] = []
+  @Published var searchCount: Int = .zero
   
   private let marketRepository: MarketProductRepository
   private var cancellables = Set<AnyCancellable>()
@@ -21,6 +22,7 @@ final class SearchViewModel: ObservableObject {
   func search(with query: String) {
     guard query.isEmpty == false else { return }
     
+    searchCount += 1
     marketRepository.searchProducts(with: query)
       .receive(on: DispatchQueue.main)
       .map(\.items)

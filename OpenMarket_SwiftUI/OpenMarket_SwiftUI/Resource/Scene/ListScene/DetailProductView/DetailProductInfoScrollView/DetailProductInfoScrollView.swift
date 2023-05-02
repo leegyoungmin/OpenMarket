@@ -38,6 +38,7 @@ struct DetailProductInfoScrollView: View {
                     with: viewModel.detailProduct
                   )
                 )
+                .navigationBarBackButtonHidden()
                 .onDisappear {
                   viewModel.shouldDismiss.toggle()
                 }

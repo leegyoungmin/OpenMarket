@@ -11,6 +11,7 @@ struct UploadProductView: View {
   @Environment(\.dismiss) var dismiss
   @StateObject private var viewModel: UploadProductViewModel
   
+  @State private var isUploading: Bool = false
   @State private var isPresentToast: Bool = false
   
   init(viewModel: UploadProductViewModel) {
@@ -28,7 +29,7 @@ struct UploadProductView: View {
           productInformationForm
         }
         
-        if isPresentToast {
+        if isUploading {
           ProgressView()
             .progressViewStyle(.circular)
         }
@@ -48,17 +49,19 @@ struct UploadProductView: View {
     }
     .padding(16)
     .onReceive(viewModel.successUpload) { isSuccess in
-      isPresentToast = true
+      isPresentToast = isSuccess
     }
-    .disabled(isPresentToast)
+    .disabled(isUploading)
     .toast(
       message: "정상적으로 업로드 되었습니다.",
       isShowing: $isPresentToast
     ) {
+      isUploading = false
       dismiss()
     }
     .alert(isPresented: $viewModel.isPresentErrorAlert, error: viewModel.alertState) { error in
       Button {
+        isUploading = false
         viewModel.isPresentErrorAlert = false
       } label: {
         Text("확인")
@@ -107,6 +110,10 @@ private extension UploadProductView {
         from: nil,
         for: nil
       )
+      
+      withAnimation {
+        isUploading =  true
+      }
       
       if viewModel.viewStyle == .create {
         viewModel.uploadProduct()

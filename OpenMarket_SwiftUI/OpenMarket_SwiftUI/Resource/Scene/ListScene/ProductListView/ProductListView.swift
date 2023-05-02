@@ -51,9 +51,12 @@ private extension ProductListView {
       DetailProductView(
         viewModel: DetailProductViewModel(
           product: product,
-          marketRepository: viewModel.marketWebRepository
+          marketRepository: viewModel.marketRepository
         )
       )
+      .onDisappear {
+        viewModel.reloadProducts()
+      }
     } label: {
       ProductListCellView(product: product)
     }

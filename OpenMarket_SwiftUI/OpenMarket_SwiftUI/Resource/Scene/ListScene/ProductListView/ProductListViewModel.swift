@@ -9,7 +9,7 @@ import Combine
 
 final class ProductListViewModel: ObservableObject {
   // Properties
-  let marketWebRepository: MarketProductRepository
+  let marketRepository: MarketProductRepository
   private var page: Int = 1
   
   private var cancellables = Set<AnyCancellable>()
@@ -18,8 +18,8 @@ final class ProductListViewModel: ObservableObject {
   @Published var products: [Product] = []
   
   // Initializer
-  init(marketWebRepository: MarketProductRepository = MarketProductConcreteRepository()) {
-    self.marketWebRepository = marketWebRepository
+  init(marketRepository: MarketProductRepository = MarketProductConcreteRepository()) {
+    self.marketRepository = marketRepository
   }
   
   func fetchProducts(isReload: Bool = false) {
@@ -29,7 +29,7 @@ final class ProductListViewModel: ObservableObject {
     let page = (isReload ? 1 : page)
     let itemCount = (isReload ? (10 * page) : 10)
     
-    marketWebRepository.loadProducts(with: page, itemCount: itemCount)
+    marketRepository.loadProducts(with: page, itemCount: itemCount)
       .receive(on: DispatchQueue.main)
       .sink(
         receiveCompletion: onReceiveCompletion,
